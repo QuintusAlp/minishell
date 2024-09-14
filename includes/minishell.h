@@ -1,20 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/09/12 21:02:56 by qalpesse         ###   ########.fr       */
+/*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
+/*   Updated: 2024/09/12 21:01:21 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/libft.h"
-#include "../includes/minishell.h"
-//include <stdio.h>
+#ifndef MINISHELL_H
+#define MINISHELL_H
 
-int main(void)
-{
-	ft_printf("hello world!");
-}
+#include <stdio.h>
+
+#endif

@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 14:27:13 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/06/26 16:09:53 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/08/15 16:01:47 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <unistd.h>
 # include <stdarg.h>
 # include <stdio.h>
+# include "gnl/get_next_line.h"
 //Bonnus 
 typedef struct s_list
 {

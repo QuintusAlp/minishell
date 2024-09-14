@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 10:38:30 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/05/01 15:21:15 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/08/07 17:14:35 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*ft_freestr(char *str)
 	return (NULL);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin_bis(char *s1, char *s2)
 {
 	char	*new_str;
 	int		size_s1;
@@ -59,7 +59,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (new_str);
 }
 
-int	ft_findchar(char c, char *str)
+int	ft_findchar_bis(char c, char *str)
 {
 	if (!str)
 		return (0);

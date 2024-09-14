@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 10:38:19 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/05/07 19:06:20 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/08/07 17:14:46 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,6 @@
 
 char	*get_next_line(int fd);
 //utils
-char	*ft_strjoin(char *s1, char *s2);
-int		ft_findchar(char c, char *str);
+char	*ft_strjoin_bis(char *s1, char *s2);
+int		ft_findchar_bis(char c, char *str);
 #endif

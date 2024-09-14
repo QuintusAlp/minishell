@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 10:38:02 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/05/01 15:20:30 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/08/07 17:14:52 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,10 @@ char	*get_next_line(int fd)
 	str = NULL;
 	while (rd > 0)
 	{
-		str = ft_strjoin(str, buffer[fd]);
+		str = ft_strjoin_bis(str, buffer[fd]);
 		if (!str)
 			return (NULL);
-		if (ft_findchar('\n', buffer[fd]))
+		if (ft_findchar_bis('\n', buffer[fd]))
 		{
 			ft_buffer_modif(buffer[fd]);
 			break ;
