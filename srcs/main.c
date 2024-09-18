@@ -12,9 +12,17 @@
 
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
-//include <stdio.h>
 
 int main(void)
 {
-	ft_printf("hello world!");
+	char	*prompt;
+
+	prompt = readline(">");
+	while (prompt)
+	{
+		printf("%s\n", prompt);
+		free(prompt);
+		prompt = readline(">");
+	}
+	return (0);
 }
