@@ -1,26 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
+/*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/15 10:11:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/06/09 13:01:25 by qalpesse         ###   ########.fr       */
+/*   Created: 2024/09/18 10:41:47 by qalpesse          #+#    #+#             */
+/*   Updated: 2024/09/18 11:47:49 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef PARSING_H
+# define PARSING_H
 
-t_list	*ft_lstnew(void *content, int type)
+enum e_char_token
 {
-	t_list	*element;
+	LITTERAL,
+	PIPE,
+	AND,
+	OR,
+	REDIR,
+	S_QUOTE,
+	D_QUOTE,
+	WORD
+};
 
-	element = malloc(sizeof(t_list));
-	if (!element)
-		return (NULL);
-	element->value = content;
-	element->type = type;
-	element->next = NULL;
-	return (element);
-}
+void ft_parsing(char *prompt);
+
+#endif

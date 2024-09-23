@@ -6,11 +6,10 @@
 /*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/09/12 21:02:56 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/09/18 10:46:54 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/libft.h"
 #include "../includes/minishell.h"
 
 int main(void)
@@ -20,9 +19,9 @@ int main(void)
 	prompt = readline(">");
 	while (prompt)
 	{
-		printf("%s\n", prompt);
+		ft_parsing(prompt);
 		free(prompt);
-		prompt = readline(">");
+		prompt = readline("> ");
 	}
 	return (0);
 }

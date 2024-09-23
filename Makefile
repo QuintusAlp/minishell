@@ -1,4 +1,5 @@
 SRCS = 	./srcs/main.c \
+		./srcs/parsing.c
 
 OBJDIR = objets
 OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)
