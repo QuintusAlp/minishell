@@ -1,5 +1,6 @@
-SRCS = 	./srcs/main.c \
-		./srcs/parsing.c
+SRCS = 	./srcs/main.c ./srcs/ft_error.c \
+		./srcs/parsing.c ./srcs/lexer.c
+
 
 OBJDIR = objets
 OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)

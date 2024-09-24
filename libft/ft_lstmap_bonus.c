@@ -36,7 +36,7 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 	element = start_list;
 	while (lst)
 	{
-		element->content = f(lst->content);
+		element->value= f(lst->value);
 		lst = lst->next;
 		if (lst)
 		{

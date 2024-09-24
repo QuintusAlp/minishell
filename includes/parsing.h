@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 10:41:47 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/09/18 11:47:49 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/09/24 15:12:56 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,5 @@ enum e_char_token
 	WORD
 };
 
-void ft_parsing(char *prompt);
 
 #endif
