@@ -12,21 +12,6 @@
 
 #include "../includes/minishell.h"
 
-int	ft_find_sep(char *s)
-{
-	if (!ft_strrchr(s, '\"') && !ft_strrchr(s, '\"'))
-	{
-		if (ft_strrchr(s, '|'))
-			return (1);
-		if (ft_strrchr(s, '>'))
-			return (1);
-		if (ft_strrchr(s, '<'))
-			return (1);
-		if (ft_strrchr(s, '&'))
-			return (1);
-	}
-	return (0);
-}
 void	ft_printlst(t_list *e)
 {
 	t_list	*tokens;
