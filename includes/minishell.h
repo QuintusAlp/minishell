@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/09/12 21:01:21 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/09/30 10:20:03 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,9 @@
 #define MINISHELL_H
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+#include <stddef.h>
 
 #endif
