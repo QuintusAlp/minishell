@@ -90,13 +90,36 @@ char *ft_get_sp_token(char *c, int *i)
 	data[1] = '\0';
 	return (data);
 }
-void	ft_token_type(t_list *tokens)
+int	ft_strcmp(char *str1, char *str2)
 {
-	while (tokens)
+	while(*str1 || *str2)
 	{
-		if ()
-		tokens = tokens->next
-	}	
+		if (*str1 != *str2)
+			return (0);
+		str1++;
+		str2++;
+	}
+	return  (1);
+}
+void	ft_token_type(t_list *token)
+{
+
+	while (token)
+	{
+		if (ft_strcmp(token->value, "|"))
+			token->type = PIPE;
+		else if (ft_strcmp(token->value, "<"))
+			token->type = I_REDIR;
+		else if (ft_strcmp(token->value, ">"))
+			token->type = O_REDIR_TRUNC;
+		else if (ft_strcmp(token->value, ">>"))
+			token->type = O_REDIR_APPEND;
+		else if (ft_strcmp(token->value, "<<"))
+			token->type = HEREDOC;
+		else
+			token->type = WORD;
+		token = token->next;
+	}
 }
 /*king of split but that work directly with chain list and that keep sep if it has to */
 t_list *ft_lexer(char *str)

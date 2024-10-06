@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 10:43:25 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/09/24 15:07:43 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/04 11:51:08 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ void ft_parsing(char *prompt)
 	t_list *tokens;
 
 	tokens = ft_lexer(prompt);
-	ft_printlst(tokens);
+	ft_ast_builder(tokens);
+	// ft_printlst(tokens);
 	ft_lstclear(&tokens,&free); 
 
 }

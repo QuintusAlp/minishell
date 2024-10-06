@@ -1,5 +1,6 @@
 SRCS = 	./srcs/main.c ./srcs/ft_error.c \
-		./srcs/parsing.c ./srcs/lexer.c
+		./srcs/parse_pipe.c ./srcs/parse_cmd.c ./srcs/parse_redir.c \
+		./srcs/parsing.c ./srcs/lexer.c ./srcs/ast.c 
 
 
 OBJDIR = objets
@@ -8,7 +9,7 @@ OBJS_BONNUS = $(SRCS_BONNUS:%.c=$(OBJDIR)/%.o)
 LIB = make -C ./libft
 INCS = includes
 CC = gcc
-RM = rm -f
+RM = rm -rf
 CFLAGS = -Wall -Wextra -Werror 
 NAME = minishell
 
@@ -25,7 +26,7 @@ $(OBJDIR)/%.o: %.c
 
 ${NAME}: ${OBJS}
 	@${LIB}
-	@echo "${FLUO_GREEN}compiling push_swap...${NC}"
+	@echo "${FLUO_GREEN}compiling minishell...${NC}"
 	@${CC} ${CFLAGS} ${OBJS} -L./libft -lft -lreadline -o ${NAME}
 	@printf "\r${YELLOW}Compiling: [${FLUO_GREEN}%-50s${FLUO_GREEN}${YELLOW}] %d/%d${NC}" $$(printf "#%.0s" $$(seq 1 $$(expr $$(find $(OBJDIR) -type f -name '*.o' | wc -l) \* \
 	 50 / $(words $(SRCS))))) $$(find $(OBJDIR) -type f -name '*.o' | wc -l) $(words $(SRCS))
