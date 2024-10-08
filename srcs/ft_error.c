@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 13:45:24 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/09/23 13:46:32 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/08 21:03:04 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,7 @@
 
 void	ft_error(char *str)
 {
-	perror(str);
+	write(2, str, ft_strlen(str));
+	write(2, "\n", 1);
+	exit(1);
 }

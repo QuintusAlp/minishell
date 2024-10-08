@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 11:04:17 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/07 15:56:30 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/08 14:28:33 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,36 +16,45 @@
 
 int	ft_lstfind(t_list *token, int type)
 {
-	while(token)
+	if (type == REDIR)
 	{
-		if (token->type == type)
-			return (1);
-		token = token->next;
+		while(token)
+		{
+			if (ft_token_isredir(token))
+					return (1);
+			token = token->next;
+		}
+	}
+	else
+	{
+		while(token)
+		{
+			if (token->type == type)
+				return (1);
+			token = token->next;
+		}
 	}
 	return (0);
 }
 
 t_node	*ft_parsetoken(t_list *token)
 {
-	// if (token->type == PIPE)
-	// 	return (ft_error("syntax error, pipe first token"), NULL);
+	int	type;
+
 	if (ft_lstfind(token, PIPE))
+	{
 		return (ft_pipenode(ft_parsetoken(ft_get_prevpipe(token)),
 				ft_parsetoken(ft_get_nextpipe(token)), token));
-	// if (ft_lstfind(token, I_REDIR))
-	// 	return (ft_redirnode(ft_parsetoken(ft_get_prevredir(token))
-	// 			, ft_get_file(token), I_REDIR, token));
-	// if (ft_lstfind(token, O_REDIR_APPEND))
-	// 	return (ft_redirnode(ft_parsetoken(ft_get_prevredir(token))
-	// 			, ft_get_file(token), O_REDIR_APPEND, token));
-	// if (ft_lstfind(token, O_REDIR_TRUNC))
-	// 	return (ft_redirnode(ft_parsetoken(ft_get_prevredir(token))
-	// 			, ft_get_file(token), O_REDIR_TRUNC, token));
-	// if (ft_lstfind(token, HEREDOC))
-	// 	return (ft_redirnode(ft_parsetoken(ft_get_prevredir(token))
-	// 			, ft_get_file(token), HEREDOC, token));
+	}
+	if (ft_lstfind(token, REDIR))
+	{
+	 	return (ft_redirnode(ft_parsetoken(ft_get_prevredir(token))
+	 			, ft_get_file_and_type(token, &type), type, token));
+	}
 	if (ft_lstfind(token, WORD))
-			return (ft_cmdnode(ft_getargv(token), NULL, token));
+	{
+		return (ft_cmdnode(ft_getargv(token), NULL, token));
+	}
 	return (NULL);
 }
 //////////////AST PRINTER///////////////////////////////////
@@ -128,11 +137,3 @@ void ast_printer(t_node *node, int level)
 }
 /////////////////////////////////////////
 
-void	*ft_ast_builder(t_list *token)
-{
-	t_node	*ast;
-	
-	ast = ft_parsetoken(token);
-	ast_printer(ast, 0);
-	return (NULL);
-}

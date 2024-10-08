@@ -21,6 +21,8 @@ t_node	*ft_pipenode(t_node *left, t_node *right, t_list *token)
 	pipe->left = left;
 	pipe->right = right;
 	ft_lstclear(&token, &free);
+	if (!pipe->left)
+		ft_error("parse error pipe\n");
 	return ((t_node *)pipe);
 }
 

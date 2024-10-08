@@ -20,7 +20,8 @@ t_node	*ft_redirnode(t_node *cmd, char *file, int type, t_list *token)
 	redir->type = type;
 	redir->cmd = cmd;
 	redir->file = file;
-	return (ft_lstclear(&token, &free), (t_node *)redir);
+	ft_lstclear(&token, &free);
+	return ((t_node *)redir);
 }
 int ft_token_isredir(t_list *token)
 {
@@ -50,23 +51,24 @@ t_list	*ft_get_prevredir(t_list *token)
 	prev = NULL;
 	while (!(ft_token_isredir(token) && !ft_check_other_redir(token)))
 	{
-		ft_lstadd_back(&prev, ft_lstnew(token->value, token->type));
+		ft_lstadd_back(&prev, ft_lstnew(ft_strdup(token->value), token->type));
 		token = token->next;
 	}
 	return (prev);
 }
-char *ft_get_file(t_list *token)
+char *ft_get_file_and_type(t_list *token, int *type)
 {
 	t_list *start_lst;
 
 	start_lst = token;
 	while (!(ft_token_isredir(token) && !ft_check_other_redir(token)))
 		token = token->next;
+	*type = token->type;
 	if ((token->next)->type == WORD)
 	{
 		return (ft_strdup((token->next)->value));
 	}
 	else
-		return (ft_printf("file not fouhnd\n"), NULL);
+		return (NULL);
 	return (NULL);
 }
