@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_ast.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 09:41:50 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/08 14:28:49 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/09 11:11:50 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	ft_free_cmd(t_node *node)
 {
 	t_cmd	*cmd= (t_cmd*)node;
 	ft_freeargv(cmd->argv);
-	ft_freeargv(cmd->env);
 }
 void	ft_free_ast(t_node *node)
 {

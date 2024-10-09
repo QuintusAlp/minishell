@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 10:43:25 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/08 22:10:57 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/09 15:54:16 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,16 @@ void	ft_printlst(t_list *e)
 	}
 }
 
-void ft_parsing(char *prompt)
+void ft_pars_and_exec(char *prompt, char **env)
 {
 	t_list *tokens;
 	t_node *ast;
 
+	if (!prompt)
+		return ;
 	tokens = ft_lexer(prompt);
-	ast = ft_parsetoken(tokens);
-	ast_printer(ast, 0);
+	ast = ft_parsetoken(tokens, env);
+	//ast_printer(ast, 0);
 	ft_execute_ast(ast);
 	ft_free_ast(ast);
 	// ft_printlst(tokens);

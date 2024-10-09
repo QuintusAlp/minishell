@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/08 19:40:18 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/09 13:59:57 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@
 //error
 void ft_error(char *str);
 //parsing
-void ft_parsing(char *prompt);
+void ft_pars_and_exec(char *prompt, char **env);
 t_list *ft_lexer(char *str);
 //for debug
 void	ft_printlst(t_list *e);
 void ast_printer(t_node *node, int level);
 //ast functions
-t_node	*ft_parsetoken(t_list *token);
+t_node	*ft_parsetoken(t_list *token, char **env);
 // pipe
 t_list	*ft_get_prevpipe(t_list *token);
 t_list	*ft_get_nextpipe(t_list *token);
@@ -48,6 +48,12 @@ char **ft_getargv(t_list *token);
 int ft_token_isredir(t_list *token);
 //free ast
 void	ft_free_ast(t_node *node);
-//execute ast	
+//execute ast
 void	ft_execute_ast(t_node *node);
+void ft_exec(t_node *node);
+// exec pipe
+void	ft_exec_pipe(t_pipe *node);
+// exec cmd
+void	ft_exec_cmd(t_cmd *cmd);
+
 #endif

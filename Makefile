@@ -1,6 +1,7 @@
 SRCS = 	./srcs/main.c ./srcs/ft_error.c \
 		./srcs/parse_pipe.c ./srcs/parse_cmd.c ./srcs/parse_redir.c \
-		./srcs/parsing.c ./srcs/lexer.c ./srcs/ast.c ./srcs/free_ast.c ./srcs/execute_ast.c 
+		./srcs/parsing.c ./srcs/lexer.c ./srcs/ast.c ./srcs/free_ast.c ./srcs/execute_ast.c \
+		./srcs/exec_pipe.c ./srcs/exec_cmd.c
 		
 
 
@@ -11,7 +12,7 @@ LIB = make -C ./libft
 INCS = includes
 CC = gcc
 RM = rm -rf
-CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 NAME = minishell
 
 FLUO_GREEN = \033[1;92m

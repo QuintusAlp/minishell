@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 11:04:17 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/08 14:28:33 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/09 10:54:16 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,23 +37,23 @@ int	ft_lstfind(t_list *token, int type)
 	return (0);
 }
 
-t_node	*ft_parsetoken(t_list *token)
+t_node	*ft_parsetoken(t_list *token, char **env)
 {
 	int	type;
 
 	if (ft_lstfind(token, PIPE))
 	{
-		return (ft_pipenode(ft_parsetoken(ft_get_prevpipe(token)),
-				ft_parsetoken(ft_get_nextpipe(token)), token));
+		return (ft_pipenode(ft_parsetoken(ft_get_prevpipe(token), env),
+				ft_parsetoken(ft_get_nextpipe(token), env), token));
 	}
 	if (ft_lstfind(token, REDIR))
 	{
-	 	return (ft_redirnode(ft_parsetoken(ft_get_prevredir(token))
+	 	return (ft_redirnode(ft_parsetoken(ft_get_prevredir(token), env)
 	 			, ft_get_file_and_type(token, &type), type, token));
 	}
 	if (ft_lstfind(token, WORD))
 	{
-		return (ft_cmdnode(ft_getargv(token), NULL, token));
+		return (ft_cmdnode(ft_getargv(token), env, token));
 	}
 	return (NULL);
 }
