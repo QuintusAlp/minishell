@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:40:11 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/09 15:10:43 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/14 16:10:34 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,43 @@ char	*ft_path(char *exec, char **env)
 	return (path);
 }
 
-void	ft_exec_cmd(t_cmd *cmd)
+void	ft_exec_cmd(t_cmd *cmd, int *pipefd, int dupfd, int *cmd_index)
 {
-	//printf("cmd: %s\n", cmd->argv[0]);
-	if (execve(ft_path(cmd->argv[0],cmd->env),cmd->argv, cmd->env) == -1)
-		ft_error("cmd error");
+	int	pid;
+
+	pid = fork();
+	if (pid == -1)
+		ft_error("fork error");
+	if (pid == 0)
+	{
+		if (*cmd_index == 0)
+		{
+			if (pipefd)
+			{
+				if (dup2(pipefd[1], 1) == -1)
+					ft_error("dup2 error 1");
+			}
+		}
+		if (*cmd_index == -1)
+		{
+			if (dup2(dupfd, 0) == -1)
+					ft_error("dup2 error 2");
+		}
+		if (*cmd_index > 0)
+		{
+			if (dup2(dupfd, 0) == -1)
+				ft_error("dup2 error 2");
+			if (dup2(pipefd[1], 1) == -1)
+				ft_error("dup2 error 3");
+		}
+		if (pipefd)
+		{
+			close(pipefd[1]);
+			close(pipefd[0]);
+		}
+		if (dupfd != -1)
+			close(dupfd);
+		if (execve(ft_path(cmd->argv[0],cmd->env),cmd->argv, cmd->env) == -1)
+			ft_error("cmd error");
+	}
 }

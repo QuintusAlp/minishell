@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/09 13:59:57 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/14 10:17:51 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,13 @@ char **ft_getargv(t_list *token);
 int ft_token_isredir(t_list *token);
 //free ast
 void	ft_free_ast(t_node *node);
+
 //execute ast
 void	ft_execute_ast(t_node *node);
-void ft_exec(t_node *node);
+void ft_exec(t_node *node, int *pipefd, int dupfd, int *cmd_index);
 // exec pipe
-void	ft_exec_pipe(t_pipe *node);
+void	ft_exec_pipe(t_pipe *node, int dupfd, int *cmd_index);
 // exec cmd
-void	ft_exec_cmd(t_cmd *cmd);
+void	ft_exec_cmd(t_cmd *cmd, int *pipefd, int dupfd, int *cmd_index);
 
 #endif
