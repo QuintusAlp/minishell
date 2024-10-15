@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/14 10:17:51 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/15 15:30:43 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,7 @@ void ft_exec(t_node *node, int *pipefd, int dupfd, int *cmd_index);
 void	ft_exec_pipe(t_pipe *node, int dupfd, int *cmd_index);
 // exec cmd
 void	ft_exec_cmd(t_cmd *cmd, int *pipefd, int dupfd, int *cmd_index);
+// exec redir
+void ft_exec_redir(t_redir *redir);
 
 #endif

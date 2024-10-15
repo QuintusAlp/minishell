@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 10:43:25 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/09 15:54:16 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/15 15:32:49 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void ft_pars_and_exec(char *prompt, char **env)
 		return ;
 	tokens = ft_lexer(prompt);
 	ast = ft_parsetoken(tokens, env);
-	//ast_printer(ast, 0);
+	ast_printer(ast, 0);
 	ft_execute_ast(ast);
 	ft_free_ast(ast);
 	// ft_printlst(tokens);

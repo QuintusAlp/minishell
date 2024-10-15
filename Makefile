@@ -1,7 +1,7 @@
 SRCS = 	./srcs/main.c ./srcs/ft_error.c \
 		./srcs/parse_pipe.c ./srcs/parse_cmd.c ./srcs/parse_redir.c \
 		./srcs/parsing.c ./srcs/lexer.c ./srcs/ast.c ./srcs/free_ast.c ./srcs/execute_ast.c \
-		./srcs/exec_pipe.c ./srcs/exec_cmd.c
+		./srcs/exec_pipe.c ./srcs/exec_cmd.c ./srcs/exec_redir.c
 		
 
 
