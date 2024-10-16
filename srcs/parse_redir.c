@@ -49,11 +49,19 @@ t_list	*ft_get_prevredir(t_list *token)
 	t_list	*prev;
 
 	prev = NULL;
-	while (!(ft_token_isredir(token) && !ft_check_other_redir(token)))
+	while (!ft_token_isredir(token))
 	{
 		ft_lstadd_back(&prev, ft_lstnew(ft_strdup(token->value), token->type));
 		token = token->next;
 	}
+	token = token->next;
+	token = token->next;
+	while(token)
+	{
+		ft_lstadd_back(&prev, ft_lstnew(ft_strdup(token->value), token->type));
+		token = token->next;
+	}
+		
 	return (prev);
 }
 char *ft_get_file_and_type(t_list *token, int *type)
@@ -61,7 +69,7 @@ char *ft_get_file_and_type(t_list *token, int *type)
 	t_list *start_lst;
 
 	start_lst = token;
-	while (!(ft_token_isredir(token) && !ft_check_other_redir(token)))
+	while (!ft_token_isredir(token))
 		token = token->next;
 	*type = token->type;
 	if ((token->next)->type == WORD)

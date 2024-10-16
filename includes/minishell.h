@@ -57,6 +57,6 @@ void	ft_exec_pipe(t_pipe *node, int dupfd, int *cmd_index);
 // exec cmd
 void	ft_exec_cmd(t_cmd *cmd, int *pipefd, int dupfd, int *cmd_index);
 // exec redir
-void ft_exec_redir(t_redir *redir);
+void ft_exec_redir(t_redir *redir, int *pipefd, int dupfd, int *cmd_index);
 
 #endif
