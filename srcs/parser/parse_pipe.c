@@ -6,13 +6,13 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 11:26:09 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/07 15:56:12 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/17 16:21:00 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_node	*ft_pipenode(t_node *left, t_node *right, t_list *token)
+t_node	*ft_pipenode(t_node *left, t_node *right, t_list **token)
 {
 	t_pipe	*pipe;
 	
@@ -20,16 +20,13 @@ t_node	*ft_pipenode(t_node *left, t_node *right, t_list *token)
 	pipe->type = PIPE;
 	pipe->left = left;
 	pipe->right = right;
-	ft_lstclear(&token, &free);
-	if (!pipe->left)
-		ft_error("parse error pipe\n");
+	ft_lstclear(token, &free);
 	return ((t_node *)pipe);
 }
 
 t_list	*ft_get_prevpipe(t_list *token)
 {
 	t_list *prev;
-	(void)token;
 
 	prev = NULL;
 	while (token && token->type != PIPE)
@@ -43,7 +40,7 @@ t_list	*ft_get_prevpipe(t_list *token)
 t_list	*ft_get_nextpipe(t_list *token)
 {
 	t_list *next;
-	(void)token;
+
 	next = NULL;
 	while (token && token->type != PIPE)
 		token = token->next;

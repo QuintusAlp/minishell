@@ -6,13 +6,13 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 11:26:20 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/07 12:43:30 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/17 16:54:39 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-t_node	*ft_redirnode(t_node *cmd, char *file, int type, t_list *token)
+t_node	*ft_redirnode(t_node *cmd, char *file, int type, t_list **token)
 {
 	t_redir	*redir;
 
@@ -20,7 +20,7 @@ t_node	*ft_redirnode(t_node *cmd, char *file, int type, t_list *token)
 	redir->type = type;
 	redir->cmd = cmd;
 	redir->file = file;
-	ft_lstclear(&token, &free);
+	ft_lstclear(token, &free);
 	return ((t_node *)redir);
 }
 int ft_token_isredir(t_list *token)
