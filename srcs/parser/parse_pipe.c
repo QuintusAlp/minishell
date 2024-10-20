@@ -45,6 +45,11 @@ t_list	*ft_get_nextpipe(t_list *token)
 	while (token && token->type != PIPE)
 		token = token->next;
 	token = token->next;
+	if (!token)
+	{
+		ft_lexer(readline("> "), &next);
+		return (next);
+	}
 	while (token)
 	{
 		ft_lstadd_back(&next, ft_lstnew(ft_strdup(token->value), token->type));

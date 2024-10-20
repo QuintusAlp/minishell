@@ -46,6 +46,8 @@ void	ft_free_cmd(t_node *node)
 }
 void	ft_free_ast(t_node *node)
 {
+	if (!node)
+		return ;
 	if (node->type == PIPE)
 		return(ft_free_pipe(node, &ft_free_ast));
 	if (node->type == I_REDIR

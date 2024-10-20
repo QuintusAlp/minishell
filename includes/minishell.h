@@ -55,12 +55,12 @@ void	ft_free_ast(t_node *node);
 
 //execute ast
 void	ft_execute_ast(t_node *node);
-void ft_exec(t_node *node, int *pipefd, int dupfd, int *cmd_index);
+void	ft_exec(t_node *node, int dupfd, int *cmd_index);
 // exec pipe
 void	ft_exec_pipe(t_pipe *node, int dupfd, int *cmd_index);
 // exec cmd
-void	ft_exec_cmd(t_cmd *cmd, int *pipefd, int dupfd, int *cmd_index);
+void	ft_exec_cmd(t_cmd *cmd);
 // exec redir
-void ft_exec_redir(t_redir *redir, int *pipefd, int dupfd, int *cmd_index);
+void	ft_exec_redir(t_redir *redir, int dupfd, int *cmd_index);
 
 #endif

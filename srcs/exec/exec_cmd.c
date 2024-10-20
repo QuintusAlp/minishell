@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 char	**ft_binpaths(char **env)
 {
@@ -54,12 +54,8 @@ char	*ft_path(char *exec, char **env)
 	return (path);
 }
 
-void	ft_exec_cmd(t_cmd *cmd, int *pipefd, int dupfd, int *cmd_index)
+void	ft_exec_cmd(t_cmd *cmd)
 {
-	(void)pipefd;
-	(void)dupfd;
-	(void)cmd_index;
-	
-	if (execve(ft_path(cmd->argv[0],cmd->env),cmd->argv, cmd->env) == -1)
+	if (execve(ft_path(cmd->argv[0], cmd->env), cmd->argv, cmd->env) == -1)
 		ft_error("cmd error");
 }

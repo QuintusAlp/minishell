@@ -16,7 +16,6 @@ enum e_char_token
 {
 	PIPE,
 	WORD,
-	REDIR,
 	I_REDIR,
 	O_REDIR_APPEND,
 	O_REDIR_TRUNC,

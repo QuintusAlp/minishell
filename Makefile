@@ -1,7 +1,7 @@
 SRCS = 	./srcs/main.c ./srcs/ft_error.c \
 		./srcs/parser/parse_pipe.c ./srcs/parser/parse_cmd.c ./srcs/parser/parse_redir.c \
-		./srcs/parsing.c ./srcs/lexer/lexer.c ./srcs/lexer/lexer_utils.c ./srcs/parser/ast.c ./srcs/free_ast.c ./srcs/execute_ast.c \
-		./srcs/exec_pipe.c ./srcs/exec_cmd.c ./srcs/exec_redir.c
+		 ./srcs/lexer/lexer.c ./srcs/lexer/lexer_utils.c ./srcs/parser/ast.c ./srcs/free_ast.c ./srcs/exec/execute_ast.c \
+		./srcs/exec/exec_pipe.c ./srcs/exec/exec_cmd.c ./srcs/exec/exec_redir.c
 		
 
 
@@ -23,7 +23,7 @@ NC = \033[0m
 all: titre ${NAME}
 
 $(OBJDIR)/%.o: %.c
-	@mkdir -p $(OBJDIR) $(OBJDIR)/srcs $(OBJDIR)/srcs/lexer $(OBJDIR)/srcs/parser
+	@mkdir -p $(OBJDIR) $(OBJDIR)/srcs $(OBJDIR)/srcs/lexer $(OBJDIR)/srcs/parser $(OBJDIR)/srcs/exec
 	@${CC} ${CFLAGS} -I ${INCS} -c $< -o $@
 
 ${NAME}: ${OBJS}
