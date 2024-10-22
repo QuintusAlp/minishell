@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redir.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 12:09:30 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/16 17:03:53 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/22 13:32:50 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,6 @@ void	ft_heredoc(t_redir *heredoc)
 		str = get_next_line(0);
 	}
 	close(fd);
-	fd = open("/tmp/hd_file", O_RDONLY);
-	if (dup2(fd, 0) == -1)
-		ft_error ("dup2");
-	close(fd);
 }
 
 void	ft_exec_redir(t_redir *redir, int dupfd, int *cmd_index)
@@ -60,23 +56,24 @@ void	ft_exec_redir(t_redir *redir, int dupfd, int *cmd_index)
 	if (redir->type == O_REDIR_TRUNC)
 	{
 		fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (dup2(fd, 1) == -1)
-			ft_error ("dup2");
+		ft_dup2(fd, 1);
 	}
 	if (redir->type == O_REDIR_APPEND)
 	{
 		fd = open(redir->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		if (dup2(fd, 1) == -1)
-			ft_error ("dup2");
+		ft_dup2(fd, 1);
 	}
 	if (redir->type == I_REDIR)
 	{
 		fd = open(redir->file, O_RDONLY, 0644);
-		if (dup2(fd, 0) == -1)
-			ft_error ("dup2");
+		ft_dup2(fd, 0);
 	}
 	if (redir->type == HEREDOC)
+	{	
 		ft_heredoc(redir);
+		fd = open("/tmp/hd_file", O_RDONLY,  0644);
+		ft_dup2(fd, 0);
+	}
 	close(fd);
 	ft_exec(redir->cmd, dupfd, cmd_index);
 }

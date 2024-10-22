@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 10:10:24 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/15 14:35:45 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/22 10:21:48 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,15 @@ void	close_processfd(int *pipefd, int dupfd)
 		close(dupfd);
 }
 
+void	ft_dup2(int fd1, int fd2)
+{
+	if (dup2(fd1, fd2) == -1)
+		ft_error("");
+}
+
 void	ft_process(t_node *node, int dupfd, int *pipefd, int *cmd_index)
 {
 	int	pid;
-	int	dup_value;
 
 	pid = fork();
 	if (pid == -1)
@@ -31,19 +36,15 @@ void	ft_process(t_node *node, int dupfd, int *pipefd, int *cmd_index)
 	if (pid == 0)
 	{
 		if (*cmd_index == 0)
-			dup_value = dup2(pipefd[1], 1);
+			ft_dup2(pipefd[1], 1);
 		if (*cmd_index == -1)
-			dup_value = dup2(dupfd, 0);
+			ft_dup2(dupfd, 0);
 		if (*cmd_index > 0)
 		{
-			if (dup2(dupfd, 0) == -1)
-				ft_error("dup2 error 2");
-			if (dup2(pipefd[1], 1) == -1)
-				ft_error("dup2 error 3");
+			ft_dup2(dupfd, 0);
+			ft_dup2(pipefd[1], 1);
 		}
 		close_processfd(pipefd, dupfd);
-		if (dup_value == -1)
-			ft_error("dup2 error");
 		ft_exec(node, dupfd, cmd_index);
 	}
 }

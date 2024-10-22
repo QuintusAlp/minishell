@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:40:11 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/15 14:42:29 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/22 10:50:56 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,5 @@ char	*ft_path(char *exec, char **env)
 void	ft_exec_cmd(t_cmd *cmd)
 {
 	if (execve(ft_path(cmd->argv[0], cmd->env), cmd->argv, cmd->env) == -1)
-		ft_error("cmd error");
+		ft_error("cmd not found");
 }

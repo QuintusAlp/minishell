@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/17 15:07:54 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/22 13:32:01 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	ft_execute_ast(t_node *node);
 void	ft_exec(t_node *node, int dupfd, int *cmd_index);
 // exec pipe
 void	ft_exec_pipe(t_pipe *node, int dupfd, int *cmd_index);
+void	ft_dup2(int fd1, int fd2);
 // exec cmd
 void	ft_exec_cmd(t_cmd *cmd);
 // exec redir

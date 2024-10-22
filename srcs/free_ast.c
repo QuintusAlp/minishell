@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 09:41:50 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/09 11:11:50 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/22 09:45:28 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	ft_free_redir(t_node *node, void (*ft_free_ast)(t_node *))
 	t_redir	*redir = (t_redir*)node;
 	ft_free_ast(redir->cmd);
 	free(redir->file);
+	free(redir);
 }
 void	ft_freeargv(char **argv)
 {
@@ -38,11 +39,13 @@ void	ft_freeargv(char **argv)
 		free(argv[i]);
 		i++;
 	}
+	free(argv);
 }
 void	ft_free_cmd(t_node *node)
 {
 	t_cmd	*cmd= (t_cmd*)node;
 	ft_freeargv(cmd->argv);
+	free(cmd);
 }
 void	ft_free_ast(t_node *node)
 {

@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 10:41:47 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/07 10:12:08 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/22 09:39:05 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ enum e_char_token
 	O_REDIR_APPEND,
 	O_REDIR_TRUNC,
 	HEREDOC,
+	REDIR,
 	CMD
 };
 

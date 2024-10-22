@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 11:04:17 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/17 16:50:58 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/22 09:47:29 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	ft_lstfind(t_list *token, int type)
 {
+    if (!token)
+        return (0);
 	if (type == REDIR)
 	{
 		while (token)
