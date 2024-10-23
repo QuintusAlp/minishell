@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/22 13:29:09 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/23 11:42:31 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,40 +25,6 @@ void	ft_printlst(t_list *e)
 	}
 }
 
-void	ft_checklexing(t_list **tokens)
-{
-	t_list	*token;
-
-	token = *tokens;
-	if (token && token->type == PIPE)
-	{
-		ft_error("syntax error : near pipe");
-		ft_lstclear(tokens, &free);
-	}
-	while (token)
-	{
-		if (token->type >= I_REDIR && token->type <= HEREDOC)
-		{
-			if ((token->next)->type != WORD)
-			{
-				ft_error("syntax error: near redir");
-				ft_lstclear(tokens, &free);
-				return ;
-			}
-		}
-		if (token->type == PIPE)
-		{
-			if (token->next && (token->next)->type != WORD)
-			{
-				ft_error("syntax error: near pipe");
-				ft_lstclear(tokens, &free);
-				return ;
-			}
-		}
-		token = token->next;
-	}
-}
-
 void ft_pars_and_exec(char *prompt, char **env)
 {
 	t_list *tokens;
@@ -69,9 +35,7 @@ void ft_pars_and_exec(char *prompt, char **env)
 	tokens = NULL;
 	ast = NULL;
 	ft_lexer(prompt, &tokens);
-	ft_checklexing(&tokens);
 	//ft_printlst(tokens);
-	
 	ast = ft_parsetoken(&tokens, env);
 	//ast_printer(ast, 0);
 	ft_execute_ast(ast);

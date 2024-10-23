@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/22 13:32:01 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/23 14:26:15 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,10 @@
 # include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/stat.h>
 //error
 void ft_error(char *str);
+void	ft_panic(char *str, char *name, int exit_code);
 //parsing
 void ft_pars_and_exec(char *prompt, char **env);
 void	ft_lexer(char *str, t_list **tokens);

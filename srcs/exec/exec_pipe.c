@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 10:10:24 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/22 10:21:48 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/23 14:44:01 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,9 @@ void	ft_process(t_node *node, int dupfd, int *pipefd, int *cmd_index)
 void	ft_exec_pipe(t_pipe *node, int dupfd, int *cmd_index)
 {
 	int	pipefd[2];
-
+	
+	if (!node->left || !node->right)
+		ft_panic("syntax error near unexpected token `|\'", NULL, 258);
 	if (pipe(pipefd) == -1)
 		ft_error("pipe");
 	ft_process(node->left, dupfd, pipefd, cmd_index);
