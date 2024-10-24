@@ -6,13 +6,52 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 11:26:20 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/17 16:54:39 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/24 18:39:03 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-t_node	*ft_redirnode(t_node *cmd, char *file, int type, t_list **token)
+int	ft_strfind(char *str, char *str_to_find)
+{
+	int	i;
+
+	if (!str)
+		return (0);
+	i = 0;
+	while ((str[i] && str[i] != '\n') || str_to_find[i])
+	{
+		if (str[i] != str_to_find[i])
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+void	ft_heredoc(char *delimiter, char *file)
+{
+	char	*str;
+	int		fd;
+	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd == -1)
+		ft_error("open");
+	str = readline("> ");
+	while (!ft_strfind(str, delimiter))
+	{
+		if (write(fd, str, ft_strlen(str)) == -1)
+		{
+			free(str);
+			ft_error("write");
+		}
+		write(fd, "\n", 1);
+		free(str);
+		str = readline("> ");
+	}
+	free (str);
+	close(fd);
+}
+
+t_node	*ft_redirnode(char *file, t_node *cmd, int type, t_list **token)
 {
 	t_redir	*redir;
 
@@ -54,29 +93,38 @@ t_list	*ft_get_prevredir(t_list *token)
 		ft_lstadd_back(&prev, ft_lstnew(ft_strdup(token->value), token->type));
 		token = token->next;
 	}
+	// if (token->next)
 	token = token->next;
-	token = token->next;
+	if (token && token-> type == WORD)
+		token = token->next;
 	while(token)
 	{
 		ft_lstadd_back(&prev, ft_lstnew(ft_strdup(token->value), token->type));
 		token = token->next;
 	}
-		
 	return (prev);
 }
-char *ft_get_file_and_type(t_list *token, int *type)
+char *ft_get_file_and_type(t_list *token, int *type, int *hd_index)
 {
 	t_list *start_lst;
+	char *hd_file;
+	char *index;
 
 	start_lst = token;
 	while (!ft_token_isredir(token))
 		token = token->next;
 	*type = token->type;
-	if ((token->next)->type == WORD)
+	token = token->next;
+	if (*type == HEREDOC)
 	{
-		return (ft_strdup((token->next)->value));
+		index = ft_itoa(*hd_index);
+		hd_file = ft_strjoin("/tmp/hd_file", index);
+		free(index);
+		(*hd_index) --;
+		ft_heredoc(token->value, hd_file);
+		return (hd_file);
 	}
 	else
-		return (NULL);
+		return (ft_strdup(token->value));
 	return (NULL);
 }

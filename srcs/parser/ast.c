@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 11:04:17 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/22 09:47:29 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/24 18:36:52 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	ft_lstfind(t_list *token, int type)
 	return (0);
 }
 
-t_node	*ft_parsetoken(t_list **token, char **env)
+t_node	*ft_parsetoken(t_list **token, char **env, int *hd_index)
 {
 	int	type;
 	t_list	*prev;
@@ -47,14 +47,14 @@ t_node	*ft_parsetoken(t_list **token, char **env)
 	{
 		prev = ft_get_prevpipe(*token);
 		next = ft_get_nextpipe(*token);
-		return (ft_pipenode(ft_parsetoken(&prev, env),
-				ft_parsetoken(&next, env), token));
+		return (ft_pipenode(ft_parsetoken(&prev, env, hd_index),
+				ft_parsetoken(&next, env, hd_index), token));
 	}
 	if (ft_lstfind(*token, REDIR))
 	{
 		prev = ft_get_prevredir(*token);
-		return (ft_redirnode(ft_parsetoken(&prev, env)
-				, ft_get_file_and_type(*token, &type), type, token));
+		return (ft_redirnode(ft_get_file_and_type(*token, &type, hd_index),
+                    ft_parsetoken(&prev, env, hd_index), type, token));
 	}
 	if (ft_lstfind(*token, WORD))
 	{

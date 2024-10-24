@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/23 11:42:31 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/24 18:43:32 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,37 @@ void	ft_printlst(t_list *e)
 		tokens = tokens->next;
 	}
 }
+int	ft_countheredocs(t_list *token)
+{
+	int	nbr_heredocs;
 
+	nbr_heredocs = 0;
+	while (token)
+	{
+		if(token->type == HEREDOC)
+			nbr_heredocs ++;
+		token = token->next;
+	}
+	return (nbr_heredocs);
+}
 void ft_pars_and_exec(char *prompt, char **env)
 {
 	t_list *tokens;
 	t_node *ast;
+	int		nbr_heredoc;
+	int		nbr_heredoc_bis;
 
 	if (!prompt)
 		return ;
 	tokens = NULL;
 	ast = NULL;
 	ft_lexer(prompt, &tokens);
-	//ft_printlst(tokens);
-	ast = ft_parsetoken(&tokens, env);
-	//ast_printer(ast, 0);
-	ft_execute_ast(ast);
+	ft_printlst(tokens);
+	nbr_heredoc = ft_countheredocs(tokens);
+	nbr_heredoc_bis = nbr_heredoc;
+	ast = ft_parsetoken(&tokens, env, &nbr_heredoc);
+	ast_printer(ast, 0);
+	//ft_execute_ast(ast);
 	ft_free_ast(ast);
 	//system("leaks minishell");
 }
