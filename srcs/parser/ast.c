@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 11:04:17 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/24 18:36:52 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/27 15:37:35 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_node	*ft_parsetoken(t_list **token, char **env, int *hd_index)
 	if (ft_lstfind(*token, REDIR))
 	{
 		prev = ft_get_prevredir(*token);
-		return (ft_redirnode(ft_get_file_and_type(*token, &type, hd_index),
+		return (ft_redirnode(ft_get_file_and_type(*token, &type, hd_index, env),
                     ft_parsetoken(&prev, env, hd_index), type, token));
 	}
 	if (ft_lstfind(*token, WORD))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/24 18:43:32 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/27 17:35:26 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,21 @@ int	ft_countheredocs(t_list *token)
 	}
 	return (nbr_heredocs);
 }
+void	ft_del_hdfiles(int nbr_heredoc)
+{
+	char *file;
+	char *index;
+	while (nbr_heredoc)
+	{
+		index = ft_itoa(nbr_heredoc);
+		file = ft_strjoin("/tmp/hd_file", index);
+		unlink(file);
+		free(file);
+		free(index);
+		nbr_heredoc --;
+	}
+	
+}
 void ft_pars_and_exec(char *prompt, char **env)
 {
 	t_list *tokens;
@@ -49,14 +64,16 @@ void ft_pars_and_exec(char *prompt, char **env)
 	tokens = NULL;
 	ast = NULL;
 	ft_lexer(prompt, &tokens);
-	ft_printlst(tokens);
+	//ft_printlst(tokens);
 	nbr_heredoc = ft_countheredocs(tokens);
 	nbr_heredoc_bis = nbr_heredoc;
 	ast = ft_parsetoken(&tokens, env, &nbr_heredoc);
-	ast_printer(ast, 0);
-	//ft_execute_ast(ast);
+	//ast_printer(ast, 0);
+	ft_execute_ast(ast);
 	ft_free_ast(ast);
+	ft_del_hdfiles(nbr_heredoc_bis);
 	//system("leaks minishell");
+	return ;
 }
 
 int main(int argc, char **argv, char **env)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/24 16:44:02 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/27 15:44:28 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ void	ft_panic(char *str, char *name, int exit_code);
 //parsing
 void ft_pars_and_exec(char *prompt, char **env);
 void	ft_lexer(char *str, t_list **tokens);
+//count heredocs
+int	ft_countheredocs(t_list *token);
 // lexer utils
 void	ft_update_quotes_status(char c, int *d_quote_status, int *s_quote_status);
 int	ft_is_sp(char c, int *d_quote, int *s_quote);
@@ -47,7 +49,8 @@ t_node	*ft_pipenode(t_node *left, t_node *right, t_list **token);
 // redir
 t_node	*ft_redirnode(char *file, t_node *cmd, int type, t_list **token);
 t_list *ft_get_prevredir(t_list *token);
-char *ft_get_file_and_type(t_list *token, int *type, int *hd_index);
+char *ft_get_file_and_type(t_list *token, int *type, int *hd_index, char **env);
+int	ft_strcmp(char *str, char *str_to_find);
 // cmd
 t_node	*ft_cmdnode(char **argv, char **env, t_list **token);
 char **ft_getargv(t_list *token);

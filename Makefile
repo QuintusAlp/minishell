@@ -12,7 +12,7 @@ LIB = make -C ./libft
 INCS = includes
 CC = gcc
 RM = rm -rf
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 NAME = minishell
 
 FLUO_GREEN = \033[1;92m

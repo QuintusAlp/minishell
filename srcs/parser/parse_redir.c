@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 11:26:20 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/24 18:39:03 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/10/27 17:56:44 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	ft_strfind(char *str, char *str_to_find)
+int	ft_strcmp(char *str, char *str_to_find)
 {
 	int	i;
 
@@ -27,28 +27,78 @@ int	ft_strfind(char *str, char *str_to_find)
 	}
 	return (1);
 }
-
-void	ft_heredoc(char *delimiter, char *file)
+int ft_cmdlen(char *str)
 {
-	char	*str;
+	int	i;
+
+	i = 0;
+	str = str + 2;
+	while (str[i] != ')')
+		i++;
+	return (i);
+}
+void	ft_write_hdline(char *str, char **env, char *file)
+{
+	char	*buff;
+	int		pid;
 	int		fd;
-	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+
+	fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd == -1)
 		ft_error("open");
-	str = readline("> ");
-	while (!ft_strfind(str, delimiter))
+	while (*str)
 	{
-		if (write(fd, str, ft_strlen(str)) == -1)
+		if (*str == '$' && *(str + 1) == '(' && ft_strchr(str, ')'))
 		{
-			free(str);
-			ft_error("write");
+			buff = malloc(ft_cmdlen(str) + 1);
+			ft_strlcpy(buff, (str + 2), ft_cmdlen(str) + 1);
+
+			pid = fork();
+			if (pid == -1)
+				ft_error("fork error");
+			if (pid == 0)
+			{
+				if (dup2(fd, 1) == -1)
+					ft_error("dup2");
+				close(fd);
+				
+				ft_pars_and_exec(buff, env);
+				//free(buff);
+				exit(0);
+			}
+			else
+			{
+				waitpid(pid, NULL, 0);
+			}
+			str += ft_cmdlen(str) + 3;
+			//free(buff);
 		}
-		write(fd, "\n", 1);
-		free(str);
-		str = readline("> ");
+		else
+		{
+			write(fd, str, 1);
+			if (*(str + 1) == '\0')
+				write(fd, "\n", 1);
+			str++;
+		}
 	}
-	free (str);
+	
 	close(fd);
+}
+void	ft_heredoc(char *delimiter, char *file, char **env)
+{
+	char *buff;
+	
+	buff = readline("> ");
+	(void)env;
+	(void)file;
+	while (!ft_strcmp(buff, delimiter))
+	{
+		ft_write_hdline(buff, env, file);
+		free(buff);
+		//free(str);
+		buff = readline("> ");
+	}
+	free (buff);
 }
 
 t_node	*ft_redirnode(char *file, t_node *cmd, int type, t_list **token)
@@ -104,7 +154,7 @@ t_list	*ft_get_prevredir(t_list *token)
 	}
 	return (prev);
 }
-char *ft_get_file_and_type(t_list *token, int *type, int *hd_index)
+char *ft_get_file_and_type(t_list *token, int *type, int *hd_index, char **env)
 {
 	t_list *start_lst;
 	char *hd_file;
@@ -115,16 +165,20 @@ char *ft_get_file_and_type(t_list *token, int *type, int *hd_index)
 		token = token->next;
 	*type = token->type;
 	token = token->next;
-	if (*type == HEREDOC)
+	if (token)
 	{
-		index = ft_itoa(*hd_index);
-		hd_file = ft_strjoin("/tmp/hd_file", index);
-		free(index);
-		(*hd_index) --;
-		ft_heredoc(token->value, hd_file);
-		return (hd_file);
+		if (*type == HEREDOC)
+		{
+			index = ft_itoa(*hd_index);
+			hd_file = ft_strjoin("/tmp/hd_file", index);
+			free(index);
+			(*hd_index) --;
+			ft_heredoc(token->value, hd_file, env);
+			return (hd_file);
+		}
+		else
+			return (ft_strdup(token->value));
 	}
 	else
-		return (ft_strdup(token->value));
-	return (NULL);
+		return (ft_strdup("\n"));
 }
