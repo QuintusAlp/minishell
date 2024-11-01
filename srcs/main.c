@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/27 17:35:26 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/01 14:23:05 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,11 @@ int main(int argc, char **argv, char **env)
 	prompt = readline("\033[1;92mminishell$\033[0m ");
 	while (prompt)
 	{
-		if (*prompt)
+		if (prompt && *prompt)
+		{
+			add_history(prompt);
 			ft_pars_and_exec(prompt, env);
+		}
 		free(prompt);
 		prompt = readline("\033[1;92mminishell$\033[0m ");
 	}
