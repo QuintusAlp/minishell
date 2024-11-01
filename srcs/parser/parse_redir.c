@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 11:26:20 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/27 17:56:44 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/01 14:35:47 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,17 @@ void	ft_write_hdline(char *str, char **env, char *file)
 void	ft_heredoc(char *delimiter, char *file, char **env)
 {
 	char *buff;
+	int	fd;
+		
 	
 	buff = readline("> ");
 	(void)env;
 	(void)file;
+	if (ft_strcmp(buff, delimiter))
+	{
+		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		close (fd);
+	}
 	while (!ft_strcmp(buff, delimiter))
 	{
 		ft_write_hdline(buff, env, file);
