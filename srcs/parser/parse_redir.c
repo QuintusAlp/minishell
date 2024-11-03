@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 11:26:20 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/01 14:35:47 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/03 16:41:23 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,52 @@ int ft_cmdlen(char *str)
 		i++;
 	return (i);
 }
+t_list	*ft_delheredoc(t_list **token)
+{
+	t_list *current;
+	t_list *new_lst;
+
+	current = *token;
+	new_lst = NULL;
+	while (current)
+	{
+		if (current->type == HEREDOC)
+		{
+			current = current->next->next;
+		}
+		else
+		{
+			ft_lstadd_back(&new_lst, ft_lstnew(ft_strdup(current->value), current->type));
+			current = current->next;
+		}
+	}
+	ft_lstclear(token, &free);
+	return (new_lst);
+}
+void ft_exec_hd_cmd(char *prompt, char **env)
+{
+	t_list *tokens;
+	t_node *ast;
+	int		nbr_heredoc;
+	int		nbr_heredoc_bis;
+
+	if (!prompt)
+		return ;
+	tokens = NULL;
+	ast = NULL;
+	ft_lexer(prompt, &tokens);
+	tokens = ft_delheredoc(&tokens);
+	//ft_printlst(tokens);
+	nbr_heredoc = ft_countheredocs(tokens);
+	nbr_heredoc_bis = nbr_heredoc;
+	ast = ft_parsetoken(&tokens, env, &nbr_heredoc);
+	//ast_printer(ast, 0);
+	ft_execute_ast(ast);
+	ft_free_ast(ast);
+	ft_del_hdfiles(nbr_heredoc_bis);
+	//system("leaks minishell");
+	return ;
+}
 void	ft_write_hdline(char *str, char **env, char *file)
 {
 	char	*buff;
@@ -52,7 +98,6 @@ void	ft_write_hdline(char *str, char **env, char *file)
 		{
 			buff = malloc(ft_cmdlen(str) + 1);
 			ft_strlcpy(buff, (str + 2), ft_cmdlen(str) + 1);
-
 			pid = fork();
 			if (pid == -1)
 				ft_error("fork error");
@@ -60,10 +105,15 @@ void	ft_write_hdline(char *str, char **env, char *file)
 			{
 				if (dup2(fd, 1) == -1)
 					ft_error("dup2");
+				if (dup2(fd, 2) == -1)
+					ft_error("dup2");
 				close(fd);
-				
-				ft_pars_and_exec(buff, env);
-				//free(buff);
+				int fd2 = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+				if (dup2(fd2, 0) == -1)
+					ft_error("dup2");
+				close(fd2);
+				ft_exec_hd_cmd(buff, env);
+				free(buff);
 				exit(0);
 			}
 			else
@@ -71,7 +121,7 @@ void	ft_write_hdline(char *str, char **env, char *file)
 				waitpid(pid, NULL, 0);
 			}
 			str += ft_cmdlen(str) + 3;
-			//free(buff);
+			free(buff);
 		}
 		else
 		{
@@ -81,7 +131,6 @@ void	ft_write_hdline(char *str, char **env, char *file)
 			str++;
 		}
 	}
-	
 	close(fd);
 }
 void	ft_heredoc(char *delimiter, char *file, char **env)
@@ -89,10 +138,7 @@ void	ft_heredoc(char *delimiter, char *file, char **env)
 	char *buff;
 	int	fd;
 		
-	
 	buff = readline("> ");
-	(void)env;
-	(void)file;
 	if (ft_strcmp(buff, delimiter))
 	{
 		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
@@ -102,7 +148,6 @@ void	ft_heredoc(char *delimiter, char *file, char **env)
 	{
 		ft_write_hdline(buff, env, file);
 		free(buff);
-		//free(str);
 		buff = readline("> ");
 	}
 	free (buff);
@@ -150,7 +195,6 @@ t_list	*ft_get_prevredir(t_list *token)
 		ft_lstadd_back(&prev, ft_lstnew(ft_strdup(token->value), token->type));
 		token = token->next;
 	}
-	// if (token->next)
 	token = token->next;
 	if (token && token-> type == WORD)
 		token = token->next;
@@ -161,6 +205,7 @@ t_list	*ft_get_prevredir(t_list *token)
 	}
 	return (prev);
 }
+
 char *ft_get_file_and_type(t_list *token, int *type, int *hd_index, char **env)
 {
 	t_list *start_lst;
@@ -189,3 +234,4 @@ char *ft_get_file_and_type(t_list *token, int *type, int *hd_index, char **env)
 	else
 		return (ft_strdup("\n"));
 }
+

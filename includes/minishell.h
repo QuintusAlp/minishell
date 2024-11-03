@@ -29,6 +29,7 @@
 void ft_error(char *str);
 void	ft_panic(char *str, char *name, int exit_code);
 //parsing
+void	ft_del_hdfiles(int nbr_heredoc);
 void ft_pars_and_exec(char *prompt, char **env);
 void	ft_lexer(char *str, t_list **tokens);
 //count heredocs

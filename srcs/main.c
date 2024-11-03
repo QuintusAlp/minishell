@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/01 14:23:05 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/03 18:30:33 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ void	ft_printlst(t_list *e)
 	tokens = e;
 	while(tokens)
 	{
-		printf("token value: %s \n", (char *)tokens->value);
-		printf("token type: %d \n", tokens->type);
-		printf("---------------------------------------\n");
+		dprintf(2,"token value: %s \n", (char *)tokens->value);
+		dprintf(2, "token type: %d \n", tokens->type);
+		dprintf(2, "---------------------------------------\n");
 		tokens = tokens->next;
 	}
 }
