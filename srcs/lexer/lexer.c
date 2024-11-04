@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 14:41:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/26 13:09:54 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/04 13:14:12 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,6 @@ char	*ft_get_sp_token(char *c, int *i)
 	data[1] = '\0';
 	return (data);
 }
-
-// int	ft_strcmp(char *str1, char *str2)
-// {
-// 	while (*str1 || *str2)
-// 	{
-// 		if (*str1 != *str2)
-// 			return (0);
-// 		str1++;
-// 		str2++;
-// 	}
-// 	return (1);
-// }
 
 void	ft_token_type(t_list *token)
 {

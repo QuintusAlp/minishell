@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 10:10:24 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/23 14:44:01 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/04 13:14:38 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ void	ft_process(t_node *node, int dupfd, int *pipefd, int *cmd_index)
 	}
 }
 
-//Entrée standard 	stdin 	0
-//Sortie standard 	stdout 	1
 void	ft_exec_pipe(t_pipe *node, int dupfd, int *cmd_index)
 {
 	int	pipefd[2];

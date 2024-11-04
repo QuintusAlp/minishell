@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 11:26:20 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/03 16:41:23 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/04 13:13:25 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	ft_strcmp(char *str, char *str_to_find)
 	}
 	return (1);
 }
+
 int ft_cmdlen(char *str)
 {
 	int	i;
@@ -37,6 +38,7 @@ int ft_cmdlen(char *str)
 		i++;
 	return (i);
 }
+
 t_list	*ft_delheredoc(t_list **token)
 {
 	t_list *current;
@@ -59,6 +61,7 @@ t_list	*ft_delheredoc(t_list **token)
 	ft_lstclear(token, &free);
 	return (new_lst);
 }
+
 void ft_exec_hd_cmd(char *prompt, char **env)
 {
 	t_list *tokens;
@@ -83,10 +86,40 @@ void ft_exec_hd_cmd(char *prompt, char **env)
 	//system("leaks minishell");
 	return ;
 }
-void	ft_write_hdline(char *str, char **env, char *file)
+
+void	ft_hdcmd(char *str, int fd, char **env)
 {
 	char	*buff;
 	int		pid;
+	int 	fd2;
+
+	buff = malloc(ft_cmdlen(str) + 1);
+	ft_strlcpy(buff, (str + 2), ft_cmdlen(str) + 1);
+	pid = fork();
+	if (pid == -1)
+	ft_error("fork error");
+	if (pid == 0)
+	{
+		if (dup2(fd, 1) == -1)
+			ft_error("dup2");
+		if (dup2(fd, 2) == -1)
+			ft_error("dup2");
+		close(fd);
+		fd2 = open("/tmp/tmp_hdfile", O_WRONLY | O_CREAT | O_APPEND, 0644);
+		if (dup2(fd2, 0) == -1)
+			ft_error("dup2");
+		close(fd2);
+		ft_exec_hd_cmd(buff, env);
+		free(buff);
+		exit(0);
+	}
+	else
+		waitpid(pid, NULL, 0);
+	free(buff);
+}
+
+void	ft_write_hdline(char *str, char **env, char *file)
+{
 	int		fd;
 
 	fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
@@ -96,32 +129,8 @@ void	ft_write_hdline(char *str, char **env, char *file)
 	{
 		if (*str == '$' && *(str + 1) == '(' && ft_strchr(str, ')'))
 		{
-			buff = malloc(ft_cmdlen(str) + 1);
-			ft_strlcpy(buff, (str + 2), ft_cmdlen(str) + 1);
-			pid = fork();
-			if (pid == -1)
-				ft_error("fork error");
-			if (pid == 0)
-			{
-				if (dup2(fd, 1) == -1)
-					ft_error("dup2");
-				if (dup2(fd, 2) == -1)
-					ft_error("dup2");
-				close(fd);
-				int fd2 = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-				if (dup2(fd2, 0) == -1)
-					ft_error("dup2");
-				close(fd2);
-				ft_exec_hd_cmd(buff, env);
-				free(buff);
-				exit(0);
-			}
-			else
-			{
-				waitpid(pid, NULL, 0);
-			}
+			ft_hdcmd(str, fd, env);
 			str += ft_cmdlen(str) + 3;
-			free(buff);
 		}
 		else
 		{
@@ -133,6 +142,7 @@ void	ft_write_hdline(char *str, char **env, char *file)
 	}
 	close(fd);
 }
+
 void	ft_heredoc(char *delimiter, char *file, char **env)
 {
 	char *buff;
@@ -164,6 +174,7 @@ t_node	*ft_redirnode(char *file, t_node *cmd, int type, t_list **token)
 	ft_lstclear(token, &free);
 	return ((t_node *)redir);
 }
+
 int ft_token_isredir(t_list *token)
 {
 	if (!token)
@@ -174,6 +185,7 @@ int ft_token_isredir(t_list *token)
 		return (1);
 	return (0);
 }
+
 int	ft_check_other_redir(t_list *token)
 {
 	t_list 		*tokens = token->next;
@@ -185,6 +197,7 @@ int	ft_check_other_redir(t_list *token)
 	}
 	return (0);
 }
+
 t_list	*ft_get_prevredir(t_list *token)
 {
 	t_list	*prev;
@@ -234,4 +247,3 @@ char *ft_get_file_and_type(t_list *token, int *type, int *hd_index, char **env)
 	else
 		return (ft_strdup("\n"));
 }
-

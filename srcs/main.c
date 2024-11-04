@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/03 18:30:33 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/04 13:12:16 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	ft_printlst(t_list *e)
 		tokens = tokens->next;
 	}
 }
+
 int	ft_countheredocs(t_list *token)
 {
 	int	nbr_heredocs;
@@ -37,10 +38,12 @@ int	ft_countheredocs(t_list *token)
 	}
 	return (nbr_heredocs);
 }
+
 void	ft_del_hdfiles(int nbr_heredoc)
 {
 	char *file;
 	char *index;
+
 	while (nbr_heredoc)
 	{
 		index = ft_itoa(nbr_heredoc);
@@ -50,8 +53,8 @@ void	ft_del_hdfiles(int nbr_heredoc)
 		free(index);
 		nbr_heredoc --;
 	}
-	
 }
+
 void ft_pars_and_exec(char *prompt, char **env)
 {
 	t_list *tokens;
