@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:51:17 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/04 15:49:38 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/04 17:03:18 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,13 @@ static void	set_envv(const char *name, const char *value)
 	}
 }
 
-void	export(char *input)
+void	export(char **argvs)
 {
 	char **result;
+	char **input;
+
+	// input = remove_first(argvs);
+	input = &argvs[1];
 	
 	if (input == NULL || (*input) == NULL)
 		return;

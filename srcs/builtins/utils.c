@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:34:33 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/04 15:36:33 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/04 17:37:25 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,34 @@ int	ft_strcmp(const char *s1, const char *s2)
 		i++;
 	}
 	return (0);
+}
+
+int	list_size(char **argv)
+{
+	int i;
+
+	i = 0;
+	if (!argv || !(*argv))
+		return (0);
+	while (argv[i])
+		i++;
+	return (i);
+}
+
+void	remove_first(char **argv, int *size)
+{
+	int	i;
+
+	i = 0;
+	if (*size <= 0)
+		return;
+	
+	free(argv[0]);
+	while (i < *size)
+	{
+		argv[i-1] = argv[i];
+		i++;
+	}
+	argv[*size - 1] = 0;
+	(*size--);
 }

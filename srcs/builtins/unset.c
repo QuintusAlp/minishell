@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:55:32 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/04 16:00:46 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/04 17:09:22 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,15 @@ void	free_envv(t_env *current)
 	}
 }
 
-void	unset(const char *name) // CHANGE TO THE ARG OF THE CMD
+void	unset(char **argv) // CHANGE TO THE ARG OF THE CMD
 {
 	t_env	*current;
 	t_env	*prev;
+	char	**name;
 
 	current = g_env;
 	prev = NULL;
+	name = &argv[1];
 	if (name == NULL || *name == '\0')
 		error("unset: invalid name\n");
 	while (current)

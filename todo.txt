@@ -1,1 +1,3 @@
 test init env
+finish cd
+

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:14:27 by marlonco          #+#    #+#             */
-/*   Updated: 2024/09/30 09:49:56 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/04 17:07:52 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,14 @@ static int check_flag(char **str)
 	return (flag);
 }
 
-int echo () // WHAT TO TAKE AS ARG
+int echo(char **argv) // WHAT TO TAKE AS ARG
 {
 	int	flag;
 	int	i;
 	char	**str; // str = the arg of the command 
 	
 	i = check_flag(str);
+	str = &argv[1];
 	while (str[i])
 	{
 		write(1, str[i], ft_strlen(str[i]));// WHERE TO WRITE --> STDOUT_FILENO ???
