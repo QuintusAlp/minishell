@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:51:17 by marlonco          #+#    #+#             */
-/*   Updated: 2024/10/07 16:30:11 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/04 17:03:18 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,28 +52,58 @@ int valid_value(char *value)
 	}
 }
 
-void	export(char *input)
+static void	set_envv(const char *name, const char *value)
+{
+	t_env	*current;
+	t_env	*new;
+
+	current = g_env;
+	while (current)
+	{
+		if (ft_strcmp(name, current->name) == 0)
+		{
+			free(current->value);
+			current->value = ft_strdup(value);
+			return;
+		}
+		current = current->next;
+	}
+	new = (t_env *)malloc(sizeof(t_env));
+	if (!new)
+		error("New envv malloc error");
+	new->name = ft_strdup(name);
+	new->value = ft_strdup(value);
+	new->next = NULL;
+	if (g_env == NULL)
+	{
+		new->index = 0;
+		g_env = new;
+	}
+	else
+	{
+	new->index = current->index + 1;
+	current->next = new;	
+	}
+}
+
+void	export(char **argvs)
 {
 	char **result;
+	char **input;
+
+	// input = remove_first(argvs);
+	input = &argvs[1];
 	
 	if (input == NULL || (*input) == NULL)
 		return;
 	
 	// split avant et apres le =
-	result = ft_split(input, '='); // METTRE UN CONDITION QUE L'INDEX !> 1
+	result = ft_split(input, '=');
 	
-
 	// verifier si le name & value sont valid 
 	if (valid_name(result[0]) == 0)
 		error("Incorrect variable name\n");
 	if (valid_value(result[1]) == 0 || result[2])
 		error("Incorrect environmental variable value\n");
-	// check if la variable existe deja 
-
-	// if existe deja 
-		// update new value 
-
-	// if pas add variable
-
-	
+	set_envv(result[0], result[1]);
 }
