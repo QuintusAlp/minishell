@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:55:32 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/04 17:09:22 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/05 20:36:03 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,30 +40,36 @@ void	free_envv(t_env *current)
 	}
 }
 
-void	unset(char **argv) // CHANGE TO THE ARG OF THE CMD
+void	unset(char **argv)
 {
 	t_env	*current;
 	t_env	*prev;
 	char	**name;
+	int		i;
 
-	current = g_env;
-	prev = NULL;
 	name = &argv[1];
-	if (name == NULL || *name == '\0')
+	i = 0;
+	if (name == NULL || **name == '\0')
 		error("unset: invalid name\n");
-	while (current)
+	while (name[i])
 	{
-		if (strcmp(current->name, name) == 0)
+		current = g_env;
+		prev = NULL;
+		while (current)
 		{
-			if (prev == NULL)
-				g_env = current->next;
-			else
-				prev->next = current->next;
-			update_index(current->index);
-			free_envv(current);
-			return;
+			if (strcmp(current->name, name[i]) == 0)
+			{
+				if (prev == NULL)
+					g_env = current->next;
+				else
+					prev->next = current->next;
+				update_index(current->index);
+				free_envv(current);
+				return;
+			}
+			prev = current;
+			current = current->next;	
 		}
-		prev = current;
-		current = current->next;
+		i++;
 	}
 }

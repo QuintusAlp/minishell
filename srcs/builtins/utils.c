@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:34:33 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/05 15:57:02 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/05 20:37:38 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../../includes/minishell.h"
 
 int is_space(char c)
 {
@@ -46,20 +48,20 @@ int	list_size(char **argv)
 	return (i);
 }
 
-void	remove_first(char **argv, int *size)
-{
-	int	i;
+// void	remove_first(char **argv, int *size)
+// {
+// 	int	i;
 
-	i = 0;
-	if (*size <= 0)
-		return;
+// 	i = 0;
+// 	if (*size <= 0)
+// 		return;
 	
-	free(argv[0]);
-	while (i < *size)
-	{
-		argv[i-1] = argv[i];
-		i++;
-	}
-	argv[*size - 1] = 0;
-	(*size--);
-}
+// 	free(argv[0]);
+// 	while (i < *size)
+// 	{
+// 		argv[i-1] = argv[i];
+// 		i++;
+// 	}
+// 	argv[*size - 1] = 0;
+// 	(*size--);
+// }
