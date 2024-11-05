@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/04 13:12:16 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/05 14:46:10 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void ft_pars_and_exec(char *prompt, char **env)
 	tokens = NULL;
 	ast = NULL;
 	ft_lexer(prompt, &tokens);
+	//Trim tokens TODO MARGGG
 	//ft_printlst(tokens);
 	nbr_heredoc = ft_countheredocs(tokens);
 	nbr_heredoc_bis = nbr_heredoc;

@@ -1,3 +1,4 @@
 test init env
-finish cd
+builtins
+trim token main
 
