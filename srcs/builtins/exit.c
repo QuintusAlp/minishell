@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:35:53 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/04 19:10:49 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/05 16:43:42 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void    exit_code(char *argv)
     int exit_code;
     
     i = 0;
+    exit_code = 0;
     while (argv[i])
     {
         if (!(ft_isdigit(argv[i])))
@@ -52,7 +53,7 @@ void    ft_exit(char **argv)
 {
     if (argv[1] && argv[2])
         error("exit: too many arguments");
-    free_env(g_env);
+    free_env();
     if (argv[1])
         exit_code(argv[1]);
     else 

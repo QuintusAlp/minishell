@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:53:14 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/04 19:13:29 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/05 16:53:16 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,19 @@ void	free_env(void)
 		free(tmp->value);
 		free(tmp);
 	}
+}
+
+void	free_array(char **array)
+{
+	int	i;
+
+	i = 0;
+	if (!array)
+		return;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
 }

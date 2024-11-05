@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:51:17 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/04 17:03:18 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/05 16:58:46 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@
 		export MY_VAR="voici la nouvelle valeur"
 	2. to display all exported variables 
 		export
+
+	if "export new=new new2" --> only new=new appears
+	if "export new=new new2=new2" --> both appears
 */
 
 int	valid_name(char *name)
@@ -24,12 +27,12 @@ int	valid_name(char *name)
 	int i;
 
 	i = 0;
-	if (name == NULL || is_digit(name[0]))
+	if (name == NULL || ft_isdigit(name[0]))
 		return (0);
 	while (name)
 	{
-		if (!(is_digit(name[i]))
-			&& !(is_alpha(name[i]))
+		if (!(ft_isdigit(name[i]))
+			&& !(ft_isalpha(name[i]))
 			&& name[i] != '_')
 			return (0);
 		i++;
@@ -47,9 +50,10 @@ int valid_value(char *value)
 		return (0);
 	while (value[i])
 	{
-		if (!(is_alpha(value[i])))
+		if (!(ft_isalpha(value[i])))
 			return (0);
 	}
+	return (1);
 }
 
 static void	set_envv(const char *name, const char *value)
@@ -90,20 +94,29 @@ void	export(char **argvs)
 {
 	char **result;
 	char **input;
+	int	i;
 
 	// input = remove_first(argvs);
 	input = &argvs[1];
-	
+	i = 0;
 	if (input == NULL || (*input) == NULL)
 		return;
 	
-	// split avant et apres le =
-	result = ft_split(input, '=');
-	
-	// verifier si le name & value sont valid 
-	if (valid_name(result[0]) == 0)
-		error("Incorrect variable name\n");
-	if (valid_value(result[1]) == 0 || result[2])
-		error("Incorrect environmental variable value\n");
-	set_envv(result[0], result[1]);
+	while (input[i])
+	{
+		result = NULL;
+		// split avant et apres le =
+		result = ft_split(input[i], '=');
+		//verifier si la key a une value
+		if (!(result[1]))
+			continue;
+		// verifier si le name & value sont valid 
+		if (valid_name(result[0]) == 0)
+			error("Incorrect variable name\n");
+		if (valid_value(result[1]) == 0 || result[2])
+			error("Incorrect environmental variable value\n");
+		set_envv(result[0], result[1]);
+		free_array(result);
+		i++;
+	}
 }
