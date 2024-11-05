@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:14:27 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/04 17:07:52 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/05 15:05:37 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@ static int check_flag(char **str)
 	return (flag);
 }
 
-int echo(char **argv) // WHAT TO TAKE AS ARG
+int echo(char **argv)
 {
 	int	flag;
 	int	i;
-	char	**str; // str = the arg of the command 
+	char	**str;
 	
 	i = check_flag(str);
 	str = &argv[1];

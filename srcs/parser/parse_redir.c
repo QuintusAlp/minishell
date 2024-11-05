@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 11:26:20 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/04 13:13:25 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/05 15:18:53 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	ft_strcmp(char *str, char *str_to_find)
+int	ft_strcmp2(char *str, char *str_to_find)
 {
 	int	i;
 
@@ -149,12 +149,12 @@ void	ft_heredoc(char *delimiter, char *file, char **env)
 	int	fd;
 		
 	buff = readline("> ");
-	if (ft_strcmp(buff, delimiter))
+	if (ft_strcmp2(buff, delimiter))
 	{
 		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		close (fd);
 	}
-	while (!ft_strcmp(buff, delimiter))
+	while (!ft_strcmp2(buff, delimiter))
 	{
 		ft_write_hdline(buff, env, file);
 		free(buff);
@@ -199,7 +199,7 @@ int	ft_check_other_redir(t_list *token)
 }
 
 t_list	*ft_get_prevredir(t_list *token)
-{
+{    
 	t_list	*prev;
 
 	prev = NULL;

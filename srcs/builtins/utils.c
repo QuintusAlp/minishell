@@ -6,10 +6,11 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:34:33 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/04 17:37:25 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/05 15:08:07 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+// DO WE ACTUALLY USE IT ? 
 int is_space(char c)
 {
 	if (!c)

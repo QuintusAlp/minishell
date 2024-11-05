@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:14:49 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/05 12:10:25 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/05 15:04:47 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static int  minus_cd()
         update_envv("PWD", oldpwd_var->value);
     }
     else
-        return(ft_putstr_fd(2, "cd: OLDPWD not set\n", 1));
+        return(ft_putstr_fd(2, "cd: OLDPWD not set\n"), 1);
     return (0);
 }
 
@@ -110,7 +110,7 @@ static int  basic_cd(char *path)
     return (0);
 }
 
-
+// RETURN ?
 void    cd(char **argv)
 {
     char    **input;
