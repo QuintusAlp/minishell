@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:51:17 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/05 16:58:46 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/05 16:59:57 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,11 @@ void	export(char **argvs)
 	char **result;
 	char **input;
 	int	i;
-
-	// input = remove_first(argvs);
+	
 	input = &argvs[1];
 	i = 0;
 	if (input == NULL || (*input) == NULL)
 		return;
-	
 	while (input[i])
 	{
 		result = NULL;
