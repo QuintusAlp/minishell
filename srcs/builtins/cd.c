@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:14:49 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/05 15:04:47 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/05 15:55:59 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int  only_cd()
         update_envv("PWD", home_var->value);
     }
     else
-        return(ft_putstr_fd(2, "cd: HOME not set\n"), 1);
+        return(ft_putstr_fd("cd: HOME not set\n", 2), 1);
     return (0);
 }
 
@@ -79,13 +79,13 @@ static int  minus_cd()
     oldpwd_var = find_key("OLDPWD");
     if (oldpwd_var && oldpwd_var->value)
     {
-        if(chdir(oldpwd_var) != 0)
+        if(chdir((const char *)oldpwd_var) != 0)
             return(perror("cd"), 1);
         update_envv("OLDPWD", find_key("PWD")->value);
         update_envv("PWD", oldpwd_var->value);
     }
     else
-        return(ft_putstr_fd(2, "cd: OLDPWD not set\n"), 1);
+        return(ft_putstr_fd("cd: OLDPWD not set\n", 2), 1);
     return (0);
 }
 

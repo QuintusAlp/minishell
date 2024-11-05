@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/05 15:26:09 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/05 15:57:27 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,10 @@ int     pwd(void);
     //unset
 void    unset(char **argv);
     //utils
+int		is_space(char c);
 int     ft_strcmp(const char *s1, const char *s2);
 int     list_size(char **argv); // DO WE USE IT ?
-void    renove_first(char **argv, int *size); // DO WE USE IT ?
+void    remove_first(char **argv, int *size); // DO WE USE IT ?
 // ********** exec **********
     //exec_cmd
 void	ft_exec_cmd(t_cmd *cmd);

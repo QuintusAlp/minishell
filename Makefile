@@ -5,7 +5,7 @@ SRCS = 	./srcs/builtins/builtins.c ./srcs/builtins/cd.c ./srcs/builtins/echo.c \
 		./srcs/exec/exec_cmd.c ./srcs/exec/exec_pipe.c ./srcs/exec/exec_redir.c ./srcs/exec/execute_ast.c \
 		./srcs/lexer/lexer_utils.c ./srcs/lexer/lexer.c \
 		./srcs/parser/ast.c ./srcs/parser/parse_cmd.c ./srcs/parser/parse_pipe.c ./srcs/parser/parse_redir.c \
-		./signals/signals.c
+		./signals/signals.c \
 		./srcs/free_ast.c ./srcs/ft_error.c ./srcs/main.c ./srcs/utils.c \
 		
 
@@ -28,7 +28,7 @@ NC = \033[0m
 all: titre ${NAME}
 
 $(OBJDIR)/%.o: %.c
-	@mkdir -p $(OBJDIR) $(OBJDIR)/srcs $(OBJDIR)/srcs/lexer $(OBJDIR)/srcs/parser $(OBJDIR)/srcs/exec
+	@mkdir -p $(OBJDIR) $(OBJDIR)/srcs $(OBJDIR)/srcs/lexer $(OBJDIR)/srcs/parser $(OBJDIR)/srcs/exec $(OBJDIR)/srcs/builtins $(OBJDIR)/srcs/signals
 	@${CC} ${CFLAGS} -I ${INCS} -c $< -o $@
 
 ${NAME}: ${OBJS}

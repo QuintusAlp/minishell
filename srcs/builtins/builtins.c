@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:09:49 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/05 15:04:11 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/05 15:53:21 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ void builtins(t_cmd *cmd)
     else if (ft_strncmp(cmd->argv[0], "pwd", INT_MAX) == 0)
         return(pwd(), exit(0));
     else if (ft_strncmp(cmd->argv[0], "unset", INT_MAX) == 0)
-        return(unset((const char)cmd->argv), exit(0));
+        return(unset(cmd->argv), exit(0));
     else if (ft_strncmp(cmd->argv[0], "cd", INT_MAX) == 0)
-        return(cd(cmd->argv[0]), exit(0));
+        return(cd(cmd->argv), exit(0));
     else if (ft_strncmp(cmd->argv[0], "exit", INT_MAX) == 0)
         return(ft_exit(cmd->argv), exit(0));
     else
