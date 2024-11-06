@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:53:14 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/05 16:53:16 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/06 15:10:10 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 void	error(const char *error)
 {
 	ft_putstr_fd("Error :", 2);
-	ft_putstr_fd(error, 2);
+	ft_putstr_fd((char *)error, 2);
 	ft_putchar_fd('\n', 2);
-	return (1);
+	return ;
 }
 
 void	free_str(char *str)

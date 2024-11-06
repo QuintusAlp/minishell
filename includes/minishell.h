@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/06 13:19:43 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/06 15:07:04 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ char    *ft_get_file_and_type(t_list *token, int *type, int *hd_index, char **en
 // ********** signals **********
     //signals
 void    handle_signals(void);
+void	rl_replace_line(const char *text, int clear_undo);//readline lib
 // ********** free_ast **********
 void	ft_free_ast(t_node *node);
 // ********** ft_error **********
@@ -106,5 +107,6 @@ void    error(const char *error);
 void    free_str(char *str);
 void    free_env(void);
 void    free_array(char **array);
+
 
 #endif

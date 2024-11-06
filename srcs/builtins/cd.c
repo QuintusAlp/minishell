@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:14:49 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/06 14:02:49 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/06 14:06:15 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,25 +42,25 @@
         --> pathname = dir whose information to retrieve 
         --> statbuf = a struct stat that will be filled with the info about the file 
     struct stat {
-    // dev_t     st_dev;     /* ID of device containing file */
-    // ino_t     st_ino;     /* Inode number */
-    // mode_t    st_mode;    /* File type and mode (permissions) */
-    // nlink_t   st_nlink;   /* Number of hard links */
-    // uid_t     st_uid;     /* User ID of owner */
-    // gid_t     st_gid;     /* Group ID of owner */
-    // dev_t     st_rdev;    /* Device ID (if special file) */
-    // off_t     st_size;    /* Total size, in bytes */
-    // blksize_t st_blksize; /* Block size for file system I/O */
-    // blkcnt_t  st_blocks;  /* Number of 512B blocks allocated */
+    dev_t     st_dev;     ID of device containing file
+    ino_t     st_ino;      Inode number 
+    mode_t    st_mode;     File type and mode (permissions) 
+    nlink_t   st_nlink;    Number of hard links 
+    uid_t     st_uid;      User ID of owner 
+    gid_t     st_gid;      Group ID of owner 
+    dev_t     st_rdev;     Device ID (if special file) 
+    off_t     st_size;     Total size, in bytes 
+    blksize_t st_blksize;  Block size for file system I/O 
+    blkcnt_t  st_blocks;   Number of 512B blocks allocated 
     
-    // /* Times: seconds since epoch */
-    // time_t    st_atime;   /* Last access time */
-    // time_t    st_mtime;   /* Last modification time */
-    // time_t    st_ctime;   /* Last status change time */
+     Times: seconds since epoch 
+    time_t    st_atime;    Last access time 
+    time_t    st_mtime;    Last modification time 
+    time_t    st_ctime;    Last status change time 
     
-    // /* Padding to prevent structure from being misaligned */
-    // long      __pad[3];
-
+     Padding to prevent structure from being misaligned 
+    long      __pad[3];
+*/
 
 
 t_env   *find_key(char *key)

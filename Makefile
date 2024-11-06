@@ -5,7 +5,7 @@ SRCS = 	./srcs/builtins/builtins.c ./srcs/builtins/cd.c ./srcs/builtins/echo.c \
 		./srcs/exec/exec_cmd.c ./srcs/exec/exec_pipe.c ./srcs/exec/exec_redir.c ./srcs/exec/execute_ast.c \
 		./srcs/lexer/lexer_utils.c ./srcs/lexer/lexer.c \
 		./srcs/parser/ast.c ./srcs/parser/parse_cmd.c ./srcs/parser/parse_pipe.c ./srcs/parser/parse_redir.c \
-		./signals/signals.c \
+		./srcs/signals/signals.c \
 		./srcs/free_ast.c ./srcs/ft_error.c ./srcs/main.c ./srcs/utils.c \
 		
 
@@ -19,6 +19,10 @@ CC = gcc
 RM = rm -rf
 CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 NAME = minishell
+
+READINC = /Users/qalpesse/.brew/opt/readline/include
+READLIB = /Users/qalpesse/.brew/opt/readline/lib
+READLINE = -L$(READLIB) -I$(READINC) -lreadline
 
 FLUO_GREEN = \033[1;92m
 YELLOW = \033[0;33m
@@ -34,7 +38,7 @@ $(OBJDIR)/%.o: %.c
 ${NAME}: ${OBJS}
 	@${LIB}
 	@echo "${FLUO_GREEN}compiling minishell...${NC}"
-	@${CC} ${CFLAGS} ${OBJS} -L./libft -lft -lreadline -o ${NAME}
+	@${CC} ${CFLAGS} ${OBJS} -L./libft -lft  $(READLINE) -o ${NAME}
 	@printf "\r${YELLOW}Compiling: [${FLUO_GREEN}%-50s${FLUO_GREEN}${YELLOW}] %d/%d${NC}" $$(printf "#%.0s" $$(seq 1 $$(expr $$(find $(OBJDIR) -type f -name '*.o' | wc -l) \* \
 	 50 / $(words $(SRCS))))) $$(find $(OBJDIR) -type f -name '*.o' | wc -l) $(words $(SRCS))
 	@echo "\n${FLUO_GREEN} ./minishell  ready to use ${NC}"
