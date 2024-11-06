@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:14:49 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/06 18:39:36 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/06 19:40:57 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@
     long      __pad[3];
     }
     int access      (const char *pathname, int mode);
+    symlink: ln -s <target> <symlink name> 
 */
 
 
@@ -124,11 +125,17 @@ static int  minus_cd()
         return(ft_putstr_fd("cd: OLDPWD not set\n", 2), 1);
     return (0);
 }
+
+static int   symlink_cd(char *path)
+{
+    (void)path;
+}
 // to implement : tilde & variants ; symlinks ? 
 static int  basic_cd(char *path)
 {
     char    cwd[PATH_MAX];
     
+    //
     // storing the current directolry path
     if (getcwd(cwd, sizeof(cwd)) == NULL)
         return(perror("getcwd"), 1);
@@ -148,10 +155,6 @@ static int  basic_cd(char *path)
 static int  tilde_cd(char *path)
 {
     char            cwd[PATH_MAX];
-    DIR             *dir;
-    struct dirent   *dp;
-    struct stat     file_stat;
-    char            *path_user[INT_MAX];
     
     // option 1: only cd ~ or cd ~/ --> acts like cd
     if (strcmp(path, "~") == 0 || strcmp(path, "~/") == 0)
@@ -165,40 +168,18 @@ static int  tilde_cd(char *path)
     // ~otheruser --> go to the home of the other user 
     else if (strncmp(path, "~", 1) == 0 && ft_strlen(path) > 1)
     {
-        // if linux 
-        dir = opendir("/home/");
-        ft_strlcpy(path_user, "/home/", 6); // 6 OR 7 ??
-        ft_strlcat(path_user, &path[1], (ft_strlen(path_user) + ft_strlen(&path[1])));
-        // if mac 
-        dir = opendir("/Users/");
-        ft_strlcpy(path_user, "/Users/", 7); // 7 OR 8 ??
-        ft_strlcat(path_user, &path[1], (ft_strlen(path_user) + ft_strlen(&path[1])));
-        
-        if (dir == NULL)
-            return(perror("Unable to read directory"), 0);
-        while ((dp = readdir(dir)) != NULL)
-        {
-            if (strcmp(dp->d_name, ".") == 0 || strcmp(dp->d_name, "..") == 0)
-                continue;
-            if (strcmp(dp->d_name, &path[1]) == 0) // si le argv est bien un username
-            {
-                if (stat(path_user, &file_stat) == -1) 
-                    return(perror("stat"), 1);
-                if (S_ISDIR(file_stat.st_mode)) // si le username est bien un dir
-                {
-                    if (access(&path[1], X_OK) == 0)
-                    {
-                        basic_cd(path_user);
-                        return (0);
-                    }
-                    else
-                        return (perror("Access error"), 1);
-                } 
-                return (1);
-            }
-        }
-        closedir(dir);
-        return (0);
+        #if defined(__linux__) 
+            char    new[6 + ft_strlen(&path[1])];
+            ft_strlcpy(new, "/home/", 6); // 6 OR 7 ??
+        #elif defined(__APPLE__) && defined(__MACH__)
+            char    new[7 + ft_strlen(&path[1])];
+            ft_strlcpy(new, "/Users/", 7);
+        #endif 
+        ft_strlcat(new, &path[1], (ft_strlen(new)));
+        if (access(new, F_OK) == -1 || acess(new, X_OK) == -1)
+            return (perror("cd"), 1);
+        else 
+            return (basic_cd(new));
     }
 }
 
@@ -216,8 +197,8 @@ void    cd(char **argv)
         only_cd();
     else if (ft_strncmp(input[0], "-", INT_MAX) == 0)
         minus_cd();
-    // else if (ft_strncmp(input[0][0], "~", 1) == 0)
-    //     tilde_cd(input[0]);
+    else if (ft_strncmp(&input[0][0], "~", 1) == 0)
+        tilde_cd(input[0]);
     else
         basic_cd(input[0]);
 }

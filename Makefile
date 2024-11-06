@@ -20,8 +20,13 @@ RM = rm -rf
 CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 NAME = minishell
 
+ifeq ($(ARCH),arm64) # command to check the ARCH variable : uname -m
+READINC = /opt/homebrew/Cellar/readline/8.2.10/include/
+READLIB = /opt/homebrew/Cellar/readline/8.2.10/lib/
+else
 READINC = /Users/qalpesse/.brew/opt/readline/include
 READLIB = /Users/qalpesse/.brew/opt/readline/lib
+endif
 READLINE = -L$(READLIB) -I$(READINC) -lreadline
 
 FLUO_GREEN = \033[1;92m
