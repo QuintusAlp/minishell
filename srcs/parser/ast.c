@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 11:04:17 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/27 15:37:35 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/06 16:00:33 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@ int	ft_lstfind(t_list *token, int type)
 		while (token)
 		{
 			if (token->type == type)
+            {
 				return (1);
-			token = token->next;
+            }
+            token = token->next;
 		}
 	}
 	return (0);
@@ -42,7 +44,7 @@ t_node	*ft_parsetoken(t_list **token, char **env, int *hd_index)
 	int	type;
 	t_list	*prev;
 	t_list	*next;
-
+    
 	if (ft_lstfind(*token, PIPE))
 	{
 		prev = ft_get_prevpipe(*token);

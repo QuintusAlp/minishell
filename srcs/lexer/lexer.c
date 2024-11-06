@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 14:41:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/04 13:14:12 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/06 16:00:00 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,15 @@ void	ft_token_type(t_list *token)
 {
 	while (token)
 	{
-		if (ft_strcmp(token->value, "|"))
+		if (ft_strcmp(token->value, "|") == 0)
 			token->type = PIPE;
-		else if (ft_strcmp(token->value, "<"))
+		else if (ft_strcmp(token->value, "<") == 0)
 			token->type = I_REDIR;
-		else if (ft_strcmp(token->value, ">"))
+		else if (ft_strcmp(token->value, ">") == 0)
 			token->type = O_REDIR_TRUNC;
-		else if (ft_strcmp(token->value, ">>"))
+		else if (ft_strcmp(token->value, ">>") == 0)
 			token->type = O_REDIR_APPEND;
-		else if (ft_strcmp(token->value, "<<"))
+		else if (ft_strcmp(token->value, "<<") == 0)
 			token->type = HEREDOC;
 		else
 			token->type = WORD;

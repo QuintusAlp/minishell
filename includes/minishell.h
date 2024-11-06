@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/06 15:07:04 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/06 16:17:41 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 #include <stddef.h>
 #include <limits.h>
 #include <dirent.h>
+
 
 // ********** builtins **********
     //builtins

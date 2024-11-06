@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:09:49 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/06 15:21:46 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/06 16:05:54 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 
 void builtins(t_cmd *cmd)
 {
-    dprintf(2, "buildins\n");
     if (ft_strncmp(cmd->argv[0], "echo", INT_MAX) == 0)
         return(echo(cmd->argv), exit(0));
     else if(ft_strncmp(cmd->argv[0], "env", INT_MAX) == 0)
@@ -32,6 +31,4 @@ void builtins(t_cmd *cmd)
         return(cd(cmd->argv), exit(0));
     else if (ft_strncmp(cmd->argv[0], "exit", INT_MAX) == 0)
         return(ft_exit(cmd->argv), exit(0));
-    else
-        exit(1); // CORRECT ? 
 }

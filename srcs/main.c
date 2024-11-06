@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/06 15:21:23 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/06 16:00:13 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,10 @@ void ft_pars_and_exec(char *prompt, char **env)
 	nbr_heredoc = ft_countheredocs(tokens);
 	nbr_heredoc_bis = nbr_heredoc;
 	ast = ft_parsetoken(&tokens, env, &nbr_heredoc);
-	ast_printer(ast, 0);
-	// ft_execute_ast(ast);
-	// ft_free_ast(ast);
-	// ft_del_hdfiles(nbr_heredoc_bis);
+	//ast_printer(ast, 0);
+	ft_execute_ast(ast);
+	ft_free_ast(ast);
+	ft_del_hdfiles(nbr_heredoc_bis);
 	//system("leaks minishell");
 	return ;
 }

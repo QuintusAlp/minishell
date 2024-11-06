@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:51:17 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/05 16:59:57 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/06 16:11:30 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	export(char **argvs)
 	
 	input = &argvs[1];
 	i = 0;
-	if (input == NULL || (*input) == NULL)
+	if (input == NULL || (*input) == NULL)//par pitier ca doit pas juste return (voir man)
 		return;
 	while (input[i])
 	{
