@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/05 16:58:00 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/06 13:19:43 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 #include <string.h>
 #include <stddef.h>
 #include <limits.h>
-
+#include <dirent.h>
 
 // ********** builtins **********
     //builtins

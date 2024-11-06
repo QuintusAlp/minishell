@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:14:49 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/05 15:55:59 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/06 13:59:28 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,43 @@
         --> buf = array where the current working dir path will be stored 
         --> size = the size of the buf 
         --> returns NULL on error 
-*/
+    DIR     *opendir(const char *name)
+        --> name = path of the dir i want to open 
+            --> returns NULL on error or a ptr used to access the dir's content 
+        --> once open succesfully: readdir
+        --> once read: closedir 
+    struct dirent
+        struct dirent {
+            ino_t d_ino;             // Inode number (unique identifier for the file)
+            off_t d_off;             // Offset to the next dirent structure
+            unsigned short d_reclen; // Length of this record (structure)
+            unsigned char d_type;    // Type of file (e.g., regular file, directory, symlink)
+            char d_name[256];        // Name of the file (or directory) in the entry
+        };
+    int     stat(const char *pathname, struct stat *statbuf)
+        --> pathname = dir whose information to retrieve 
+        --> statbuf = a struct stat that will be filled with the info about the file 
+    struct stat {
+    // dev_t     st_dev;     /* ID of device containing file */
+    // ino_t     st_ino;     /* Inode number */
+    // mode_t    st_mode;    /* File type and mode (permissions) */
+    // nlink_t   st_nlink;   /* Number of hard links */
+    // uid_t     st_uid;     /* User ID of owner */
+    // gid_t     st_gid;     /* Group ID of owner */
+    // dev_t     st_rdev;    /* Device ID (if special file) */
+    // off_t     st_size;    /* Total size, in bytes */
+    // blksize_t st_blksize; /* Block size for file system I/O */
+    // blkcnt_t  st_blocks;  /* Number of 512B blocks allocated */
+    
+    // /* Times: seconds since epoch */
+    // time_t    st_atime;   /* Last access time */
+    // time_t    st_mtime;   /* Last modification time */
+    // time_t    st_ctime;   /* Last status change time */
+    
+    // /* Padding to prevent structure from being misaligned */
+    // long      __pad[3];
+
+
 
 t_env   *find_key(char *key)
 {
@@ -88,7 +124,6 @@ static int  minus_cd()
         return(ft_putstr_fd("cd: OLDPWD not set\n", 2), 1);
     return (0);
 }
-
 // to implement : tilde & variants ; symlinks ? 
 static int  basic_cd(char *path)
 {
@@ -110,6 +145,52 @@ static int  basic_cd(char *path)
     return (0);
 }
 
+// TO FINISH
+// stat, opendir, readdir 
+static int  tilde_cd(char *path)
+{
+    char            cwd[PATH_MAX];
+    DIR             *dir;
+    struct dirent   *dp;
+    struct stat     stat;
+    char            *path_user[INT_MAX];
+    
+    // option 1: only cd ~ or cd ~/ --> acts like cd
+    if (strcmp(path, "~") == 0 || strcmp(path, "~/") == 0)
+        return (only_cd());
+    //option 2: ~/subdir --> go to subdir in the current user's home directory
+    else if (strncmp(path, "~/", 2) == 0 && ft_strlen(path) > 2)
+    {
+        only_cd();
+        return (basic_cd(&path[2]));
+    }
+    // ~otheruser --> go to the home of the other user 
+    else if (strncmp(path, "~", 1) == 0 && ft_strlen(path) > 1)
+    {
+        // if linux 
+        dir = opendir("/home/");
+        path_user = ft_strlcat("/home/", &path[1], (strlen("/home/") + strlen(&path[1])));
+        // if mac 
+        dir = opendir("/Users/");
+        
+        if (dir == NULL)
+            return(perror("Unable to read directory"), 0);
+        while ((dp = readdir(dir)) != NULL)
+        {
+            if (strcmp(dp->d_name, ".") == 0 || strcmp(dp->d_name, "..") == 0)
+                continue;
+            if (strcmp(dp->d_name, &path[1]) == 0) // si le argv est bien un username
+            {
+                if (stat())
+                return (1);
+            }
+        }
+        closedir(dir);
+        return (0);
+    }
+}
+
+
 // RETURN ?
 void    cd(char **argv)
 {
@@ -121,8 +202,10 @@ void    cd(char **argv)
         error("cd: more than 1 relative/absolute path");
     if (list_size(input) == 0)
         only_cd();
-    else if (ft_strncmp(input[0], "-", INT_MAX))
+    else if (ft_strncmp(input[0], "-", INT_MAX) == 0)
         minus_cd();
+    else if (ft_strncmp(input[0][0], "~", 1) == 0)
+        tilde_cd(input[0]);
     else
         basic_cd(input[0]);
 }

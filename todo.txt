@@ -4,3 +4,4 @@ quid ctrl-escape
 fct too long dans echo
 check for edge cases in export 
 line too long unset
+tilde cd 
