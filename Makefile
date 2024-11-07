@@ -3,7 +3,7 @@ SRCS = 	./srcs/builtins/builtins.c ./srcs/builtins/cd.c ./srcs/builtins/echo.c \
 		./srcs/builtins/env.c ./srcs/builtins/exit.c ./srcs/builtins/export.c \
 		./srcs/builtins/pwd.c ./srcs/builtins/unset.c ./srcs/builtins/utils.c \
 		./srcs/exec/exec_cmd.c ./srcs/exec/exec_pipe.c ./srcs/exec/exec_redir.c ./srcs/exec/execute_ast.c \
-		./srcs/lexer/lexer_utils.c ./srcs/lexer/lexer.c \
+		./srcs/lexer/lexer_utils.c ./srcs/lexer/lexer.c ./srcs/lexer/trim_tokens.c\
 		./srcs/parser/ast.c ./srcs/parser/parse_cmd.c ./srcs/parser/parse_pipe.c ./srcs/parser/parse_redir.c \
 		./srcs/signals/signals.c \
 		./srcs/free_ast.c ./srcs/ft_error.c ./srcs/main.c ./srcs/utils.c \

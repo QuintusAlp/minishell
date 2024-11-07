@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/06 15:07:04 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/07 17:18:00 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	ft_execute_ast(t_node *node);
 void	ft_update_quotes_status(char c, int *d_quote_status, int *s_quote_status);
 int	    ft_is_sp(char c, int *d_quote, int *s_quote);
 char	*ft_get_token(char *s, int *i, int *d_quote, int *s_quote);
+void    trim_tokens(t_list *tokens);
     //lexer
 void	ft_lexer(char *str, t_list **tokens);
 // ********** parser **********
