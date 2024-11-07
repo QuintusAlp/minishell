@@ -3,14 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/06 15:21:23 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/07 07:33:01 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+/*
+	char	*readline(const char *prompt);
+*/
 
 void	ft_printlst(t_list *e)
 {
@@ -67,7 +71,7 @@ void ft_pars_and_exec(char *prompt, char **env)
 	tokens = NULL;
 	ast = NULL;
 	ft_lexer(prompt, &tokens);
-	//Trim tokens TODO MARGGG
+	trim_token(tokens); // TO DO
 	//ft_printlst(tokens);
 	nbr_heredoc = ft_countheredocs(tokens);
 	nbr_heredoc_bis = nbr_heredoc;

@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:14:49 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/06 19:40:57 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/06 19:49:57 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,11 +126,13 @@ static int  minus_cd()
     return (0);
 }
 
-static int   symlink_cd(char *path)
-{
-    (void)path;
-}
-// to implement : tilde & variants ; symlinks ? 
+// TO DO
+// static int   symlink_cd(char *path)
+// {
+//     (void)path;
+//     return (0);
+// }
+
 static int  basic_cd(char *path)
 {
     char    cwd[PATH_MAX];
@@ -153,9 +155,7 @@ static int  basic_cd(char *path)
 }
 
 static int  tilde_cd(char *path)
-{
-    char            cwd[PATH_MAX];
-    
+{   
     // option 1: only cd ~ or cd ~/ --> acts like cd
     if (strcmp(path, "~") == 0 || strcmp(path, "~/") == 0)
         return (only_cd());
@@ -176,11 +176,12 @@ static int  tilde_cd(char *path)
             ft_strlcpy(new, "/Users/", 7);
         #endif 
         ft_strlcat(new, &path[1], (ft_strlen(new)));
-        if (access(new, F_OK) == -1 || acess(new, X_OK) == -1)
+        if (access(new, F_OK) == -1 || access(new, X_OK) == -1)
             return (perror("cd"), 1);
         else 
             return (basic_cd(new));
     }
+    return (0);
 }
 
 
