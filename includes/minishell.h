@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/07 17:18:00 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/08 09:29:06 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ char	*ft_get_token(char *s, int *i, int *d_quote, int *s_quote);
 void    trim_tokens(t_list *tokens);
     //lexer
 void	ft_lexer(char *str, t_list **tokens);
+    //trim_tokens
+void    trim_tokens(t_list *tokens);
 // ********** parser **********
     //ast
 t_node	*ft_parsetoken(t_list **token, char **env, int *hd_index);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   trim_tokens.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 07:18:36 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/07 17:26:46 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/08 09:57:38 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,23 @@
 
 void    remove_quotes(t_list *tokens)
 {
+    char    *str;
     char    *new_str;
     int     i;
+    int     len;
     
-    new_str = malloc(ft_strlen(tokens->value) - 1);
+    str = (char *)tokens->value;
+    len = ft_strlen(str);
+    new_str = malloc(len - 1);
     if (!new_str)
         return;
     i = 1;
-    while (i < (ft_strlen(tokens->value)))
+    while (i < (len - 1))
     {
-        new_str[i - 1] = (char)tokens->value[i]; // ICI
+        new_str[i - 1] = str[i];
         i++;
     }
-    new_str[i] = '\0';
+    new_str[len - 2] = '\0';
     free(tokens->value);
     tokens->value = new_str;
 }
@@ -48,68 +52,64 @@ void    remove_quotes(t_list *tokens)
 void    refer_envv(t_list *tokens, int start)
 {
     int         i;
-    int         j;
-    char        *envv;
-    char        *new_str;
-    const char  *envv_value;
+    int         new_len;
+    char        *str; // the initial tokens->value str
+    char        *envv; // the ref of $
+    char        *new_str; // the new str in the token
+    const char  *envv_value; // the vakue of the $ ref
 
     i = 0;
-    j = 0;
-    while (!(is_space((char *)tokens->value[start + i])))
+    str = (char *)tokens->value;
+    while (str[start + i + 1]
+            && !(is_space(str[start + i + 1]))
+            && str[start + i + 1] != '$')
         i++;
-    envv = malloc((i - start) * sizeof(char));
+    envv = malloc((i + 1) * sizeof(char));
     if (!envv)
         return;
-    ft_memcpy(envv, &tokens->value[start + 1], i);
+    ft_memcpy(envv, &str[start + 1], i);
     envv[i] = '\0';
-    envv_value = get_env(envv);
+    envv_value = getenv(envv);
+    free(envv);
     if (envv_value)
     {
-        i = 0;
-        new_str = malloc(ft_strlen(tokens->value) - (ft_strlen(envv) + 1) + ft_strlen(envv_value) + 1 
-                            * sizeof(char));
+        new_len = ft_strlen(str) - i - 1 + ft_strlen(envv_value);
+        new_str = malloc((new_len + 1) * sizeof(char));
         if (!new_str)
             return;
-        while (i < start)
-        {
-            new_str[i] = (char *)tokens->value[i];
-            i++;
-        }
-        while (envv_value[j])
-        {
-            new_str[i] = envv_value[j];
-            i++;
-            j++;
-        }
-        while (&tokens->value[i])
-        {
-            new_str[i] = envv_value[i];
-            i++;
-        }
+        ft_memcpy(new_str, str, start); // copy the beginning part of the tokens>value
+        ft_memcpy((new_str + start), envv_value, ft_strlen(envv_value)); // copy the envv value
+        ft_memcpy((new_str + start + ft_strlen(envv_value)), (str + start + i + 1), 
+                        (ft_strlen(str) - start - i)); // copy the remaining part of the str
+        new_str[new_len] = '\0';
         free (tokens->value);
         tokens->value = new_str;
     }
     else 
-        // print a newline but how to properly do this 
+        write (1, "\n", 1);
 }
 
 void    trim_tokens(t_list *tokens)
 {
-    int i;
-
+    int     i;
+    char    *str;
+    
     i = 0;
     if (!tokens || !(tokens->value))
         return;
     while (tokens)
     {
-        char *str = (char *)tokens->value;// la ca marche !!!!! pcw (char *)str[0] -> tu esssayes de cast un char en address
+        str = (char *)tokens->value;
         if ((str[0] == '\"' && str[ft_strlen(str) - 1] == '\"')
                 || (str[0] == '\'' && str[ft_strlen(str) - 1] == '\''))
-            remove_quotes(tokens);
-        i = 0;
-        while (&str[i])
         {
-            if (str[i] == '$' && &str[i + 1])
+            remove_quotes(tokens);
+            str = (char *)tokens->value;
+        }
+        i = 0;
+        while (str && str[i])
+        {
+            if (str[i] == '$' && str[i + 1])
                 refer_envv(tokens, i);
             i++;
         }
@@ -132,7 +132,7 @@ void    trim_tokens(t_list *tokens)
 //     node2->type = 0;
 //     node2->next = node3;
 
-//     node3->value = strdup("NoQuotesHere");
+//     node3->value = strdup("Voici le envv user : $USER");
 //     node3->type = 0;
 //     node3->next = NULL;
 
@@ -154,14 +154,6 @@ void    trim_tokens(t_list *tokens)
 //         printf("Node value: %s\n", (char *)current->value);
 //         current = current->next;
 //     }
-
-//     // Free allocated memory
-//     free(node1->value);
-//     free(node2->value);
-//     free(node3->value);
-//     free(node1);
-//     free(node2);
-//     free(node3);
 
 //     return 0;
 // }
