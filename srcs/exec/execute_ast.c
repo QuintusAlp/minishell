@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 19:01:11 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/23 14:48:54 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/08 16:11:58 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	ft_execute_ast(t_node *node)
 	int	cmd_index;
 
 	if (!node)
+		return ;
+	if(ft_isbuiltins(node))
 		return ;
 	pid = fork();
 	cmd_index = 0;

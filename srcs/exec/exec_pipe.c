@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 10:10:24 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/04 13:14:38 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/08 15:57:25 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,13 @@ void	ft_process(t_node *node, int dupfd, int *pipefd, int *cmd_index)
 		}
 		close_processfd(pipefd, dupfd);
 		ft_exec(node, dupfd, cmd_index);
+	}
+	if (*cmd_index == -1)
+	{
+		int stat = 0;
+		waitpid(pid, &stat, 0);
+		if (WIFEXITED(stat))
+            printf("terminated  status: %d\n", WEXITSTATUS(stat));
 	}
 }
 

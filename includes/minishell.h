@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/06 16:17:41 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/08 16:14:05 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,5 +109,6 @@ void    free_str(char *str);
 void    free_env(void);
 void    free_array(char **array);
 
-
+//crash test functions
+int  ft_isbuiltins(t_node *node);
 #endif
