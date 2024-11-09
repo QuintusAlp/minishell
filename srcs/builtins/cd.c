@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:14:49 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/06 14:06:15 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/06 19:49:57 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,15 @@
     off_t     st_size;     Total size, in bytes 
     blksize_t st_blksize;  Block size for file system I/O 
     blkcnt_t  st_blocks;   Number of 512B blocks allocated 
-    
      Times: seconds since epoch 
     time_t    st_atime;    Last access time 
     time_t    st_mtime;    Last modification time 
     time_t    st_ctime;    Last status change time 
-    
      Padding to prevent structure from being misaligned 
     long      __pad[3];
+    }
+    int access      (const char *pathname, int mode);
+    symlink: ln -s <target> <symlink name> 
 */
 
 
@@ -124,11 +125,19 @@ static int  minus_cd()
         return(ft_putstr_fd("cd: OLDPWD not set\n", 2), 1);
     return (0);
 }
-// to implement : tilde & variants ; symlinks ? 
+
+// TO DO
+// static int   symlink_cd(char *path)
+// {
+//     (void)path;
+//     return (0);
+// }
+
 static int  basic_cd(char *path)
 {
     char    cwd[PATH_MAX];
     
+    //
     // storing the current directolry path
     if (getcwd(cwd, sizeof(cwd)) == NULL)
         return(perror("getcwd"), 1);
@@ -145,50 +154,35 @@ static int  basic_cd(char *path)
     return (0);
 }
 
-// TO FINISH
-// stat, opendir, readdir 
-// static int  tilde_cd(char *path)
-// {
-//     char            cwd[PATH_MAX];
-//     DIR             *dir;
-//     struct dirent   *dp;
-//     struct stat     stat;
-//     char            *path_user[INT_MAX];
-    
-//     // option 1: only cd ~ or cd ~/ --> acts like cd
-//     if (strcmp(path, "~") == 0 || strcmp(path, "~/") == 0)
-//         return (only_cd());
-//     //option 2: ~/subdir --> go to subdir in the current user's home directory
-//     else if (strncmp(path, "~/", 2) == 0 && ft_strlen(path) > 2)
-//     {
-//         only_cd();
-//         return (basic_cd(&path[2]));
-//     }
-//     // ~otheruser --> go to the home of the other user 
-//     else if (strncmp(path, "~", 1) == 0 && ft_strlen(path) > 1)
-//     {
-//         // if linux 
-//         dir = opendir("/home/");
-//         path_user = ft_strlcat("/home/", &path[1], (strlen("/home/") + strlen(&path[1])));
-//         // if mac 
-//         dir = opendir("/Users/");
-        
-//         if (dir == NULL)
-//             return(perror("Unable to read directory"), 0);
-//         while ((dp = readdir(dir)) != NULL)
-//         {
-//             if (strcmp(dp->d_name, ".") == 0 || strcmp(dp->d_name, "..") == 0)
-//                 continue;
-//             if (strcmp(dp->d_name, &path[1]) == 0) // si le argv est bien un username
-//             {
-//                 if (stat())
-//                 return (1);
-//             }
-//         }
-//         closedir(dir);
-//         return (0);
-//     }
-// }
+static int  tilde_cd(char *path)
+{   
+    // option 1: only cd ~ or cd ~/ --> acts like cd
+    if (strcmp(path, "~") == 0 || strcmp(path, "~/") == 0)
+        return (only_cd());
+    //option 2: ~/subdir --> go to subdir in the current user's home directory
+    else if (strncmp(path, "~/", 2) == 0 && ft_strlen(path) > 2)
+    {
+        only_cd();
+        return (basic_cd(&path[2]));
+    }
+    // ~otheruser --> go to the home of the other user 
+    else if (strncmp(path, "~", 1) == 0 && ft_strlen(path) > 1)
+    {
+        #if defined(__linux__) 
+            char    new[6 + ft_strlen(&path[1])];
+            ft_strlcpy(new, "/home/", 6); // 6 OR 7 ??
+        #elif defined(__APPLE__) && defined(__MACH__)
+            char    new[7 + ft_strlen(&path[1])];
+            ft_strlcpy(new, "/Users/", 7);
+        #endif 
+        ft_strlcat(new, &path[1], (ft_strlen(new)));
+        if (access(new, F_OK) == -1 || access(new, X_OK) == -1)
+            return (perror("cd"), 1);
+        else 
+            return (basic_cd(new));
+    }
+    return (0);
+}
 
 
 // RETURN ?
@@ -204,8 +198,8 @@ void    cd(char **argv)
         only_cd();
     else if (ft_strncmp(input[0], "-", INT_MAX) == 0)
         minus_cd();
-    // else if (ft_strncmp(input[0][0], "~", 1) == 0)
-    //     tilde_cd(input[0]);
+    else if (ft_strncmp(&input[0][0], "~", 1) == 0)
+        tilde_cd(input[0]);
     else
         basic_cd(input[0]);
 }

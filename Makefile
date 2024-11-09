@@ -3,7 +3,7 @@ SRCS = 	./srcs/builtins/builtins.c ./srcs/builtins/cd.c ./srcs/builtins/echo.c \
 		./srcs/builtins/env.c ./srcs/builtins/exit.c ./srcs/builtins/export.c \
 		./srcs/builtins/pwd.c ./srcs/builtins/unset.c ./srcs/builtins/utils.c \
 		./srcs/exec/exec_cmd.c ./srcs/exec/exec_pipe.c ./srcs/exec/exec_redir.c ./srcs/exec/execute_ast.c \
-		./srcs/lexer/lexer_utils.c ./srcs/lexer/lexer.c \
+		./srcs/lexer/lexer_utils.c ./srcs/lexer/lexer.c ./srcs/lexer/trim_tokens.c\
 		./srcs/parser/ast.c ./srcs/parser/parse_cmd.c ./srcs/parser/parse_pipe.c ./srcs/parser/parse_redir.c \
 		./srcs/signals/signals.c \
 		./srcs/free_ast.c ./srcs/ft_error.c ./srcs/main.c ./srcs/utils.c \
@@ -20,8 +20,13 @@ RM = rm -rf
 CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 NAME = minishell
 
+ifeq ($(ARCH),arm64) # command to check the ARCH variable : uname -m
+READINC = /opt/homebrew/Cellar/readline/8.2.10/include/
+READLIB = /opt/homebrew/Cellar/readline/8.2.10/lib/
+else
 READINC = /Users/qalpesse/.brew/opt/readline/include
 READLIB = /Users/qalpesse/.brew/opt/readline/lib
+endif
 READLINE = -L$(READLIB) -I$(READINC) -lreadline
 
 FLUO_GREEN = \033[1;92m
