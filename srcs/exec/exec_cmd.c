@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:40:11 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/06 16:01:04 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/11 11:19:14 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*ft_path(char *exec, char **env)
 
 void	ft_exec_cmd(t_cmd *cmd)
 {
-	builtins(cmd);
+	//builtins(cmd);
 	if (execve(ft_path(cmd->argv[0], cmd->env), cmd->argv, cmd->env) == -1) // g_env was previsously cmd->env
 		ft_panic("cmd not found", cmd->argv[0], 127);
 }

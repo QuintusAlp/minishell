@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 19:01:11 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/09 15:12:59 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/11 11:28:28 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ void	ft_exec(t_node *node, int dupfd, int *cmd_index)
 		ft_exec_pipe((t_pipe *)node, dupfd, cmd_index);
 	if (node->type == CMD)
 		ft_exec_cmd((t_cmd *)node);
-	if (node->type == O_REDIR_TRUNC || node->type == O_REDIR_APPEND
-		|| node->type == I_REDIR || node->type == HEREDOC)
+	if (node->type >= I_REDIR && node->type <= HEREDOC)
 		ft_exec_redir((t_redir *)node, dupfd, cmd_index);
 }
 
@@ -30,8 +29,8 @@ void	ft_execute_ast(t_node *node)
 
 	if (!node)
 		return ;
-	if(ft_isbuiltins(node) || (node->type >= I_REDIR && node->type <= HEREDOC && ft_isbuiltins(((t_redir *)node)->cmd)))
-		return ;
+	// if(ft_isbuiltins(node) || (node->type >= I_REDIR && node->type <= HEREDOC && ft_isbuiltins(((t_redir *)node)->cmd)))
+	// 	return ;
 	pid = fork();
 	cmd_index = 0;
 	if (pid == -1)
