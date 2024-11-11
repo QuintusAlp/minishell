@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/11 12:14:32 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/11 12:34:30 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void    cd(char **argv, t_env **env);
     //echo
 int     echo(char **argv);
     //env
-void    init_envv(void);
+t_env   *init_envv(void);
 void    env(void);
     //exit
 void    ft_exit(char **argv, t_env **env);

@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 07:18:36 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/08 09:57:38 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/11 12:25:02 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,13 +107,16 @@ void    trim_tokens(t_list *tokens)
             str = (char *)tokens->value;
         }
         i = 0;
-        while (str && str[i])
+        if (str[0] == '\'' && str[ft_strlen(str) - 1] == '\'')
         {
-            if (str[i] == '$' && str[i + 1])
-                refer_envv(tokens, i);
-            i++;
+            while (str && str[i])
+            {
+                if (str[i] == '$' && str[i + 1])
+                    refer_envv(tokens, i);
+                i++;
+            }
+            tokens = tokens->next; 
         }
-        tokens = tokens->next;
     }
 }
 
