@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:22:35 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/05 15:06:01 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/11 11:07:46 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	init_envv()
 	}
 }
 
+//CHECK THE WORKING OF ENVV
 void	env(void)
 {
 	extern char	**environ;

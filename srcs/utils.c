@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:53:14 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/06 15:10:10 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/11 12:14:16 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,15 @@ void	free_str(char *str)
 	str = NULL;
 }
 
-void	free_env(void)
+void	free_env(t_env *env)
 {
 	t_env	*tmp;
 
 	tmp = NULL;
-	while (g_env)
+	while (env)
 	{
-		tmp = g_env;
-		g_env = g_env->next;
+		tmp = env;
+		env = env->next;
 		free(tmp->name);
 		free(tmp->value);
 		free(tmp);

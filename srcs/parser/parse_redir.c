@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 11:26:20 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/05 15:18:53 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/11 11:01:53 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,6 +226,7 @@ char *ft_get_file_and_type(t_list *token, int *type, int *hd_index, char **env)
 	char *index;
 
 	start_lst = token;
+	(void) start_lst; // MODIF TO COMPILE 
 	while (!ft_token_isredir(token))
 		token = token->next;
 	*type = token->type;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/09 15:28:28 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/11 12:14:32 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +35,20 @@
     //builtins
 void    builtins(t_cmd *cmd);
     //cd
-void    cd(char **argv);
+void    cd(char **argv, t_env **env);
     //echo
 int     echo(char **argv);
     //env
 void    init_envv(void);
 void    env(void);
     //exit
-void    ft_exit(char **argv);
+void    ft_exit(char **argv, t_env **env);
     //export
-void    export(char **argv);
+void    export(char **argv, t_env **env);
     //pwd
 int     pwd(void);
     //unset
-void    unset(char **argv);
+void    unset(char **argv, t_env **env);
     //utils
 int		is_space(char c);
 int     ft_strcmp(const char *s1, const char *s2);
@@ -109,7 +109,7 @@ void    ft_pars_and_exec(char *prompt, char **env);
 // ********** utils **********
 void    error(const char *error);
 void    free_str(char *str);
-void    free_env(void);
+void    free_env(t_env *env);
 void    free_array(char **array);
 
 //crash test functions

@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 10:41:47 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/05 15:42:40 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/11 11:59:31 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,18 @@ typedef struct	s_node
 	int	type;
 }	t_node;
 
+typedef struct s_env {
+	char			*name;
+	char			*value;
+	int				index;
+	struct s_env	*next;
+}	t_env;
+
  typedef struct s_cmd	
 {
 	int		type;
 	char 	**argv;
-	char 	**env;
+	t_env 	**env;
 }	t_cmd;
 
  typedef struct s_redir 
@@ -49,15 +56,5 @@ typedef struct	s_node
 	t_node	*left;
 	t_node	*right;
 }	t_pipe;
-
-//MARG STRUCT
-typedef struct s_env {
-	char			*name;
-	char			*value;
-	int				index;
-	struct s_env	*next;
-}	t_env;
-
-t_env   *g_env;
 
 #endif

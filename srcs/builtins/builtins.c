@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:09:49 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/08 16:13:30 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/11 11:25:11 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-// PQ ARGV[0] ET PAS JUSTE ARGV
-// RETURNN ?
 
 void builtins(t_cmd *cmd)
 {
@@ -22,15 +19,15 @@ void builtins(t_cmd *cmd)
     else if(ft_strncmp(cmd->argv[0], "env", INT_MAX) == 0)
         return(env(), exit(0)); // WHAT TO DO IF THERE ARE ARGS SINCE WE DONT NEED TO MANAGE THAT
     else if(ft_strncmp(cmd->argv[0], "export", INT_MAX) == 0)
-        return(export(cmd->argv), exit(0));
+        return(export(cmd->argv, cmd->env), exit(0));
     else if (ft_strncmp(cmd->argv[0], "pwd", INT_MAX) == 0)
         return(pwd(), exit(0));
     else if (ft_strncmp(cmd->argv[0], "unset", INT_MAX) == 0)
-        return(unset(cmd->argv), exit(0));
+        return(unset(cmd->argv, cmd->env), exit(0));
     else if (ft_strncmp(cmd->argv[0], "cd", INT_MAX) == 0)
-        return(cd(cmd->argv), exit(0));
+        return(cd(cmd->argv, cmd->env), exit(0));
     else if (ft_strncmp(cmd->argv[0], "exit", INT_MAX) == 0)
-        return(ft_exit(cmd->argv), exit(0));
+        return(ft_exit(cmd->argv, cmd->env), exit(0));
 }
 
 int  ft_isbuiltins(t_node *node)
@@ -45,14 +42,14 @@ int  ft_isbuiltins(t_node *node)
     else if(ft_strncmp(cmd->argv[0], "env", INT_MAX) == 0)
         return(env(), 1); // WHAT TO DO IF THERE ARE ARGS SINCE WE DONT NEED TO MANAGE THAT
     else if(ft_strncmp(cmd->argv[0], "export", INT_MAX) == 0)
-        return(export(cmd->argv), 1);
+        return(export(cmd->argv, cmd->env), 1);
     else if (ft_strncmp(cmd->argv[0], "pwd", INT_MAX) == 0)
         return(pwd(), 1);
     else if (ft_strncmp(cmd->argv[0], "unset", INT_MAX) == 0)
-        return(unset(cmd->argv), 1);
+        return(unset(cmd->argv, cmd->env), 1);
     else if (ft_strncmp(cmd->argv[0], "cd", INT_MAX) == 0)
-        return(cd(cmd->argv), 1);
+        return(cd(cmd->argv, cmd->env), 1);
     else if (ft_strncmp(cmd->argv[0], "exit", INT_MAX) == 0)
-        return(ft_exit(cmd->argv), 1);
+        return(ft_exit(cmd->argv, cmd->env), 1);
     return (0);
 }
