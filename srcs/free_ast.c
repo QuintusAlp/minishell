@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 09:41:50 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/04 13:12:46 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/12 15:20:48 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	ft_free_cmd(t_node *node)
 {
 	t_cmd	*cmd= (t_cmd*)node;
 	ft_freeargv(cmd->argv);
+	//free_env(*(cmd->g_env));
 	free(cmd);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:14:49 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/06 19:49:57 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/12 15:50:01 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,11 @@
 */
 
 
-t_env   *find_key(char *key)
+t_env   *find_key(char *key, t_env **env)
 {
     t_env *current;
 
-    current = g_env;
+    current = *env;
     if (!key || !current)
         return (NULL);
     while (current)
@@ -80,11 +80,11 @@ t_env   *find_key(char *key)
     return (NULL);
 }
 
-void    update_envv(char *key, char *new_value)
+void    update_envv(char *key, char *new_value, t_env **env)
 {
     t_env   *var;
     
-    var = find_key(key);
+    var = find_key(key, env);
     if (var)
     {
         free(var->value);
@@ -92,34 +92,34 @@ void    update_envv(char *key, char *new_value)
     }
 }
 
-static int  only_cd()
+static int  only_cd(t_env **env)
 {
     t_env   *home_var;
 
-    home_var = find_key("HOME");
+    home_var = find_key("HOME", env);
     if (home_var && home_var->value)
     {
         if (chdir(home_var->value) != 0)
             return(perror("cd"), 1);
-        update_envv("OLDPWD", find_key("PWD")->value);
-        update_envv("PWD", home_var->value);
+        update_envv("OLDPWD", find_key("PWD", env)->value, env);
+        update_envv("PWD", home_var->value, env);
     }
     else
         return(ft_putstr_fd("cd: HOME not set\n", 2), 1);
     return (0);
 }
 
-static int  minus_cd()
+static int  minus_cd(t_env **env)
 {
     t_env   *oldpwd_var;
 
-    oldpwd_var = find_key("OLDPWD");
+    oldpwd_var = find_key("OLDPWD", env);
     if (oldpwd_var && oldpwd_var->value)
     {
         if(chdir((const char *)oldpwd_var) != 0)
             return(perror("cd"), 1);
-        update_envv("OLDPWD", find_key("PWD")->value);
-        update_envv("PWD", oldpwd_var->value);
+        update_envv("OLDPWD", find_key("PWD", env)->value, env);
+        update_envv("PWD", oldpwd_var->value, env);
     }
     else
         return(ft_putstr_fd("cd: OLDPWD not set\n", 2), 1);
@@ -133,7 +133,7 @@ static int  minus_cd()
 //     return (0);
 // }
 
-static int  basic_cd(char *path)
+static int  basic_cd(char *path, t_env **env)
 {
     char    cwd[PATH_MAX];
     
@@ -145,25 +145,25 @@ static int  basic_cd(char *path)
     if (chdir(path) != 0)
         return(perror("cd"), 1);
     // update oldpwd with previous path stored in cwd
-    update_envv("OLDPWD", cwd);
+    update_envv("OLDPWD", cwd, env);
     // update pwd  witgh the new cwd path
     if (getcwd(cwd, sizeof(cwd)) != NULL)
-        update_envv("PWD", cwd);
+        update_envv("PWD", cwd, env);
     else 
         return(perror("getcwd"), 1);
     return (0);
 }
 
-static int  tilde_cd(char *path)
+static int  tilde_cd(char *path, t_env **env)
 {   
     // option 1: only cd ~ or cd ~/ --> acts like cd
     if (strcmp(path, "~") == 0 || strcmp(path, "~/") == 0)
-        return (only_cd());
+        return (only_cd(env));
     //option 2: ~/subdir --> go to subdir in the current user's home directory
     else if (strncmp(path, "~/", 2) == 0 && ft_strlen(path) > 2)
     {
-        only_cd();
-        return (basic_cd(&path[2]));
+        only_cd(env);
+        return (basic_cd(&path[2], env));
     }
     // ~otheruser --> go to the home of the other user 
     else if (strncmp(path, "~", 1) == 0 && ft_strlen(path) > 1)
@@ -179,14 +179,12 @@ static int  tilde_cd(char *path)
         if (access(new, F_OK) == -1 || access(new, X_OK) == -1)
             return (perror("cd"), 1);
         else 
-            return (basic_cd(new));
+            return (basic_cd(new, env));
     }
     return (0);
 }
 
-
-// RETURN ?
-void    cd(char **argv)
+void    cd(char **argv, t_env **env)
 {
     char    **input;
 
@@ -195,11 +193,11 @@ void    cd(char **argv)
     if (list_size(input) > 1 || list_size(input) < 0)
         error("cd: more than 1 relative/absolute path");
     if (list_size(input) == 0)
-        only_cd();
+        only_cd(env);
     else if (ft_strncmp(input[0], "-", INT_MAX) == 0)
-        minus_cd();
+        minus_cd(env);
     else if (ft_strncmp(&input[0][0], "~", 1) == 0)
-        tilde_cd(input[0]);
+        tilde_cd(input[0], env);
     else
-        basic_cd(input[0]);
+        basic_cd(input[0], env);
 }

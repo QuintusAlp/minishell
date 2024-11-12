@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/11 11:28:32 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/12 16:20:49 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,36 +59,39 @@ void	ft_del_hdfiles(int nbr_heredoc)
 	}
 }
 
-void ft_pars_and_exec(char *prompt, char **env)
+void ft_pars_and_exec(char *prompt, t_env **g_env)
 {
+	(void)prompt;
+	(void)g_env;
 	t_list *tokens;
 	t_node *ast;
 	int		nbr_heredoc;
 	int		nbr_heredoc_bis;
-	(void)env;
+
 	if (!prompt)
 		return ;
 	tokens = NULL;
-	ast = NULL;
+	// ast = NULL;
 	ft_lexer(prompt, &tokens);
 	trim_tokens(tokens); // TO DO
-	//ft_printlst(tokens);
+	ft_printlst(tokens);
 	nbr_heredoc = ft_countheredocs(tokens);
 	nbr_heredoc_bis = nbr_heredoc;
-	ast = ft_parsetoken(&tokens, env, &nbr_heredoc);
+	ast = ft_parsetoken(&tokens, g_env, &nbr_heredoc);
 	//ast_printer(ast, 0);
 	ft_execute_ast(ast);
 	ft_free_ast(ast);
 	ft_del_hdfiles(nbr_heredoc_bis);
-	//system("leaks minishell");
+	// system("leaks minishell");
 	return ;
 }
 
-int main(int argc, char **argv, char **env)
+int main(void)
 {
-	(void)argc;
-	(void)argv;
 	char	*prompt;
+	t_env *g_env;
+
+	g_env = init_envv();
 
 	prompt = readline("\033[1;92mminishell$\033[0m ");
 	while (prompt)
@@ -96,7 +99,7 @@ int main(int argc, char **argv, char **env)
 		if (prompt && *prompt)
 		{
 			add_history(prompt);
-			ft_pars_and_exec(prompt, env);
+			ft_pars_and_exec(prompt, &g_env);
 		}
 		free(prompt);
 		prompt = readline("\033[1;92mminishell$\033[0m ");

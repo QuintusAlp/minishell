@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 10:41:47 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/11 11:54:35 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/12 16:20:37 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,18 @@ typedef struct	s_node
 	int	type;
 }	t_node;
 
+typedef struct s_env {
+	char			*name;
+	char			*value;
+	int				index;
+	struct s_env	*next;
+}	t_env;
+
  typedef struct s_cmd	
 {
 	int		type;
 	char 	**argv;
-	char 	**env;
+	t_env 	**g_env;
 }	t_cmd;
 
  typedef struct s_redir 
@@ -49,16 +56,5 @@ typedef struct	s_node
 	t_node	*left;
 	t_node	*right;
 }	t_pipe;
-
-//MARG STRUCT
-typedef struct s_env {
-	char			*name;
-	char			*value;
-	int				index;
-	struct s_env	*next;
-}	t_env;
-
-t_env   *g_env;
-int	exit_status;
 
 #endif

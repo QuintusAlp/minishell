@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:34:33 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/06 15:58:27 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/11 11:46:09 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,20 +48,3 @@ int	list_size(char **argv)
 	return (i);
 }
 
-// void	remove_first(char **argv, int *size)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	if (*size <= 0)
-// 		return;
-	
-// 	free(argv[0]);
-// 	while (i < *size)
-// 	{
-// 		argv[i-1] = argv[i];
-// 		i++;
-// 	}
-// 	argv[*size - 1] = 0;
-// 	(*size--);
-// }

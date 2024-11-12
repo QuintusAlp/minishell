@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/09 15:28:28 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/12 14:40:50 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +35,20 @@
     //builtins
 void    builtins(t_cmd *cmd);
     //cd
-void    cd(char **argv);
+void    cd(char **argv, t_env **env);
     //echo
 int     echo(char **argv);
     //env
-void    init_envv(void);
+t_env   *init_envv(void);
 void    env(void);
     //exit
-void    ft_exit(char **argv);
+void    ft_exit(char **argv, t_env **env);
     //export
-void    export(char **argv);
+void    export(char **argv, t_env **env);
     //pwd
 int     pwd(void);
     //unset
-void    unset(char **argv);
+void    unset(char **argv, t_env **env);
     //utils
 int		is_space(char c);
 int     ft_strcmp(const char *s1, const char *s2);
@@ -77,10 +77,10 @@ void	ft_lexer(char *str, t_list **tokens);
 void    trim_tokens(t_list *tokens);
 // ********** parser **********
     //ast
-t_node	*ft_parsetoken(t_list **token, char **env, int *hd_index);
+t_node	*ft_parsetoken(t_list **token, t_env **g_env, int *hd_index);
 void    ast_printer(t_node *node, int level);
     //parse_cmd
-t_node	*ft_cmdnode(char **argv, char **env, t_list **token);
+t_node	*ft_cmdnode(char **argv, t_env **g_env, t_list **token);
 char    **ft_getargv(t_list *token);
     //parse_pipe
 t_node	*ft_pipenode(t_node *left, t_node *right, t_list **token);
@@ -91,7 +91,7 @@ int	    ft_strcmp2(char *str, char *str_to_find);
 t_node	*ft_redirnode(char *file, t_node *cmd, int type, t_list **token);
 int     ft_token_isredir(t_list *token);
 t_list  *ft_get_prevredir(t_list *token);
-char    *ft_get_file_and_type(t_list *token, int *type, int *hd_index, char **env);
+char    *ft_get_file_and_type(t_list *token, int *type, int *hd_index, t_env **g_env);
 // ********** signals **********
     //signals
 void    handle_signals(void);
@@ -105,11 +105,11 @@ void	ft_panic(char *str, char *name, int exit_code);
 void	ft_printlst(t_list *e); // for debug
 int	    ft_countheredocs(t_list *token);
 void	ft_del_hdfiles(int nbr_heredoc);
-void    ft_pars_and_exec(char *prompt, char **env);
+void    ft_pars_and_exec(char *prompt, t_env **g_env);
 // ********** utils **********
 void    error(const char *error);
 void    free_str(char *str);
-void    free_env(void);
+void    free_env(t_env *env);
 void    free_array(char **array);
 
 //crash test functions

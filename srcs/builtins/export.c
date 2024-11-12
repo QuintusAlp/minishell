@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:51:17 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/06 16:11:30 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/11 12:16:23 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,12 @@ int valid_value(char *value)
 	return (1);
 }
 
-static void	set_envv(const char *name, const char *value)
+static void	set_envv(const char *name, const char *value, t_env **env)
 {
 	t_env	*current;
 	t_env	*new;
 
-	current = g_env;
+	current = *env;
 	while (current)
 	{
 		if (ft_strcmp(name, current->name) == 0)
@@ -78,10 +78,10 @@ static void	set_envv(const char *name, const char *value)
 	new->name = ft_strdup(name);
 	new->value = ft_strdup(value);
 	new->next = NULL;
-	if (g_env == NULL)
+	if (*env == NULL)
 	{
 		new->index = 0;
-		g_env = new;
+		*env = new;
 	}
 	else
 	{
@@ -90,7 +90,7 @@ static void	set_envv(const char *name, const char *value)
 	}
 }
 
-void	export(char **argvs)
+void	export(char **argvs, t_env **env)
 {
 	char **result;
 	char **input;
@@ -113,7 +113,7 @@ void	export(char **argvs)
 			error("Incorrect variable name\n");
 		if (valid_value(result[1]) == 0 || result[2])
 			error("Incorrect environmental variable value\n");
-		set_envv(result[0], result[1]);
+		set_envv(result[0], result[1], env);
 		free_array(result);
 		i++;
 	}

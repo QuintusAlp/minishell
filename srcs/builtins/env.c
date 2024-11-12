@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:22:35 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/05 15:06:01 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/11 12:34:59 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 			--> to retrieve the value of a variable with its name , returns a char *
 */
 
-void	init_envv()
+t_env *init_envv()
 {
 	t_env	*env;
 	t_env	*current;
@@ -34,9 +34,10 @@ void	init_envv()
 	{
 		new_node = (t_env *)malloc(sizeof(t_env));
 		if (!new_node)
-			return;
-			//error("Malloc error\n");
+			return(error("Malloc error\n"), NULL);
 		result = ft_split(environ[i], '=');
+		if (!result)
+			return(free(new_node), NULL);
 		new_node->index = i;
 		new_node->name = result[0]; 
 		new_node->value = result[1];
@@ -48,8 +49,10 @@ void	init_envv()
 		current = new_node;
 		i++;
 	}
+	return (env);
 }
 
+//CHECK THE WORKING OF ENVV
 void	env(void)
 {
 	extern char	**environ;
@@ -66,5 +69,5 @@ void	env(void)
 }
 // int main()
 // {
-// 	env();
+// 	t_env *env = init_envv
 // }
