@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 11:26:20 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/11 11:01:53 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/12 14:44:46 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ t_list	*ft_delheredoc(t_list **token)
 	return (new_lst);
 }
 
-void ft_exec_hd_cmd(char *prompt, char **env)
+void ft_exec_hd_cmd(char *prompt, t_env **g_env)
 {
 	t_list *tokens;
 	t_node *ast;
@@ -78,7 +78,7 @@ void ft_exec_hd_cmd(char *prompt, char **env)
 	//ft_printlst(tokens);
 	nbr_heredoc = ft_countheredocs(tokens);
 	nbr_heredoc_bis = nbr_heredoc;
-	ast = ft_parsetoken(&tokens, env, &nbr_heredoc);
+	ast = ft_parsetoken(&tokens, g_env, &nbr_heredoc);
 	//ast_printer(ast, 0);
 	ft_execute_ast(ast);
 	ft_free_ast(ast);
@@ -87,7 +87,7 @@ void ft_exec_hd_cmd(char *prompt, char **env)
 	return ;
 }
 
-void	ft_hdcmd(char *str, int fd, char **env)
+void	ft_hdcmd(char *str, int fd, t_env **g_env)
 {
 	char	*buff;
 	int		pid;
@@ -109,7 +109,7 @@ void	ft_hdcmd(char *str, int fd, char **env)
 		if (dup2(fd2, 0) == -1)
 			ft_error("dup2");
 		close(fd2);
-		ft_exec_hd_cmd(buff, env);
+		ft_exec_hd_cmd(buff, g_env);
 		free(buff);
 		exit(0);
 	}
@@ -118,7 +118,7 @@ void	ft_hdcmd(char *str, int fd, char **env)
 	free(buff);
 }
 
-void	ft_write_hdline(char *str, char **env, char *file)
+void	ft_write_hdline(char *str, t_env **g_env, char *file)
 {
 	int		fd;
 
@@ -129,7 +129,7 @@ void	ft_write_hdline(char *str, char **env, char *file)
 	{
 		if (*str == '$' && *(str + 1) == '(' && ft_strchr(str, ')'))
 		{
-			ft_hdcmd(str, fd, env);
+			ft_hdcmd(str, fd, g_env);
 			str += ft_cmdlen(str) + 3;
 		}
 		else
@@ -143,7 +143,7 @@ void	ft_write_hdline(char *str, char **env, char *file)
 	close(fd);
 }
 
-void	ft_heredoc(char *delimiter, char *file, char **env)
+void	ft_heredoc(char *delimiter, char *file, t_env **g_env)
 {
 	char *buff;
 	int	fd;
@@ -156,7 +156,7 @@ void	ft_heredoc(char *delimiter, char *file, char **env)
 	}
 	while (!ft_strcmp2(buff, delimiter))
 	{
-		ft_write_hdline(buff, env, file);
+		ft_write_hdline(buff, g_env, file);
 		free(buff);
 		buff = readline("> ");
 	}
@@ -219,7 +219,7 @@ t_list	*ft_get_prevredir(t_list *token)
 	return (prev);
 }
 
-char *ft_get_file_and_type(t_list *token, int *type, int *hd_index, char **env)
+char *ft_get_file_and_type(t_list *token, int *type, int *hd_index, t_env **g_env)
 {
 	t_list *start_lst;
 	char *hd_file;
@@ -239,7 +239,7 @@ char *ft_get_file_and_type(t_list *token, int *type, int *hd_index, char **env)
 			hd_file = ft_strjoin("/tmp/hd_file", index);
 			free(index);
 			(*hd_index) --;
-			ft_heredoc(token->value, hd_file, env);
+			ft_heredoc(token->value, hd_file, g_env);
 			return (hd_file);
 		}
 		else

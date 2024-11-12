@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:40:11 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/06 16:01:04 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/12 15:40:42 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,13 @@ char	*ft_path(char *exec, char **env)
 
 void	ft_exec_cmd(t_cmd *cmd)
 {
+	// while (cmd->argv[i])
+	// {
+		
+	// }
 	builtins(cmd);
-	if (execve(ft_path(cmd->argv[0], cmd->env), cmd->argv, cmd->env) == -1) // g_env was previsously cmd->env
-		ft_panic("cmd not found", cmd->argv[0], 127);
+	exit(0);
+	//COMBERTISSEUR CHAIN LIST -> DOUBLE TAB pour env
+	// if (execve(ft_path(cmd->argv[0], cmd->g_env), cmd->argv, cmd->g_env) == -1) // g_env was previsously cmd->env
+	// 	ft_panic("cmd not found", cmd->argv[0], 127);
 }

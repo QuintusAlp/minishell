@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   trim_tokens.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 07:18:36 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/11 12:25:02 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/12 15:44:31 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,10 @@ void    trim_tokens(t_list *tokens)
     char    *str;
     
     i = 0;
+
     if (!tokens || !(tokens->value))
         return;
+    printf("trim\n");
     while (tokens)
     {
         str = (char *)tokens->value;
@@ -107,7 +109,7 @@ void    trim_tokens(t_list *tokens)
             str = (char *)tokens->value;
         }
         i = 0;
-        if (str[0] == '\'' && str[ft_strlen(str) - 1] == '\'')
+        if (str[0] == '\"' && str[ft_strlen(str) - 1] == '\"')
         {
             while (str && str[i])
             {
@@ -115,8 +117,8 @@ void    trim_tokens(t_list *tokens)
                     refer_envv(tokens, i);
                 i++;
             }
-            tokens = tokens->next; 
         }
+        tokens = tokens->next;
     }
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_ast.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 19:01:11 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/09 15:12:59 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/12 15:32:03 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,11 @@ void	ft_execute_ast(t_node *node)
 
 	if (!node)
 		return ;
-	if(ft_isbuiltins(node) || (node->type >= I_REDIR && node->type <= HEREDOC && ft_isbuiltins(((t_redir *)node)->cmd)))
+	
+	if(ft_isbuiltins(node))
+	{	
 		return ;
+	}
 	pid = fork();
 	cmd_index = 0;
 	if (pid == -1)
