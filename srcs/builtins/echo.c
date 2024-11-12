@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:14:27 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/11 11:07:14 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/12 15:53:47 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int echo(char **argv)
 		{
 			while (str[i])
 			{
-				write(1, str[i], ft_strlen(str[i])); // CORRECT PLACE TO WRITE ?
+				write(1, str[i], ft_strlen(str[i]));
 				i++;
 			}
 		}
@@ -64,7 +64,7 @@ int echo(char **argv)
 		while (str[i])
 		{
 			write(1, str[i], ft_strlen(str[i]));
-			if (str[i + 1])//j'ai ajouté en vif
+			if (str[i + 1])
 				write(1, " ", 1);
 			i++;
 		}
