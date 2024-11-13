@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 12:09:30 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/11 11:28:20 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/13 21:22:42 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ft_exec_redir(t_redir *redir, int dupfd, int *cmd_index)
 
 	if (stat(redir->file, &f_stat) == -1)
         perror("stat");
-    if (f_stat.st_mode & S_IXUSR)
+    	if (f_stat.st_mode & S_IXUSR)
         printf("execute \n");
 	// if (ft_strcmp(redir->file, "\n"))
 	// 	ft_panic("syntax error near unexpected token `newline'", NULL, 258);

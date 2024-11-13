@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   trim_tokens.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 07:18:36 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/12 15:44:31 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/13 15:59:00 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ void    trim_tokens(t_list *tokens)
 
     if (!tokens || !(tokens->value))
         return;
-    printf("trim\n");
     while (tokens)
     {
         str = (char *)tokens->value;

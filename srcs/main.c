@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/12 16:20:49 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/13 15:58:27 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,13 @@ void ft_pars_and_exec(char *prompt, t_env **g_env)
 	// ast = NULL;
 	ft_lexer(prompt, &tokens);
 	trim_tokens(tokens); // TO DO
-	ft_printlst(tokens);
+	//ft_printlst(tokens);
 	nbr_heredoc = ft_countheredocs(tokens);
 	nbr_heredoc_bis = nbr_heredoc;
 	ast = ft_parsetoken(&tokens, g_env, &nbr_heredoc);
 	//ast_printer(ast, 0);
 	ft_execute_ast(ast);
+	dprintf(2, "exit code %d\n", g_exitcode);
 	ft_free_ast(ast);
 	ft_del_hdfiles(nbr_heredoc_bis);
 	// system("leaks minishell");
@@ -91,8 +92,8 @@ int main(void)
 	char	*prompt;
 	t_env *g_env;
 
+	g_exitcode = 0;
 	g_env = init_envv();
-
 	prompt = readline("\033[1;92mminishell$\033[0m ");
 	while (prompt)
 	{

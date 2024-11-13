@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 10:10:24 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/08 15:57:25 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/13 17:32:20 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ void	ft_process(t_node *node, int dupfd, int *pipefd, int *cmd_index)
 		int stat = 0;
 		waitpid(pid, &stat, 0);
 		if (WIFEXITED(stat))
-            printf("terminated  status: %d\n", WEXITSTATUS(stat));
+          { 
+			printf("exit with pipe\n");
+			g_exitcode =  WEXITSTATUS(stat);
+		}
 	}
 }
 

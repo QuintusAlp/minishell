@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 10:41:47 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/12 16:20:37 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/13 15:55:52 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,6 @@ typedef struct s_env {
 	t_node	*right;
 }	t_pipe;
 
+//GLOBAL VAR
+int g_exitcode;
 #endif
