@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:40:11 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/13 17:27:35 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/14 16:57:44 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,11 @@ char	*ft_path(char *exec, char **env)
 	if (!paths)
 		ft_error("env : no comand path");
 	i = 0;
+	if (!access(exec, X_OK))
+	{
+		path = exec;
+		return (path);
+	}
 	while (paths[i])
 	{
 		if (!access(ft_strjoin(paths[i], ft_strjoin("/", exec)), X_OK))
@@ -56,10 +61,9 @@ char	*ft_path(char *exec, char **env)
 
 void	ft_exec_cmd(t_cmd *cmd)
 {
-	// while (cmd->argv[i])
-	// {
-		
-	// }
+	char **env;
+
+
 	builtins(cmd);
 	exit(12);
 	//COMBERTISSEUR CHAIN LIST -> DOUBLE TAB pour env

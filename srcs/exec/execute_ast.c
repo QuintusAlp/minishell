@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_ast.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 19:01:11 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/13 22:27:03 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/14 15:53:12 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,58 +25,32 @@ int ft_check_isbuiltin(t_node *node)
 {
 	char cwd[256];
 	struct stat f_stat;
+	t_redir *redir;
 
-	
-	while (node->type >= I_REDIR && node->type <= HEREDOC)
+	while (node && node->type >= I_REDIR && node->type <= HEREDOC)
 	{
-		t_redir *redir = (t_redir *)node;
-		
-		
-		
-		if (redir->type == O_REDIR_TRUNC)
+		redir = (t_redir *)node;
+		if (getcwd(cwd, sizeof(cwd)) == NULL)
+      		perror("getcwd() error");
+		if (access(redir->file, F_OK) == -1  && access(ft_strjoin(ft_strjoin(cwd, "/"), redir->file), F_OK) == -1)
 		{
-			if (stat(redir->file, &f_stat) == -1)
-       		 	perror("stat");
-			if (!(f_stat.st_mode & S_IWUSR))
-			{
-				printf("test\n");
-				g_exitcode = 1;
-				return (1);
-			}
+			if (redir->type == HEREDOC || redir->type == I_REDIR)
+				return (0);
 		}
-		printf("redir: %s\n", redir->file);
-		if (redir->type == O_REDIR_APPEND)
+		else
 		{
 			if (stat(redir->file, &f_stat) == -1)
-       			perror("stat");
-			if (!(f_stat.st_mode & S_IWUSR))
-				g_exitcode = 1;
-				return (1);
-		}
-		if (redir->type == I_REDIR || redir->type == HEREDOC)
-		{
-			
-			if (getcwd(cwd, sizeof(cwd)) == NULL)
+				perror("stat error");
+			if (redir->type == HEREDOC || redir->type == I_REDIR)
 			{
-				g_exitcode = 1;
-				return (1);
+				if (!(f_stat.st_mode & S_IRUSR))
+					return (0);
 			}
-			if (!access(redir->file, X_OK)  && !access(ft_strjoin(ft_strjoin(cwd, "/"), redir->file), X_OK))//
+			else if (redir->type == O_REDIR_APPEND || redir->type == O_REDIR_TRUNC)
 			{
-				g_exitcode = 1;
-				return (1);
+				if (!(f_stat.st_mode & S_IWUSR))
+					return (0);
 			}
-			if (stat(redir->file, &f_stat) == -1)
-       		{
-				g_exitcode = 1;
-				return (1);
-			}
-			if (!(f_stat.st_mode & S_IRUSR))
-			{
-				g_exitcode = 1;
-				return (1);
-			}
-			
 		}
 		node = redir->cmd;
 	}
@@ -92,7 +66,6 @@ void	ft_execute_ast(t_node *node)
 
 	if (!node)
 		return ;
-	
 	if(ft_check_isbuiltin(node))
 	{	
 		return ;
@@ -115,7 +88,6 @@ void	ft_execute_ast(t_node *node)
 		{
 			if (WIFEXITED(stat))
           	{ 
-				printf("exit without pipe\n");
 				g_exitcode =  WEXITSTATUS(stat);
 			}
 		}

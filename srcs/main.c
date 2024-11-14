@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/13 15:58:27 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/14 16:34:40 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 /*
 	char	*readline(const char *prompt);
 */
-
 void	ft_printlst(t_list *e)
 {
 	t_list	*tokens;
@@ -61,8 +60,6 @@ void	ft_del_hdfiles(int nbr_heredoc)
 
 void ft_pars_and_exec(char *prompt, t_env **g_env)
 {
-	(void)prompt;
-	(void)g_env;
 	t_list *tokens;
 	t_node *ast;
 	int		nbr_heredoc;
@@ -71,16 +68,19 @@ void ft_pars_and_exec(char *prompt, t_env **g_env)
 	if (!prompt)
 		return ;
 	tokens = NULL;
-	// ast = NULL;
+	ast = NULL;
+	//dprintf(2, "exit code: %d\n", g_exitcode);
 	ft_lexer(prompt, &tokens);
-	trim_tokens(tokens); // TO DO
+	if (ft_checklexing(tokens))
+		return ;
+	trim_tokens(tokens);
 	//ft_printlst(tokens);
 	nbr_heredoc = ft_countheredocs(tokens);
 	nbr_heredoc_bis = nbr_heredoc;
 	ast = ft_parsetoken(&tokens, g_env, &nbr_heredoc);
 	//ast_printer(ast, 0);
 	ft_execute_ast(ast);
-	dprintf(2, "exit code %d\n", g_exitcode);
+	//dprintf(2, "exit code %d\n", g_exitcode);
 	ft_free_ast(ast);
 	ft_del_hdfiles(nbr_heredoc_bis);
 	// system("leaks minishell");
@@ -94,7 +94,8 @@ int main(void)
 
 	g_exitcode = 0;
 	g_env = init_envv();
-	prompt = readline("\033[1;92mminishell$\033[0m ");
+	
+	prompt = readline("😎\033[1;92mminishell$\033[0m ");
 	while (prompt)
 	{
 		if (prompt && *prompt)
@@ -103,7 +104,10 @@ int main(void)
 			ft_pars_and_exec(prompt, &g_env);
 		}
 		free(prompt);
-		prompt = readline("\033[1;92mminishell$\033[0m ");
+		if (g_exitcode == 0)
+			prompt = readline("😎\033[1;92mminishell$\033[0m ");
+		else
+			prompt = readline("😡\033[1;92mminishell$\033[0m ");
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/12 14:40:50 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/14 15:01:56 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ void	ft_exec_redir(t_redir *redir, int dupfd, int *cmd_index);
     //exec_ast
 void	ft_exec(t_node *node, int dupfd, int *cmd_index);
 void	ft_execute_ast(t_node *node);
+    //check redir
+void    ft_checkredir(t_redir *redir);
 // ********** lexer **********
     //lexer_utils
 void	ft_update_quotes_status(char c, int *d_quote_status, int *s_quote_status);
@@ -75,6 +77,8 @@ void    trim_tokens(t_list *tokens);
 void	ft_lexer(char *str, t_list **tokens);
     //trim_tokens
 void    trim_tokens(t_list *tokens);
+    //error lexing
+int ft_checklexing(t_list *token);
 // ********** parser **********
     //ast
 t_node	*ft_parsetoken(t_list **token, t_env **g_env, int *hd_index);

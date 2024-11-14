@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 10:10:24 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/13 17:32:20 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/14 14:43:11 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ void	ft_process(t_node *node, int dupfd, int *pipefd, int *cmd_index)
 		int stat = 0;
 		waitpid(pid, &stat, 0);
 		if (WIFEXITED(stat))
-          { 
-			printf("exit with pipe\n");
+        {
 			g_exitcode =  WEXITSTATUS(stat);
 		}
 	}
@@ -63,8 +62,6 @@ void	ft_exec_pipe(t_pipe *node, int dupfd, int *cmd_index)
 {
 	int	pipefd[2];
 	
-	if (!node->left || !node->right)
-		ft_panic("syntax error near unexpected token `|\'", NULL, 258);
 	if (pipe(pipefd) == -1)
 		ft_error("pipe");
 	ft_process(node->left, dupfd, pipefd, cmd_index);
