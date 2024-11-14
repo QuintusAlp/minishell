@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:35:53 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/12 15:24:22 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/14 17:37:06 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void    exit_code(char *argv)
 
 void    ft_exit(char **argv, t_env **env)
 {
-    printf("exiiit\n");
     if (argv[1] && argv[2])
         error("exit: too many arguments");
     free_env(*env);

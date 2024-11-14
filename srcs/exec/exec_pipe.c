@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 10:10:24 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/14 14:43:11 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/14 17:04:11 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,7 @@ void	ft_process(t_node *node, int dupfd, int *pipefd, int *cmd_index)
 		int stat = 0;
 		waitpid(pid, &stat, 0);
 		if (WIFEXITED(stat))
-        {
 			g_exitcode =  WEXITSTATUS(stat);
-		}
 	}
 }
 

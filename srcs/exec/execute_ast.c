@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 19:01:11 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/14 15:53:12 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/14 17:35:45 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,18 +67,23 @@ void	ft_execute_ast(t_node *node)
 	if (!node)
 		return ;
 	if(ft_check_isbuiltin(node))
-	{	
 		return ;
-	}
 	pid = fork();
 	cmd_index = 0;
 	if (pid == -1)
 		ft_error("fork");
 	if (pid == 0)
 	{
-		ft_exec(node, -1, &cmd_index);
-		while (wait(NULL) > 0)
-			;
+		if (node->type == PIPE)
+		{
+			ft_exec(node, -1, &cmd_index);
+			while (wait(NULL) > 0)
+				;
+			exit(0);
+		}
+		else
+			ft_exec(node, -1, &cmd_index);
+		
 	}
 	else
 	{
@@ -87,9 +92,7 @@ void	ft_execute_ast(t_node *node)
 		if (node->type != PIPE)
 		{
 			if (WIFEXITED(stat))
-          	{ 
 				g_exitcode =  WEXITSTATUS(stat);
-			}
 		}
 	}
 }
