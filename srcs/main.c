@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/14 16:34:40 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/16 16:18:11 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void ft_pars_and_exec(char *prompt, t_env **g_env)
 		return ;
 	tokens = NULL;
 	ast = NULL;
-	//dprintf(2, "exit code: %d\n", g_exitcode);
+	
 	ft_lexer(prompt, &tokens);
 	if (ft_checklexing(tokens))
 		return ;
@@ -78,11 +78,12 @@ void ft_pars_and_exec(char *prompt, t_env **g_env)
 	nbr_heredoc = ft_countheredocs(tokens);
 	nbr_heredoc_bis = nbr_heredoc;
 	ast = ft_parsetoken(&tokens, g_env, &nbr_heredoc);
-	//ast_printer(ast, 0);
+	// ast_printer(ast, 0);
 	ft_execute_ast(ast);
 	//dprintf(2, "exit code %d\n", g_exitcode);
 	ft_free_ast(ast);
 	ft_del_hdfiles(nbr_heredoc_bis);
+	dprintf(2, "final exit code: %d\n", g_exitcode);
 	// system("leaks minishell");
 	return ;
 }
@@ -95,7 +96,7 @@ int main(void)
 	g_exitcode = 0;
 	g_env = init_envv();
 	
-	prompt = readline("😎\033[1;92mminishell$\033[0m ");
+	prompt = readline("😎 \033[1;92mminishell$\033[0m ");
 	while (prompt)
 	{
 		if (prompt && *prompt)
@@ -103,11 +104,11 @@ int main(void)
 			add_history(prompt);
 			ft_pars_and_exec(prompt, &g_env);
 		}
-		free(prompt);
+		//free(prompt);
 		if (g_exitcode == 0)
-			prompt = readline("😎\033[1;92mminishell$\033[0m ");
+			prompt = readline("😎 \033[1;92mminishell$\033[0m ");
 		else
-			prompt = readline("😡\033[1;92mminishell$\033[0m ");
+			prompt = readline("😡 \033[1;92mminishell$\033[0m ");
 	}
 	return (0);
 }

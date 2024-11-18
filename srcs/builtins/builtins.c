@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:09:49 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/12 15:33:56 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/16 14:02:54 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void builtins(t_cmd *cmd)
 int  ft_isbuiltins(t_node *node)
 {
     t_cmd *cmd;
+    if (!node)
+		return (0);
     if (node->type != CMD)
         return (0);
     cmd = (t_cmd *)node;

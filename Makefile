@@ -17,7 +17,7 @@ LIB = make -C ./libft
 INCS = includes
 CC = gcc
 RM = rm -rf
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 NAME = minishell
 
 ifeq ($(ARCH),arm64) # command to check the ARCH variable : uname -m
