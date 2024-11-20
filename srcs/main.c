@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/16 16:18:11 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/20 20:19:13 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,28 +42,32 @@ int	ft_countheredocs(t_list *token)
 	return (nbr_heredocs);
 }
 
-void	ft_del_hdfiles(int nbr_heredoc)
+void	ft_del_hdfiles()
 {
 	char *file;
 	char *index;
-
-	while (nbr_heredoc)
+	int	flag;
+	flag = 1;
+	while(flag)
 	{
-		index = ft_itoa(nbr_heredoc);
+		index = ft_itoa(flag);
 		file = ft_strjoin("/tmp/hd_file", index);
-		unlink(file);
+		if (!access(file, F_OK))
+		{
+			unlink(file);
+		}
+		else
+			flag = -1;
+		flag++;
 		free(file);
 		free(index);
-		nbr_heredoc --;
 	}
 }
-
 void ft_pars_and_exec(char *prompt, t_env **g_env)
 {
 	t_list *tokens;
 	t_node *ast;
 	int		nbr_heredoc;
-	int		nbr_heredoc_bis;
 
 	if (!prompt)
 		return ;
@@ -76,13 +80,12 @@ void ft_pars_and_exec(char *prompt, t_env **g_env)
 	trim_tokens(tokens);
 	//ft_printlst(tokens);
 	nbr_heredoc = ft_countheredocs(tokens);
-	nbr_heredoc_bis = nbr_heredoc;
 	ast = ft_parsetoken(&tokens, g_env, &nbr_heredoc);
 	// ast_printer(ast, 0);
 	ft_execute_ast(ast);
 	//dprintf(2, "exit code %d\n", g_exitcode);
 	ft_free_ast(ast);
-	ft_del_hdfiles(nbr_heredoc_bis);
+	ft_del_hdfiles();
 	dprintf(2, "final exit code: %d\n", g_exitcode);
 	// system("leaks minishell");
 	return ;
@@ -104,7 +107,7 @@ int main(void)
 			add_history(prompt);
 			ft_pars_and_exec(prompt, &g_env);
 		}
-		//free(prompt);
+		free(prompt);
 		if (g_exitcode == 0)
 			prompt = readline("😎 \033[1;92mminishell$\033[0m ");
 		else

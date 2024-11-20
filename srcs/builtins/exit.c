@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:35:53 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/14 17:37:06 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/20 20:16:40 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void    ft_exit(char **argv, t_env **env)
     if (argv[1] && argv[2])
         error("exit: too many arguments");
     free_env(*env);
+    ft_del_hdfiles();
     if (argv[1])
         exit_code(argv[1]);
     else 

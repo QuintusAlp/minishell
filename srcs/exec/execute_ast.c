@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 19:01:11 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/18 13:11:23 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/20 20:37:56 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ int ft_check_isbuiltin(t_node *node)
 	if (!ft_isbuiltins(node))
 		return (0);
 	return (1);
-	
 }
+
 void	ft_execute_ast(t_node *node)
 {
 	int	pid;
