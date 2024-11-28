@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   trim_tokens.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 07:18:36 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/12 15:44:31 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/15 14:05:38 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,14 @@
     2) remplacer $<VAR> par le contenu de la envv correspondante
 */
 
-void    remove_quotes(t_list *tokens)
+void    remove_quotes(t_list *tokens, char  *str)
 {
-    char    *str;
     char    *new_str;
     int     i;
     int     len;
     
-    str = (char *)tokens->value;
     len = ft_strlen(str);
-    new_str = malloc(len - 1);
+    new_str = malloc((len - 1) * sizeof(char));
     if (!new_str)
         return;
     i = 1;
@@ -49,17 +47,42 @@ void    remove_quotes(t_list *tokens)
     tokens->value = new_str;
 }
 
-void    refer_envv(t_list *tokens, int start)
+void    remove_quotes2(t_list *tokens, char *str)
+{
+    char    *new_str;
+    int     i;
+    int     j;
+    int     len;
+
+    i = 0;
+    j = 0;
+    len = ft_strlen(str);
+    new_str = malloc((len - 1) * sizeof(char));
+    if (!(new_str))
+        return;
+    while (str[i])
+    {
+        if (str[i] != '\'' && str[i] != '\"')
+        {
+            new_str[j] = str[i];
+            j++;
+        }
+        i++;
+    }
+    new_str[j] = '\0';
+    free(tokens->value);
+    tokens->value = new_str;
+}
+
+void    refer_envv(t_list *tokens, int start, char **str)
 {
     int         i;
     int         new_len;
-    char        *str; // the initial tokens->value str
     char        *envv; // the ref of $
     char        *new_str; // the new str in the token
     const char  *envv_value; // the vakue of the $ ref
 
     i = 0;
-    str = (char *)tokens->value;
     while (str[start + i + 1]
             && !(is_space(str[start + i + 1]))
             && str[start + i + 1] != '$')
@@ -86,7 +109,39 @@ void    refer_envv(t_list *tokens, int start)
         tokens->value = new_str;
     }
     else 
-        write (1, "\n", 1);
+        write (1, "\n", 1); // VERIFY THE BEHAVIOR ON MACS 
+}
+
+int singlequotes_count(char *str)
+{
+    int i;
+    int count;
+    
+    i = 0;
+    count = 0;
+    while (str[i])
+    {
+        if (str[i] == '\'')
+            count++;
+        i++;
+    }
+    return (count);
+}
+
+int doublequotes_count(char *str)
+{
+    int i;
+    int count;
+
+    i = 0;
+    count = 0;
+    while (str[i])
+    {
+        if (str[i] == "\"")
+            count++;
+        i++;
+    }
+    return (count);
 }
 
 void    trim_tokens(t_list *tokens)
@@ -98,23 +153,31 @@ void    trim_tokens(t_list *tokens)
 
     if (!tokens || !(tokens->value))
         return;
-    printf("trim\n");
     while (tokens)
     {
         str = (char *)tokens->value;
         if ((str[0] == '\"' && str[ft_strlen(str) - 1] == '\"')
                 || (str[0] == '\'' && str[ft_strlen(str) - 1] == '\''))
         {
-            remove_quotes(tokens);
+            remove_quotes(tokens, str);
             str = (char *)tokens->value;
         }
+        else if (singlequotes_count(str) % 2 == 0
+                   && doublequotes_count(str) % 2 == 0)
+        {
+            remove_quotes2(tokens, str);
+            str = (char *)tokens->value;
+        }
+        else if (singlequotes_count(str) % 2 != 0
+                    || doublequotes_count(str) % 2 != 0)
+            return(error("We must not implement the dquote> functiunality :D\n"));
         i = 0;
         if (str[0] == '\"' && str[ft_strlen(str) - 1] == '\"')
         {
             while (str && str[i])
             {
                 if (str[i] == '$' && str[i + 1])
-                    refer_envv(tokens, i);
+                    refer_envv(tokens, i, str);
                 i++;
             }
         }
