@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:22:35 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/11 12:34:59 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/28 20:25:11 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,19 @@
 		-> getenv(const char *name) with name = a given environmental variable 
 			--> to retrieve the value of a variable with its name , returns a char *
 */
+
+void	remaining_env()
+{
+	char *pwd_export;
+
+	pwd_export = malloc((5 + ft_strlen(pwd)) * sizeof(char));
+	if (!pwd_export)
+		return (NULL);
+	pwd_export = ft_strjoin("PWD=", getcwd(NULL, 0));
+	export(pwd_export, ); // how to refer to env ?
+	export("SHLVL=1");
+	export("_="); // HOW TO REFER TO THE SHELL BINARY 
+}
 
 t_env *init_envv()
 {
@@ -30,6 +43,8 @@ t_env *init_envv()
 	i = 0;
 	env = NULL;
 	current = NULL;
+	if (environ == NULL)
+		remaining_envv();
 	while (environ[i] != NULL)
 	{
 		new_node = (t_env *)malloc(sizeof(t_env));
