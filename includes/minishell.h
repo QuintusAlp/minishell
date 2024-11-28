@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/12 14:40:50 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/28 19:43:25 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ void	ft_exec_redir(t_redir *redir, int dupfd, int *cmd_index);
     //exec_ast
 void	ft_exec(t_node *node, int dupfd, int *cmd_index);
 void	ft_execute_ast(t_node *node);
+    //tab_converter
+char    **list_converter(t_env *env);
 // ********** lexer **********
     //lexer_utils
 void	ft_update_quotes_status(char c, int *d_quote_status, int *s_quote_status);

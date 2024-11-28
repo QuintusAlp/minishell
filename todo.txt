@@ -6,4 +6,3 @@ fct too long dans echo
 check for edge cases in export 
 line too long unset
 symlink cd 
-implement quote> / dquote> in echo 
