@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:14:49 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/12 15:50:01 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/28 20:13:05 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,12 +126,35 @@ static int  minus_cd(t_env **env)
     return (0);
 }
 
-// TO DO
-// static int   symlink_cd(char *path)
-// {
-//     (void)path;
-//     return (0);
-// }
+static int  symlink_cd(char *path, t_env **env)
+{
+    struct stat statbuf;
+    char    resolved_path[PATH_MAX];
+    char    cwd[PATH_MAX];
+    ssize_t len;
+    
+    if (lstat(path, &statbuf) == -1) //check if path is a symlink
+        return(perror("lstat"), 1);
+    if (S_ISLINK(statbuf.st_mode))
+    {
+        len = readlink(path, resolved_path, PATH_MAX - 1);
+        if (len == -1)
+            return(perror("readlink"), 1);
+        resolved_path[len] = '\0';
+        if (getcwd(cwd, sizeof(cwd)) == NULL)
+            return(perror("getcwd"), 1);
+        if (chdir(resolved_path) == -1)
+            return(perror("chdir"), 1);
+        update_envv("OLDPWD", cwd, env);
+        if (getcwd(cwd, sizeof(cwd)) != NULL)
+            update_envv("PWD", cwd, env);
+        else
+            return(perror("getcwd"), 1);
+    }
+    else
+        return(ft_putstr_fd("cd: is not a symlink\n", 2), 1);
+    return (0);
+}
 
 static int  basic_cd(char *path, t_env **env)
 {
@@ -187,6 +210,7 @@ static int  tilde_cd(char *path, t_env **env)
 void    cd(char **argv, t_env **env)
 {
     char    **input;
+    struct stat  statbuf;
 
     // IMPLEMENT ERROR HANDLING
     input = &argv[1];
@@ -199,5 +223,11 @@ void    cd(char **argv, t_env **env)
     else if (ft_strncmp(&input[0][0], "~", 1) == 0)
         tilde_cd(input[0], env);
     else
-        basic_cd(input[0], env);
+    {
+        if (lstat(input[0], &statbuf) == 0
+                && S_ISLINK(statbuf.st_mode))
+            symlink_cd(input[0], env);
+        else     
+            basic_cd(input[0], env);
+    }
 }
