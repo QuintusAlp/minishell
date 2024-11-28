@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 23:56:01 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/06 15:20:48 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/26 13:14:20 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,19 @@
 static void    handle_sigint(int signum)
 {
     (void)signum;
-//     if (signum == SIGINT)
-//     {
-//         // write(1, "\n", 1);
-//         // rl_replace_line("", 0);
-//         // rl_on_new_line();
-//         // rl_redisplay();
-//     }
+    if (signum == SIGINT)
+    {
+        write(1, "\n", 1);
+        rl_replace_line("", 0);
+        rl_on_new_line();
+        rl_redisplay();
+    }
 }
 
 void    handle_signals()
 {
     printf("signals\n");
     (void)handle_sigint(SIGINT);
-    // signal(SIGINT, handle_sigint);
-    // signal(SIGQUIT, SIG_IGN);
+    signal(SIGINT, handle_sigint);
+    signal(SIGQUIT, SIG_IGN);
 }

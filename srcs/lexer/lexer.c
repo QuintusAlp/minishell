@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 14:41:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/06 16:00:00 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/28 12:48:03 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ void	ft_verify_quotestatus(int d_quote, int s_quote, t_list **token)
 	if (d_quote || s_quote)
 	{
 		ft_lstclear(token, &free);
-		ft_error("syntax error: quote not close");
+		g_exitcode = 258;
+		ft_error("bash: syntax error quote not close");
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 10:41:47 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/13 15:55:52 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/28 12:00:14 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,20 @@ enum e_char_token
 	REDIR,
 	CMD,
 };
-
-typedef struct	s_node
-{
-	int	type;
-}	t_node;
-
+//env
 typedef struct s_env {
 	char			*name;
 	char			*value;
 	int				index;
 	struct s_env	*next;
 }	t_env;
+//--
+typedef struct	s_node
+{
+	int	type;
+}	t_node;
 
- typedef struct s_cmd	
+ typedef struct s_cmd
 {
 	int		type;
 	char 	**argv;
@@ -56,6 +56,7 @@ typedef struct s_env {
 	t_node	*left;
 	t_node	*right;
 }	t_pipe;
+
 
 //GLOBAL VAR
 int g_exitcode;
