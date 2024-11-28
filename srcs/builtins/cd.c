@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:14:49 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/28 20:13:05 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/28 23:31:50 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,9 +133,9 @@ static int  symlink_cd(char *path, t_env **env)
     char    cwd[PATH_MAX];
     ssize_t len;
     
-    if (lstat(path, &statbuf) == -1) //check if path is a symlink
+    if (lstat(path, &statbuf) == -1)
         return(perror("lstat"), 1);
-    if (S_ISLINK(statbuf.st_mode))
+    if (S_ISLNK(statbuf.st_mode))
     {
         len = readlink(path, resolved_path, PATH_MAX - 1);
         if (len == -1)
@@ -160,7 +160,6 @@ static int  basic_cd(char *path, t_env **env)
 {
     char    cwd[PATH_MAX];
     
-    //
     // storing the current directolry path
     if (getcwd(cwd, sizeof(cwd)) == NULL)
         return(perror("getcwd"), 1);
@@ -212,7 +211,6 @@ void    cd(char **argv, t_env **env)
     char    **input;
     struct stat  statbuf;
 
-    // IMPLEMENT ERROR HANDLING
     input = &argv[1];
     if (list_size(input) > 1 || list_size(input) < 0)
         error("cd: more than 1 relative/absolute path");
@@ -225,7 +223,7 @@ void    cd(char **argv, t_env **env)
     else
     {
         if (lstat(input[0], &statbuf) == 0
-                && S_ISLINK(statbuf.st_mode))
+                && S_ISLNK(statbuf.st_mode))
             symlink_cd(input[0], env);
         else     
             basic_cd(input[0], env);

@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 07:18:36 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/15 14:05:38 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/28 23:34:52 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ void    refer_envv(t_list *tokens, int start, char **str)
 
     i = 0;
     while (str[start + i + 1]
-            && !(is_space(str[start + i + 1]))
-            && str[start + i + 1] != '$')
+            && !(is_space(*str[start + i + 1]))
+            && *str[start + i + 1] != '$')
         i++;
     envv = malloc((i + 1) * sizeof(char));
     if (!envv)
@@ -96,14 +96,14 @@ void    refer_envv(t_list *tokens, int start, char **str)
     free(envv);
     if (envv_value)
     {
-        new_len = ft_strlen(str) - i - 1 + ft_strlen(envv_value);
+        new_len = ft_strlen(*str) - i - 1 + ft_strlen(envv_value);
         new_str = malloc((new_len + 1) * sizeof(char));
         if (!new_str)
             return;
         ft_memcpy(new_str, str, start); // copy the beginning part of the tokens>value
         ft_memcpy((new_str + start), envv_value, ft_strlen(envv_value)); // copy the envv value
         ft_memcpy((new_str + start + ft_strlen(envv_value)), (str + start + i + 1), 
-                        (ft_strlen(str) - start - i)); // copy the remaining part of the str
+                        (ft_strlen(*str) - start - i)); // copy the remaining part of the str
         new_str[new_len] = '\0';
         free (tokens->value);
         tokens->value = new_str;
@@ -137,7 +137,7 @@ int doublequotes_count(char *str)
     count = 0;
     while (str[i])
     {
-        if (str[i] == "\"")
+        if (str[i] == '\"')
             count++;
         i++;
     }
@@ -177,7 +177,7 @@ void    trim_tokens(t_list *tokens)
             while (str && str[i])
             {
                 if (str[i] == '$' && str[i + 1])
-                    refer_envv(tokens, i, str);
+                    refer_envv(tokens, i, &str);
                 i++;
             }
         }
