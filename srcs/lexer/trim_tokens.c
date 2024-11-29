@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 07:18:36 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/29 16:13:14 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/29 16:21:50 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ void    refer_envv(t_list *tokens, int start, char **str, t_env **env)
     printf("ICI\n");
     while ((*str)[start + i + 1]
             && !(is_space((*str)[start + i + 1]))
-            && (*str)[start + i + 1] != '$')
+            && (*str)[start + i + 1] != '$'
+            && (*str)[start + i + 1] != '\'')
         i++;
     envv = malloc((i + 1) * sizeof(char));
     if (!envv)
@@ -169,12 +170,12 @@ void    trim_tokens(t_list *tokens, t_env **g_env)
             remove_quotes(tokens, str);
             str = (char *)tokens->value;
         }
-        else if (singlequotes_count(str) % 2 == 0
-                   && doublequotes_count(str) % 2 == 0)
-        {
-            remove_quotes2(tokens, str);
-            str = (char *)tokens->value;
-        }
+        // else if (singlequotes_count(str) % 2 == 0
+        //            && doublequotes_count(str) % 2 == 0)
+        // {
+        //     remove_quotes2(tokens, str);
+        //     str = (char *)tokens->value;
+        // }
         else if (singlequotes_count(str) % 2 != 0
                     || doublequotes_count(str) % 2 != 0)
             return(error("We must not implement the dquote> functiunality :D\n"));
