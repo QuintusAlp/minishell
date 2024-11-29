@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   trim_tokens.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 07:18:36 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/29 12:04:31 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/29 15:28:21 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,24 +74,27 @@ void    remove_quotes2(t_list *tokens, char *str)
     tokens->value = new_str;
 }
 
-void    refer_envv(t_list *tokens, int start, char **str)
+void    refer_envv(t_list *tokens, int start, char **str, t_env **env)
 {
     int         i;
     int         new_len;
     char        *envv; // the ref of $
     char        *new_str; // the new str in the token
-    const char  *envv_value; // the vakue of the $ ref
+    const char  *envv_value; // the value of the $ ref
+    (void)env;
 
     i = 0;
-    while (str[start + i + 1]
-            && !(is_space(*str[start + i + 1]))
-            && *str[start + i + 1] != '$')
+    printf("ICI\n");
+    while ((*str)[start + i + 1]
+            && !(is_space((*str)[start + i + 1]))
+            && (*str)[start + i + 1] != '$')
         i++;
     envv = malloc((i + 1) * sizeof(char));
     if (!envv)
         return;
-    ft_memcpy(envv, &str[start + 1], i);
+    ft_memcpy(envv, &(*str)[start + 1], i);
     envv[i] = '\0';
+    printf("Envv str: %s\n", envv);
     envv_value = getenv(envv);
     free(envv);
     if (envv_value)
@@ -100,13 +103,14 @@ void    refer_envv(t_list *tokens, int start, char **str)
         new_str = malloc((new_len + 1) * sizeof(char));
         if (!new_str)
             return;
-        ft_memcpy(new_str, str, start); // copy the beginning part of the tokens>value
+        ft_memcpy(new_str, *str, start); // copy the beginning part of the tokens>value
         ft_memcpy((new_str + start), envv_value, ft_strlen(envv_value)); // copy the envv value
-        ft_memcpy((new_str + start + ft_strlen(envv_value)), (str + start + i + 1), 
+        ft_memcpy((new_str + start + ft_strlen(envv_value)), (*str + start + i + 1), 
                         (ft_strlen(*str) - start - i)); // copy the remaining part of the str
         new_str[new_len] = '\0';
         free (tokens->value);
         tokens->value = new_str;
+        *str = tokens->value;
     }
     else 
         write (1, "\n", 1); // VERIFY THE BEHAVIOR ON MACS 
@@ -144,13 +148,12 @@ int doublequotes_count(char *str)
     return (count);
 }
 
-void    trim_tokens(t_list *tokens, t_env **env)
+void    trim_tokens(t_list *tokens, t_env **g_env)
 {
     int     i;
     char    *str;
     
     i = 0;
-	(void)env;
     if (!tokens || !(tokens->value))
         return;
     while (tokens)
@@ -172,12 +175,12 @@ void    trim_tokens(t_list *tokens, t_env **env)
                     || doublequotes_count(str) % 2 != 0)
             return(error("We must not implement the dquote> functiunality :D\n"));
         i = 0;
-        if (str[0] == '\"' && str[ft_strlen(str) - 1] == '\"')
+        if (str[0] != '\'' && str[ft_strlen(str) - 1] != '\'')
         {
             while (str && str[i])
             {
                 if (str[i] == '$' && str[i + 1])
-                    refer_envv(tokens, i, &str);
+                    refer_envv(tokens, i, &str, g_env);
                 i++;
             }
         }
@@ -213,7 +216,7 @@ void    trim_tokens(t_list *tokens, t_env **env)
 //     }
 
 //     // Trim tokens (remove quotes)
-//     trim_tokens(node1);
+//     trim_tokens(node1, env);
 
 //     // After trimming
 //     printf("\nAfter trimming:\n");

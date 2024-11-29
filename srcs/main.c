@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/29 12:04:56 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/29 15:17:23 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void	ft_del_hdfiles(int nbr_heredoc)
 void ft_pars_and_exec(char *prompt, t_env **g_env)
 {
 	(void)prompt;
-	(void)g_env;
 	t_list *tokens;
 	t_node *ast;
 	int		nbr_heredoc;
@@ -86,12 +85,25 @@ void ft_pars_and_exec(char *prompt, t_env **g_env)
 	return ;
 }
 
+void	print_genv(t_env **g_env)
+{
+	t_env 	*current;
+	
+	current = *g_env;
+	while (current->next)
+	{
+		printf("%s=%s\n", current->name, current->value);
+		current = current->next;
+	}
+}
+
 int main(void)
 {
 	char	*prompt;
 	t_env *g_env;
 
 	g_env = init_envv();
+	//print_genv(&g_env); // PAS OUBLIER DE SUPP CA 
 
 	prompt = readline("\033[1;92mminishell$\033[0m ");
 	while (prompt)
