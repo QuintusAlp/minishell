@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 07:18:36 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/29 15:28:21 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/29 16:13:14 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,8 +152,10 @@ void    trim_tokens(t_list *tokens, t_env **g_env)
 {
     int     i;
     char    *str;
+    int     flag;
     
     i = 0;
+    flag = 0;
     if (!tokens || !(tokens->value))
         return;
     while (tokens)
@@ -162,6 +164,8 @@ void    trim_tokens(t_list *tokens, t_env **g_env)
         if ((str[0] == '\"' && str[ft_strlen(str) - 1] == '\"')
                 || (str[0] == '\'' && str[ft_strlen(str) - 1] == '\''))
         {
+            if (str[0] == '\'' && str[ft_strlen(str) - 1] == '\'')
+                flag = 1;
             remove_quotes(tokens, str);
             str = (char *)tokens->value;
         }
@@ -175,7 +179,7 @@ void    trim_tokens(t_list *tokens, t_env **g_env)
                     || doublequotes_count(str) % 2 != 0)
             return(error("We must not implement the dquote> functiunality :D\n"));
         i = 0;
-        if (str[0] != '\'' && str[ft_strlen(str) - 1] != '\'')
+        if (flag != 1)
         {
             while (str && str[i])
             {
