@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 07:18:36 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/28 23:34:52 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/29 11:45:27 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ int doublequotes_count(char *str)
     return (count);
 }
 
-void    trim_tokens(t_list *tokens)
+void    trim_tokens(t_list *tokens, t_env **env)
 {
     int     i;
     char    *str;
