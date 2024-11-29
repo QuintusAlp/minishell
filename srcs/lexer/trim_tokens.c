@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 07:18:36 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/29 16:21:50 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/29 16:38:46 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,9 @@ void    refer_envv(t_list *tokens, int start, char **str, t_env **env)
     envv[i] = '\0';
     printf("Envv str: %s\n", envv);
     envv_value = getenv(envv);
+    printf("getenv result: %s\n", envv_value);
     free(envv);
-    if (envv_value)
+    if (envv_value && ft_strncmp(envv_value, (const char *)"(null)", ft_strlen("(null)")) == 0)
     {
         new_len = ft_strlen(*str) - i - 1 + ft_strlen(envv_value);
         new_str = malloc((new_len + 1) * sizeof(char));
@@ -114,7 +115,7 @@ void    refer_envv(t_list *tokens, int start, char **str, t_env **env)
         *str = tokens->value;
     }
     else 
-        write (1, "\n", 1); // VERIFY THE BEHAVIOR ON MACS 
+        write (1, "HELOOOO\n", 1); // VERIFY THE BEHAVIOR ON MACS 
 }
 
 int singlequotes_count(char *str)
