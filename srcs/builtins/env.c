@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:22:35 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/28 23:32:20 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/29 11:40:25 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 			--> to retrieve the value of a variable with its name , returns a char *
 */
 
-// void	remaining_env()
+// t_env	*remaining_env()
 // {
 // 	char *pwd_export;
 
