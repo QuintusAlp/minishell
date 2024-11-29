@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:40:11 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/29 11:59:12 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/29 12:03:22 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,19 @@ char	*ft_path(char *exec, char **env)
 	}
 	return (path);
 }
+//convertissor env
+int ft_genv_size(t_env *var)
+{
+	int size;
 
+	size = 0;
+	while (var)
+	{
+		size++;
+		var = var->next;
+	}
+	return (size);
+}
 char **ft_lst_to_matrice(t_env **g_env)
 {
 	char **c_env;

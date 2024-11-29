@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/28 23:31:20 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/29 12:04:14 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,11 @@ char    **list_converter(t_env *env);
 void	ft_update_quotes_status(char c, int *d_quote_status, int *s_quote_status);
 int	    ft_is_sp(char c, int *d_quote, int *s_quote);
 char	*ft_get_token(char *s, int *i, int *d_quote, int *s_quote);
-void    trim_tokens(t_list *tokens);
+
     //lexer
 void	ft_lexer(char *str, t_list **tokens);
     //trim_tokens
-void    trim_tokens(t_list *tokens);
+void    trim_tokens(t_list *tokens, t_env **env);
 // ********** parser **********
     //ast
 t_node	*ft_parsetoken(t_list **token, t_env **g_env, int *hd_index);
