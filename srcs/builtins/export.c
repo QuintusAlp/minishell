@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:51:17 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/11 12:16:23 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/30 17:31:11 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,65 +56,139 @@ int valid_value(char *value)
 	return (1);
 }
 
-static void	set_envv(const char *name, const char *value, t_env **env)
-{
-	t_env	*current;
-	t_env	*new;
+// static void	set_envv(const char *name, const char *value, t_env **env)
+// {
+// 	t_env	*current;
+// 	t_env	*new;
 
-	current = *env;
-	while (current)
+// 	current = *env;
+// 	while (current)
+// 	{
+// 		if (ft_strcmp(name, current->name) == 0)
+// 		{
+// 			free(current->value);
+// 			current->value = ft_strdup(value);
+// 			return;
+// 		}
+// 		current = current->next;
+// 	}
+// 	new = (t_env *)malloc(sizeof(t_env));
+// 	if (!new)
+// 		error("New envv malloc error");
+// 	new->name = ft_strdup(name);
+// 	new->value = ft_strdup(value);
+// 	new->next = NULL;
+// 	if (*env == NULL)
+// 	{
+// 		new->index = 0;
+// 		*env = new;
+// 	}
+// 	else
+// 	{
+// 	new->index = current->index + 1;
+// 	current->next = new;	
+// 	}
+// }
+//print exporte env
+int ft_print_exportenv(t_env *env)
+{
+	while (env && env->name)
 	{
-		if (ft_strcmp(name, current->name) == 0)
-		{
-			free(current->value);
-			current->value = ft_strdup(value);
-			return;
+		write(1, "declare -x ", 11);
+		write(1, env->name, ft_strlen(env->name));
+		if (env->value)
+		{	
+			write(1, "=", 1);
+			write(1, "\"", 1);
+			write(1, env->value, ft_strlen(env->value));
+			write(1, "\"", 1);
+			write(1, "\n", 1);
 		}
-		current = current->next;
+		env = env->next;
 	}
-	new = (t_env *)malloc(sizeof(t_env));
-	if (!new)
-		error("New envv malloc error");
-	new->name = ft_strdup(name);
-	new->value = ft_strdup(value);
-	new->next = NULL;
-	if (*env == NULL)
+	return (0);
+}
+//check args are valides
+void	ft_varerror(char *var)
+{
+	write(2, "bash: export: `", 15);
+	write(2, var, ft_strlen(var));
+	write(2, "': not a valid identifier\n", 26);
+}
+int	ft_checkarg(char *var)
+{
+	int	j;
+
+	if (var[0] == '=' || (var[0] >= '0' && var[0] <= '9') )
+		return (ft_varerror(var), 1);
+	j = 0;
+	while (var[j])
 	{
-		new->index = 0;
-		*env = new;
+		if (!ft_isalnum(var[j]) && !(var[j] == '_') && !(var[j] == '='))
+			return (ft_varerror(var), 1);
+		j++;
 	}
-	else
+	return (0);
+}
+//add var to env
+t_env *ft_newvar(char *name, char *value, int index)
+{
+	t_env *newvar;
+
+	newvar = malloc(sizeof(t_env));
+	if (!newvar)
+		return (NULL);
+	newvar->value = value;
+	newvar->name = name;
+	newvar->index = index;
+	newvar->next = NULL;
+	return (newvar);
+}
+//insert var into the env
+int	ft_findvar(t_env *var, t_env *env)
+{
+	(void)var;
+	while (env)
 	{
-	new->index = current->index + 1;
-	current->next = new;	
+		env = env->next;
+
 	}
+	return (0);
 }
 
-void	export(char **argvs, t_env **env)
+void ft_insertvar(t_env *var, t_env *env)
 {
-	char **result;
-	char **input;
+	printf("var->name: %s\n var->value: %s\n", var->name, var->value);
+	if (ft_findvar(var, env))
+		return ;  
+	// while (env)
+	// {
+	// 	printf("name: %s\n", env->name);
+	// 	env = env->next;
+
+	// }
+}
+void ft_addvar(char *var, t_env *env)
+{
+	char **data;
+
+	data = ft_split(var, '=');
+	ft_insertvar(ft_newvar(data[0], data[1], 0), env);
+}
+int	export(char **argv, t_env **env)
+{
 	int	i;
 	
-	input = &argvs[1];
-	i = 0;
-	if (input == NULL || (*input) == NULL)//par pitier ca doit pas juste return (voir man)
-		return;
-	while (input[i])
+	i = 1;
+	if (!argv[i])
+		return (ft_print_exportenv(*env));
+	while(argv[i])
 	{
-		result = NULL;
-		// split avant et apres le =
-		result = ft_split(input[i], '=');
-		//verifier si la key a une value
-		if (!(result[1]))
-			continue;
-		// verifier si le name & value sont valid 
-		if (valid_name(result[0]) == 0)
-			error("Incorrect variable name\n");
-		if (valid_value(result[1]) == 0 || result[2])
-			error("Incorrect environmental variable value\n");
-		set_envv(result[0], result[1], env);
-		free_array(result);
+		if (!ft_checkarg(argv[i]))
+			ft_addvar(argv[i], *env);
+		else
+			return (1);
 		i++;
 	}
+	return 0;
 }

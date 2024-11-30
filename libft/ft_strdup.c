@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 11:15:12 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/06/22 11:17:06 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/30 17:26:41 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ char	*ft_strdup(const char *s1)
 	char	*coppy;
 	int		i;
 
+	if (!s1)
+		return NULL;
 	coppy = malloc((ft_strlen((char *)s1) + 1) * sizeof(char));
 	if (!coppy)
 		return (0);

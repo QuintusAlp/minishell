@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/28 14:43:44 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/30 11:26:06 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void    env(void);
     //exit
 void    ft_exit(char **argv, t_env **env);
     //export
-void    export(char **argv, t_env **env);
+int    export(char **argv, t_env **env);
     //pwd
 int     pwd(void);
     //unset

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 23:56:01 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/26 13:14:20 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/30 10:22:01 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,22 @@
     SIGQUIT = Ctrl-\
 */
 
-static void    handle_sigint(int signum)
-{
-    (void)signum;
-    if (signum == SIGINT)
-    {
-        write(1, "\n", 1);
-        rl_replace_line("", 0);
-        rl_on_new_line();
-        rl_redisplay();
-    }
-}
+// static void    handle_sigint(int signum)
+// {
+//     (void)signum;
+// //     if (signum == SIGINT)
+// //     {
+// //         write(1, "\n", 1);
+// //         rl_replace_line("", 0);
+// //         rl_on_new_line();
+// //         rl_redisplay();
+// //     }
+// }
 
 void    handle_signals()
 {
-    printf("signals\n");
-    (void)handle_sigint(SIGINT);
-    signal(SIGINT, handle_sigint);
-    signal(SIGQUIT, SIG_IGN);
+//     printf("signals\n");
+//     (void)handle_sigint(SIGINT);
+//     signal(SIGINT, handle_sigint);
+//     signal(SIGQUIT, SIG_IGN);
 }

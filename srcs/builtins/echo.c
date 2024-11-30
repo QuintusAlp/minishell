@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:14:27 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/12 15:53:47 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/30 10:57:10 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,32 +43,28 @@ int	check_flag(char *str)
 int echo(char **argv)
 {
 	int	i;
-	char	**str;
-	
-	str = &argv[1];
-	if (ft_strncmp(str[0], "-n", 2) == 0)
+	int newline;
+
+	i = 1;
+	newline = 1;
+	if (!argv[i])
+		return (write(1, "\n", 1), 0);
+	if (!ft_strncmp(argv[i], "-n", 2))
 	{
-		i = 1;
-		if (check_flag(str[0]) == 1)
-		{
-			while (str[i])
-			{
-				write(1, str[i], ft_strlen(str[i]));
-				i++;
-			}
-		}
+		printf("lol\n");
+		i++;
+		newline = 0;
+		if (!check_flag(argv[1]))
+			return 1;
 	}
-	else
+	while (argv[i])
 	{
-		i = 0;
-		while (str[i])
-		{
-			write(1, str[i], ft_strlen(str[i]));
-			if (str[i + 1])
-				write(1, " ", 1);
-			i++;
-		}
+		write(1, argv[i], ft_strlen(argv[i]));
+		if (argv[i + 1])
+			write(1, " ", 1);
+		i++;
+	}
+	if (newline)
 		write(1, "\n", 1);
-	}
 	return (0); // CORRECT RETURN ?
 }
