@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:14:27 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/30 10:57:10 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/30 17:47:38 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int echo(char **argv)
 
 	i = 1;
 	newline = 1;
-	if (!argv[i])
+	if (!argv[i] || argv[i][0] == '\0')
 		return (write(1, "\n", 1), 0);
 	if (!ft_strncmp(argv[i], "-n", 2))
 	{

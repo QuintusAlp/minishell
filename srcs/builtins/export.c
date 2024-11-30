@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:51:17 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/30 17:31:11 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/30 20:47:12 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,73 +22,7 @@
 	if "export new=new new2=new2" --> both appears
 */
 
-int	valid_name(char *name)
-{
-	int i;
 
-	i = 0;
-	if (name == NULL || ft_isdigit(name[0]))
-		return (0);
-	while (name)
-	{
-		if (!(ft_isdigit(name[i]))
-			&& !(ft_isalpha(name[i]))
-			&& name[i] != '_')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-// CHECK FOR SPECIAL CHARS ESCAPE
-int valid_value(char *value)
-{
-	int i;
-	
-	i = 0;
-	if (value == NULL)
-		return (0);
-	while (value[i])
-	{
-		if (!(ft_isalpha(value[i])))
-			return (0);
-	}
-	return (1);
-}
-
-// static void	set_envv(const char *name, const char *value, t_env **env)
-// {
-// 	t_env	*current;
-// 	t_env	*new;
-
-// 	current = *env;
-// 	while (current)
-// 	{
-// 		if (ft_strcmp(name, current->name) == 0)
-// 		{
-// 			free(current->value);
-// 			current->value = ft_strdup(value);
-// 			return;
-// 		}
-// 		current = current->next;
-// 	}
-// 	new = (t_env *)malloc(sizeof(t_env));
-// 	if (!new)
-// 		error("New envv malloc error");
-// 	new->name = ft_strdup(name);
-// 	new->value = ft_strdup(value);
-// 	new->next = NULL;
-// 	if (*env == NULL)
-// 	{
-// 		new->index = 0;
-// 		*env = new;
-// 	}
-// 	else
-// 	{
-// 	new->index = current->index + 1;
-// 	current->next = new;	
-// 	}
-// }
 //print exporte env
 int ft_print_exportenv(t_env *env)
 {
@@ -102,8 +36,8 @@ int ft_print_exportenv(t_env *env)
 			write(1, "\"", 1);
 			write(1, env->value, ft_strlen(env->value));
 			write(1, "\"", 1);
-			write(1, "\n", 1);
 		}
+		write(1, "\n", 1);
 		env = env->next;
 	}
 	return (0);
@@ -145,35 +79,49 @@ t_env *ft_newvar(char *name, char *value, int index)
 	return (newvar);
 }
 //insert var into the env
-int	ft_findvar(t_env *var, t_env *env)
+void	ft_lstadd_front_env(t_env **lst, t_env *new)
 {
-	(void)var;
-	while (env)
+	new->next = *lst;
+	*lst = new;
+}
+void ft_findplace(t_env *var, t_env *env)
+{
+	t_env *subvar;
+
+	while(env)
 	{
-		env = env->next;
-
+		if (!ft_strcmp((env)->name, var->name))
+		{
+			(env)->value = ft_strdup(var->value);
+			free(var->name);
+			free(var->value);
+			return (free(var));
+		}
+		if (((env)->next) && ft_strcmp(((env)->next)->name, var->name) > 0)
+		{
+			subvar = (env)->next;
+			(env)->next = var;
+			var->next = subvar;
+			return ;
+		}
+		if ((env)->next == NULL)
+		{
+			(env)->next = var;
+			return ;
+		}
+		env = (env)->next;
 	}
-	return (0);
 }
-
-void ft_insertvar(t_env *var, t_env *env)
+void ft_addvar(char *var, t_env **env)
 {
-	printf("var->name: %s\n var->value: %s\n", var->name, var->value);
-	if (ft_findvar(var, env))
-		return ;  
-	// while (env)
-	// {
-	// 	printf("name: %s\n", env->name);
-	// 	env = env->next;
-
-	// }
-}
-void ft_addvar(char *var, t_env *env)
-{
-	char **data;
+	char		**data;
+	t_env	*env_var;
 
 	data = ft_split(var, '=');
-	ft_insertvar(ft_newvar(data[0], data[1], 0), env);
+	env_var = ft_newvar(data[0], data[1], 0);
+	if (ft_strcmp((*env)->name, env_var->name) > 0)
+		return ft_lstadd_front_env(env, env_var);
+	ft_findplace(env_var, *env);
 }
 int	export(char **argv, t_env **env)
 {
@@ -185,7 +133,7 @@ int	export(char **argv, t_env **env)
 	while(argv[i])
 	{
 		if (!ft_checkarg(argv[i]))
-			ft_addvar(argv[i], *env);
+			ft_addvar(argv[i], env);
 		else
 			return (1);
 		i++;
