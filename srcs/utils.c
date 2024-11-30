@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:53:14 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/11 12:14:16 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/30 12:49:26 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,18 @@ void	free_array(char **array)
 		i++;
 	}
 	free(array);
+}
+
+char	*ft_getenv(char *name, t_env **g_env)
+{
+	t_env	*current;
+
+	current = *g_env;
+	while (current)
+	{
+		if (ft_strcmp(name, current->name) == 0)
+			return (current->value);
+		current = current->next;
+	}
+	return (NULL);
 }

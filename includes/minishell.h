@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/29 12:04:14 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/11/30 12:50:21 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ void    error(const char *error);
 void    free_str(char *str);
 void    free_env(t_env *env);
 void    free_array(char **array);
+char    *ft_getenv(char *name, t_env **g_env);
 
 //crash test functions
 int  ft_isbuiltins(t_node *node);
