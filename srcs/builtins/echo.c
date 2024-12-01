@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:14:27 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/12 15:53:47 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/01 21:18:52 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,35 +40,63 @@ int	check_flag(char *str)
 	return(1);
 }
 
+// int echo(char **argv)
+// {
+// 	int	i;
+// 	char	**str;
+	
+// 	str = &argv[1];
+// 	if (ft_strncmp(str[0], "-n", 2) == 0)
+// 	{
+// 		i = 1;
+// 		if (check_flag(str[0]) == 1)
+// 		{
+// 			while (str[i])
+// 			{
+// 				write(1, str[i], ft_strlen(str[i]));
+// 				i++;
+// 			}
+// 		}
+// 	}
+// 	else
+// 	{
+// 		i = 0;
+// 		while (str[i])
+// 		{
+// 			write(1, str[i], ft_strlen(str[i]));
+// 			if (str[i + 1])
+// 				write(1, " ", 1);
+// 			i++;
+// 		}
+// 		write(1, "\n", 1);
+// 	}
+// 	return (0); // CORRECT RETURN ?
+// }
+
+
 int echo(char **argv)
 {
-	int	i;
+	int		i;
 	char	**str;
-	
+	int		newline;
+
+	i = 0;
 	str = &argv[1];
-	if (ft_strncmp(str[0], "-n", 2) == 0)
+	newline = 1;
+	if (str[0] && ft_strncmp(str[0], "-n", 2) == 0 
+			&& check_flag(str[0]) == 1)
 	{
+		newline = 0;
 		i = 1;
-		if (check_flag(str[0]) == 1)
-		{
-			while (str[i])
-			{
-				write(1, str[i], ft_strlen(str[i]));
-				i++;
-			}
-		}
 	}
-	else
+	while (str[i])
 	{
-		i = 0;
-		while (str[i])
-		{
-			write(1, str[i], ft_strlen(str[i]));
-			if (str[i + 1])
-				write(1, " ", 1);
-			i++;
-		}
-		write(1, "\n", 1);
+		write(1, str[i], ft_strlen(str[i]));
+		if (str[i + 1])
+			write(1, " ", 1);
+		i++;
 	}
-	return (0); // CORRECT RETURN ?
+	if (newline)
+		write(1, "\n", 1);
+	return (0);
 }
