@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:14:49 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/28 23:31:50 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/01 20:49:28 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,35 +62,6 @@
     int access      (const char *pathname, int mode);
     symlink: ln -s <target> <symlink name> 
 */
-
-
-t_env   *find_key(char *key, t_env **env)
-{
-    t_env *current;
-
-    current = *env;
-    if (!key || !current)
-        return (NULL);
-    while (current)
-    {
-        if (ft_strncmp(current->name, key, INT_MAX) == 0)
-            return (current);
-        current = current->next;
-    }
-    return (NULL);
-}
-
-void    update_envv(char *key, char *new_value, t_env **env)
-{
-    t_env   *var;
-    
-    var = find_key(key, env);
-    if (var)
-    {
-        free(var->value);
-        var->value = ft_strdup(new_value);
-    }
-}
 
 static int  only_cd(t_env **env)
 {
@@ -160,15 +131,11 @@ static int  basic_cd(char *path, t_env **env)
 {
     char    cwd[PATH_MAX];
     
-    // storing the current directolry path
     if (getcwd(cwd, sizeof(cwd)) == NULL)
         return(perror("getcwd"), 1);
-    // changing the directory to specified path
     if (chdir(path) != 0)
         return(perror("cd"), 1);
-    // update oldpwd with previous path stored in cwd
     update_envv("OLDPWD", cwd, env);
-    // update pwd  witgh the new cwd path
     if (getcwd(cwd, sizeof(cwd)) != NULL)
         update_envv("PWD", cwd, env);
     else 
@@ -178,16 +145,13 @@ static int  basic_cd(char *path, t_env **env)
 
 static int  tilde_cd(char *path, t_env **env)
 {   
-    // option 1: only cd ~ or cd ~/ --> acts like cd
     if (strcmp(path, "~") == 0 || strcmp(path, "~/") == 0)
         return (only_cd(env));
-    //option 2: ~/subdir --> go to subdir in the current user's home directory
     else if (strncmp(path, "~/", 2) == 0 && ft_strlen(path) > 2)
     {
         only_cd(env);
         return (basic_cd(&path[2], env));
     }
-    // ~otheruser --> go to the home of the other user 
     else if (strncmp(path, "~", 1) == 0 && ft_strlen(path) > 1)
     {
         #if defined(__linux__) 

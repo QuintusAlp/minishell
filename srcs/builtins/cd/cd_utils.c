@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_cd.c                                         :+:      :+:    :+:   */
+/*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/11 12:43:22 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/11 12:44:06 by marlonco         ###   ########.fr       */
+/*   Created: 2024/12/01 20:48:27 by marlonco          #+#    #+#             */
+/*   Updated: 2024/12/01 20:49:17 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
-t_env *find_key(char *key, t_env **env)
+t_env   *find_key(char *key, t_env **env)
 {
     t_env *current;
 
@@ -28,10 +28,10 @@ t_env *find_key(char *key, t_env **env)
     return (NULL);
 }
 
-void update_envv(char *key, char *new_value, t_env **env)
+void    update_envv(char *key, char *new_value, t_env **env)
 {
-    t_env *var;
-
+    t_env   *var;
+    
     var = find_key(key, env);
     if (var)
     {

@@ -5,4 +5,5 @@ quid ctrl-escape
 fct too long dans echo
 check for edge cases in export 
 line too long unset
-symlink cd 
+cas ou "'$USER'"
+comment exit

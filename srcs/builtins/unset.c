@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:55:32 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/11 12:18:49 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/01 20:55:13 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	unset(char **argv, t_env **env)
 	name = &argv[1];
 	i = 0;
 	if (name == NULL || **name == '\0')
-		error("unset: invalid name\n");
+		return; // VERIFY BEHAVIOR 
 	while (name[i])
 	{
 		current = *env;

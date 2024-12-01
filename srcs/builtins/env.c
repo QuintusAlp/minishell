@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:22:35 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/29 11:40:25 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/11/29 16:04:08 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,37 @@
 			--> to retrieve the value of a variable with its name , returns a char *
 */
 
-// t_env	*remaining_env()
+// t_env	*remaining_env(t_env **env)
 // {
-// 	char *pwd_export;
+// 	char 	**pwd_export;
+// 	char	*pwd;
+// 	char	**export_;
+// 	char	**shlvl_export;
 
-// 	pwd_export = malloc((5 + ft_strlen(pwd)) * sizeof(char));
+// 	pwd_export[0] = NULL;
+// 	export_[0] = NULL;
+// 	shlvl_export[0] = NULL;
+	
+// 	pwd = getcwd(NULL, 0);
+// 	if (!pwd)
+// 		return (NULL);
+// 	pwd_export[1] = malloc((5 + ft_strlen(pwd)) * sizeof(char));
 // 	if (!pwd_export)
 // 		return (NULL);
-// 	pwd_export = ft_strjoin("PWD=", getcwd(NULL, 0));
-// 	export(pwd_export, ); // how to refer to env ?
-// 	export("SHLVL=1");
-// 	export("_="); // HOW TO REFER TO THE SHELL BINARY 
+// 	pwd_export[1] = ft_strjoin("PWD=", pwd);
+// 	export_[1] = malloc((ft_strlen(pwd_export) + 13) * sizeof(char));
+// 	if(!export_)
+// 		return (NULL);
+// 	export_[1] = ft_strjoin("_=", pwd_export[1]);
+// 	export_[1] = ft_strjoin(export_[1], "/minishell");
+// 	shlvl_export[1] = malloc(8 * sizeof(char));
+// 	if (!shlvl_export)
+// 		return (NULL);
+// 	shlvl_export[1] = "SHLVL=1";
+// 	export(pwd_export, &env); // how to refer to env ?
+// 	export(shlvl_export, &env);
+// 	export(export_, &env);
+// 	return (env);
 // }
 
 t_env *init_envv()
@@ -44,7 +64,7 @@ t_env *init_envv()
 	env = NULL;
 	current = NULL;
 	// if (environ == NULL)
-	// 	remaining_envv();
+	// 	remaining_env(env);
 	while (environ[i] != NULL)
 	{
 		new_node = (t_env *)malloc(sizeof(t_env));

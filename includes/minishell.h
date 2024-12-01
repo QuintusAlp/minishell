@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/30 16:10:42 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/01 20:51:01 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,10 @@
     //builtins
 void    builtins(t_cmd *cmd);
     //cd
+        //cd_utils
+t_env   *find_key(char *key, t_env **env);
+void    update_envv(char *key, char *new_value, t_env **env);
+        //cd
 void    cd(char **argv, t_env **env);
     //echo
 int     echo(char **argv);

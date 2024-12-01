@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:35:53 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/12 15:24:22 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/01 20:52:56 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void    exit_code(char *argv)
     while (argv[i])
     {
         if (!(ft_isdigit(argv[i])))
-            error("error: exit --> non-numeric character in the argument");
+            error("error: exit --> non-numeric character in the argument"); // VERIFIY THE BEHAVIOUR 
         i++;
     }
     nbr = ft_atoi(argv);
@@ -51,7 +51,6 @@ void    exit_code(char *argv)
 
 void    ft_exit(char **argv, t_env **env)
 {
-    printf("exiiit\n");
     if (argv[1] && argv[2])
         error("exit: too many arguments");
     free_env(*env);
