@@ -20,6 +20,8 @@ RM = rm -rf
 CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 NAME = minishell
 
+ARCH := $(shell uname -m)
+
 ifeq ($(ARCH),arm64) # command to check the ARCH variable : uname -m
 READINC = /opt/homebrew/Cellar/readline/8.2.10/include/
 READLIB = /opt/homebrew/Cellar/readline/8.2.10/lib/
