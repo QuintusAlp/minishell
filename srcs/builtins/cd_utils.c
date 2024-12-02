@@ -6,11 +6,11 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 20:48:27 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/01 20:49:17 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/01 21:04:04 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 t_env   *find_key(char *key, t_env **env)
 {

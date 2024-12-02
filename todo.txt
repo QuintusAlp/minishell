@@ -1,9 +1,5 @@
-test init env
-trim token main
-    --> 
-quid ctrl-escape 
-fct too long dans echo
-check for edge cases in export 
-line too long unset
 cas ou "'$USER'"
 comment exit
+g_exit status in signals ?
+verifier exit code 
+remaining env 

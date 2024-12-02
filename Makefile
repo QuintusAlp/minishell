@@ -1,5 +1,5 @@
 
-SRCS = 	./srcs/builtins/builtins.c ./srcs/builtins/cd/cd.c ./srcs/builtins/cd/cd_utils.c ./srcs/builtins/echo.c \
+SRCS = 	./srcs/builtins/builtins.c ./srcs/builtins/cd.c ./srcs/builtins/cd_utils.c ./srcs/builtins/echo.c \
 		./srcs/builtins/env.c ./srcs/builtins/exit.c ./srcs/builtins/export.c \
 		./srcs/builtins/pwd.c ./srcs/builtins/unset.c ./srcs/builtins/utils.c \
 		./srcs/exec/exec_cmd.c ./srcs/exec/exec_pipe.c ./srcs/exec/exec_redir.c ./srcs/exec/execute_ast.c \
