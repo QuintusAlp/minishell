@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/02 15:33:12 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/02 17:15:31 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void	ft_panic(char *str, char *name, int exit_code);
 // ********** main **********
 void	ft_printlst(t_list *e); // for debug
 int	    ft_countheredocs(t_list *token);
-void		ft_del_hdfiles();
+void	ft_del_hdfiles();
 void    ft_pars_and_exec(char *prompt, t_env **g_env);
 // ********** utils **********
 void    error(const char *error);
