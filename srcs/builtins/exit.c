@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:35:53 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/02 16:41:57 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/02 17:49:02 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,22 @@
     --> MULTIPLE ARGS / NON-NUMERIC : error
 */
 
+static int    str_isdigit(char *str)
+{
+    int i;
+    int result;
+
+    i = 0;
+    result = 1;
+    while (str[i])
+    {
+        if (!ft_isdigit(str[i]))
+            result = 0;
+        i++;
+    }
+    return (result);
+}
+
 void    exit_code(char *argv)
 {
     int i;
@@ -33,9 +49,10 @@ void    exit_code(char *argv)
     {
         if (!(ft_isdigit(argv[i])))
         {
-                g_exitcode = 1;
-               error("error: exit --> non-numeric character in the argument"); // moddifier le erreur message
-               return ;
+            ft_putstr_fd("bash: exit: ", 2);
+            ft_putstr_fd(argv, 2);
+            ft_putstr_fd(": numeric argument required\n", 2);
+            exit(g_exitcode);
         }
         i++;
     }
@@ -53,8 +70,8 @@ void    exit_code(char *argv)
 
 void    ft_exit(char **argv, t_env **env)
 {
-    (void)env;
-    if (argv[1] && argv[2])
+    if ( argv[1] && argv[2] &&
+            str_isdigit(argv[1]) && str_isdigit(argv[2]))
         error("exit: too many arguments");
     if (*env)
         free_env(*env);
