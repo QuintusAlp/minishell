@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 11:26:20 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/12 14:44:46 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/02 15:19:50 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,6 +224,7 @@ char *ft_get_file_and_type(t_list *token, int *type, int *hd_index, t_env **g_en
 	t_list *start_lst;
 	char *hd_file;
 	char *index;
+	int pid;
 
 	start_lst = token;
 	(void) start_lst; // MODIF TO COMPILE 
@@ -239,7 +240,14 @@ char *ft_get_file_and_type(t_list *token, int *type, int *hd_index, t_env **g_en
 			hd_file = ft_strjoin("/tmp/hd_file", index);
 			free(index);
 			(*hd_index) --;
-			ft_heredoc(token->value, hd_file, g_env);
+			pid = fork();
+			if (pid == 0)
+			{
+				ft_heredoc(token->value, hd_file, g_env);
+				exit(0);
+			}
+			waitpid(pid, NULL, 0);
+			printf("helooooo\n");
 			return (hd_file);
 		}
 		else

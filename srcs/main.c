@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/29 15:17:23 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/02 15:15:19 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,11 @@ int main(void)
 
 	g_env = init_envv();
 	//print_genv(&g_env); // PAS OUBLIER DE SUPP CA 
-
+	 
 	prompt = readline("\033[1;92mminishell$\033[0m ");
 	while (prompt)
 	{
+		handle_signals();
 		if (prompt && *prompt)
 		{
 			add_history(prompt);
