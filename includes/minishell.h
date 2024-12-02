@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/30 11:26:06 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/02 12:30:52 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void    cd(char **argv, t_env **env);
 int     echo(char **argv);
     //env
 t_env   *init_envv(void);
-void    env(void);
+void	env(t_env **env);
     //exit
 void    ft_exit(char **argv, t_env **env);
     //export

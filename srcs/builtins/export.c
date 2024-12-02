@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:51:17 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/30 20:47:12 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/02 12:22:01 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,10 @@ int	export(char **argv, t_env **env)
 		if (!ft_checkarg(argv[i]))
 			ft_addvar(argv[i], env);
 		else
+		{
+			g_exitcode = 1;
 			return (1);
+		}
 		i++;
 	}
 	return 0;

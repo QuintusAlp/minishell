@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 14:41:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/28 12:48:03 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/02 13:06:53 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ char	*ft_get_sp_token(char *c, int *i)
 	if (*c == *(c + 1))
 	{
 		data = malloc(3 * sizeof(char));
+		if (!data)
+			return (NULL);
 		data[0] = *c;
 		data[1] = *(c + 1);
 		data[2] = '\0';

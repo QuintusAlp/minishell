@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:40:11 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/28 12:40:29 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/02 13:21:03 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,15 +107,6 @@ void	ft_exec_cmd(t_cmd *cmd)
 
 	builtins(cmd);
 	c_env = ft_lst_to_matrice(cmd->g_env);
-	// int i = 0;
-	// while(c_env[i])
-	// {
-	// 	printf("%s\n", c_env[i]);
-	// 	i++;
-	// }
-	//exit(12);
-	//COMBERTISSEUR CHAIN LIST -> DOUBLE TAB pour env
-
 	if (execve(ft_path(cmd->argv[0], c_env), cmd->argv, c_env) == -1) // g_env was previsously cmd->env
 	{
 		ft_free_matrice(c_env);
