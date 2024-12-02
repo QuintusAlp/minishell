@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:09:49 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/12 15:33:56 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/02 12:31:18 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void builtins(t_cmd *cmd)
     if (ft_strncmp(cmd->argv[0], "echo", INT_MAX) == 0)
         return(echo(cmd->argv), exit(0));
     else if(ft_strncmp(cmd->argv[0], "env", INT_MAX) == 0)
-        return(env(), exit(0)); // WHAT TO DO IF THERE ARE ARGS SINCE WE DONT NEED TO MANAGE THAT
+        return(env(cmd->g_env), exit(0));
     else if(ft_strncmp(cmd->argv[0], "export", INT_MAX) == 0)
         return(export(cmd->argv, cmd->g_env), exit(0));
     else if (ft_strncmp(cmd->argv[0], "pwd", INT_MAX) == 0)
@@ -33,6 +33,8 @@ void builtins(t_cmd *cmd)
 int  ft_isbuiltins(t_node *node)
 {
     t_cmd *cmd;
+    if (!node)
+		return (0);
     if (node->type != CMD)
         return (0);
     cmd = (t_cmd *)node;

@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/02 15:15:19 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/02 16:22:08 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 /*
 	char	*readline(const char *prompt);
 */
-
 void	ft_printlst(t_list *e)
 {
 	t_list	*tokens;
@@ -43,44 +42,50 @@ int	ft_countheredocs(t_list *token)
 	return (nbr_heredocs);
 }
 
-void	ft_del_hdfiles(int nbr_heredoc)
+void	ft_del_hdfiles()
 {
 	char *file;
 	char *index;
-
-	while (nbr_heredoc)
+	int	flag;
+	flag = 1;
+	while(flag)
 	{
-		index = ft_itoa(nbr_heredoc);
+		index = ft_itoa(flag);
 		file = ft_strjoin("/tmp/hd_file", index);
-		unlink(file);
+		if (!access(file, F_OK))
+		{
+			unlink(file);
+		}
+		else
+			flag = -1;
+		flag++;
 		free(file);
 		free(index);
-		nbr_heredoc --;
 	}
 }
-
 void ft_pars_and_exec(char *prompt, t_env **g_env)
 {
 	(void)prompt;
 	t_list *tokens;
 	t_node *ast;
 	int		nbr_heredoc;
-	int		nbr_heredoc_bis;
-
+	//(void)g_env;
 	if (!prompt)
 		return ;
 	tokens = NULL;
 	// ast = NULL;
+	
 	ft_lexer(prompt, &tokens);
 	trim_tokens(tokens, g_env);
-	ft_printlst(tokens);
+	// ft_printlst(tokens);
 	nbr_heredoc = ft_countheredocs(tokens);
-	nbr_heredoc_bis = nbr_heredoc;
 	ast = ft_parsetoken(&tokens, g_env, &nbr_heredoc);
-	//ast_printer(ast, 0);
+	// // ast_printer(ast, 0);
 	ft_execute_ast(ast);
+
 	ft_free_ast(ast);
-	ft_del_hdfiles(nbr_heredoc_bis);
+	ft_del_hdfiles();
+	dprintf(2, "final exit code: %d\n", g_exitcode);
 	// system("leaks minishell");
 	return ;
 }
@@ -102,6 +107,7 @@ int main(void)
 	char	*prompt;
 	t_env *g_env;
 
+	g_exitcode = 0;
 	g_env = init_envv();
 	//print_genv(&g_env); // PAS OUBLIER DE SUPP CA 
 	 
@@ -115,7 +121,10 @@ int main(void)
 			ft_pars_and_exec(prompt, &g_env);
 		}
 		free(prompt);
-		prompt = readline("\033[1;92mminishell$\033[0m ");
+		if (g_exitcode == 0)
+			prompt = readline("😎 \033[1;92mminishell$\033[0m ");
+		else
+			prompt = readline("😡 \033[1;92mminishell$\033[0m ");
 	}
 	return (0);
 }

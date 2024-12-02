@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:22:35 by marlonco          #+#    #+#             */
-/*   Updated: 2024/11/29 16:04:08 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/02 15:31:00 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,19 +88,20 @@ t_env *init_envv()
 }
 
 //CHECK THE WORKING OF ENVV
-void	env(void)
+void	env(t_env **env)
 {
-	extern char	**environ;
-	int i;
+	t_env *var;
 
-	i = 0;
-	if (!(environ) || !(*environ))
-		return;
-	while (environ[i] != NULL)
+	var =  *env;
+	while(var)
 	{
-		printf("%s\n", environ[i]);
-		i++;
+		if (var->value)
+		{
+			ft_printf("%s=%s\n", var->name, var->value);
+		}
+		var = var->next;
 	}
+	
 }
 // int main()
 // {

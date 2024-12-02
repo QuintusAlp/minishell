@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:40:11 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/29 12:03:22 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/02 15:47:12 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,11 @@ char	*ft_path(char *exec, char **env)
 	if (!paths)
 		ft_error("env : no comand path");
 	i = 0;
+	if (!access(exec, X_OK))
+	{
+		path = exec;
+		return (path);
+	}
 	while (paths[i])
 	{
 		if (!access(ft_strjoin(paths[i], ft_strjoin("/", exec)), X_OK))
@@ -53,7 +58,7 @@ char	*ft_path(char *exec, char **env)
 	}
 	return (path);
 }
-//convertissor env
+//-- convertissor  chain list to matrice --
 int ft_genv_size(t_env *var)
 {
 	int size;
@@ -102,15 +107,6 @@ void	ft_exec_cmd(t_cmd *cmd)
 
 	builtins(cmd);
 	c_env = ft_lst_to_matrice(cmd->g_env);
-	// int i = 0;
-	// while(c_env[i])
-	// {
-	// 	printf("%s\n", c_env[i]);
-	// 	i++;
-	// }
-	//exit(12);
-	//COMBERTISSEUR CHAIN LIST -> DOUBLE TAB pour env
-
 	if (execve(ft_path(cmd->argv[0], c_env), cmd->argv, c_env) == -1) // g_env was previsously cmd->env
 	{
 		ft_free_matrice(c_env);

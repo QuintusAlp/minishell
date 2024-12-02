@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:35:53 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/01 20:52:56 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/02 16:41:57 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,33 +27,38 @@ void    exit_code(char *argv)
 {
     int i;
     int nbr;
-    int exit_code;
     
     i = 0;
-    exit_code = 0;
     while (argv[i])
     {
         if (!(ft_isdigit(argv[i])))
-            error("error: exit --> non-numeric character in the argument"); // VERIFIY THE BEHAVIOUR 
+        {
+                g_exitcode = 1;
+               error("error: exit --> non-numeric character in the argument"); // moddifier le erreur message
+               return ;
+        }
         i++;
     }
     nbr = ft_atoi(argv);
     if (nbr >= 0 && nbr <= 255)
-        exit_code = nbr;
+        g_exitcode = nbr;
     else if (nbr >= -255 && nbr < 0)
-        exit_code = 256 + nbr;
+        g_exitcode = 256 + nbr;
     else if (nbr < -255)
-        exit_code = -nbr % 256;
+        g_exitcode = -nbr % 256;
     else if (nbr > 255)
-        exit_code = nbr % 256;
-    exit(exit_code);
+        g_exitcode = nbr % 256;
+    exit(g_exitcode);
 }
 
 void    ft_exit(char **argv, t_env **env)
 {
+    (void)env;
     if (argv[1] && argv[2])
         error("exit: too many arguments");
-    free_env(*env);
+    if (*env)
+        free_env(*env);
+    ft_del_hdfiles();
     if (argv[1])
         exit_code(argv[1]);
     else 

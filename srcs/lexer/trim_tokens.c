@@ -6,13 +6,14 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 07:18:36 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/02 14:27:23 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/02 15:42:24 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 /*
+    ft_strlcpy(char *dest, const char *src, size_t dstsize)
     typedef struct s_list
 	{
 		void			*value;
@@ -79,11 +80,11 @@ static char *trim_quotes(char *str, bool *in_single_quotes, bool *in_double_quot
             result[j++] = str[i];
         if (str[i] == '\'')
             *c += 1;
-        printf("%c, %d, single quotes flag: %i, double quotes flag: %i\n", str[i], i, *in_single_quotes, *in_double_quotes);
+        //printf("%c, %d, single quotes flag: %i, double quotes flag: %i\n", str[i], i, *in_single_quotes, *in_double_quotes);
         i++;
     }
     result[j] = '\0';
-    printf("result trim tokens: %s\n", result);
+   // printf("result trim tokens: %s\n", result);
     return (result);
 }
 
@@ -100,9 +101,9 @@ char *replace_env_vars(char *str, t_env **g_env, int *end_index) {
     while (str[i] && (isalnum(str[i]) || str[i] == '_')) 
         i++;
     var_name = ft_strndup(&str[1], i - 1); // with j the position where the env name ends, i the position of $ and not including j 
-    printf("var name: %s\n", var_name);
+    //printf("var name: %s\n", var_name);
     env_value = ft_getenv(var_name, g_env);
-    printf("env value: %s\n", env_value);
+    //printf("env value: %s\n", env_value);
     free(var_name);
     if (!env_value)
         new_str = ft_strdup("");
@@ -130,7 +131,7 @@ void trim_tokens(t_list *tokens, t_env **g_env) {
     while (tokens) 
     {
         str = (char *)tokens->value;
-        printf("str: %s\n",  str);
+       // printf("str: %s\n",  str);
         str = trim_quotes(str, &in_single_quotes, &in_double_quotes, &c);
         new_str = malloc(1024 * sizeof(char));
         if (!new_str)
@@ -141,9 +142,9 @@ void trim_tokens(t_list *tokens, t_env **g_env) {
          {
             if (str[i] == '$' && str[i + 1] && (!(in_single_quotes) || c == 0))
             {
-                printf("LAAAAAAA\n");
+               // printf("LAAAAAAA\n");
                 char *expanded = replace_env_vars(&str[i], g_env, &end_index);
-                printf("expanded: %s\n", expanded);
+               // printf("expanded: %s\n", expanded);
                 strncpy(&new_str[j], expanded, ft_strlen(expanded));
                 j += ft_strlen(expanded);
                 free(expanded);
@@ -158,4 +159,5 @@ void trim_tokens(t_list *tokens, t_env **g_env) {
         tokens->value = new_str;
         tokens = tokens->next;
     }
+    
 }

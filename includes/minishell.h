@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/02 14:51:38 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/02 15:33:12 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@ void    cd(char **argv, t_env **env);
 int     echo(char **argv);
     //env
 t_env   *init_envv(void);
-void    env(void);
+void	env(t_env **env);
     //exit
 void    ft_exit(char **argv, t_env **env);
     //export
-void    export(char **argv, t_env **env);
+int    export(char **argv, t_env **env);
     //pwd
 int     pwd(void);
     //unset
@@ -73,8 +73,8 @@ void	ft_exec_redir(t_redir *redir, int dupfd, int *cmd_index);
     //exec_ast
 void	ft_exec(t_node *node, int dupfd, int *cmd_index);
 void	ft_execute_ast(t_node *node);
-    //tab_converter
-char    **list_converter(t_env *env);
+    //check redir
+void    ft_checkredir(t_redir *redir);
 // ********** lexer **********
     //lexer_utils
 void	ft_update_quotes_status(char c, int *d_quote_status, int *s_quote_status);
@@ -84,7 +84,9 @@ char	*ft_get_token(char *s, int *i, int *d_quote, int *s_quote);
     //lexer
 void	ft_lexer(char *str, t_list **tokens);
     //trim_tokens
-void    trim_tokens(t_list *tokens, t_env **env);
+    void trim_tokens(t_list *tokens, t_env **g_env);
+    //error lexing
+int ft_checklexing(t_list *token);
 // ********** parser **********
     //ast
 t_node	*ft_parsetoken(t_list **token, t_env **g_env, int *hd_index);
@@ -114,7 +116,7 @@ void	ft_panic(char *str, char *name, int exit_code);
 // ********** main **********
 void	ft_printlst(t_list *e); // for debug
 int	    ft_countheredocs(t_list *token);
-void	ft_del_hdfiles(int nbr_heredoc);
+void		ft_del_hdfiles();
 void    ft_pars_and_exec(char *prompt, t_env **g_env);
 // ********** utils **********
 void    error(const char *error);
