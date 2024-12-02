@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/02 17:15:31 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/02 18:21:29 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,8 @@ void    free_str(char *str);
 void    free_env(t_env *env);
 void    free_array(char **array);
 char    *ft_getenv(char *name, t_env **g_env);
-
+// ********** utils2 **********
+char	*ft_itoa(int nbr);
 //crash test functions
 int  ft_isbuiltins(t_node *node);
 #endif

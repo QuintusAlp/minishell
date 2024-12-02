@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/02 16:22:08 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/02 17:44:29 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,7 @@ int main(void)
 	t_env *g_env;
 
 	g_exitcode = 0;
-	g_env = init_envv();
-	//print_genv(&g_env); // PAS OUBLIER DE SUPP CA 
+	g_env = init_envv(); 
 	 
 	prompt = readline("\033[1;92mminishell$\033[0m ");
 	while (prompt)

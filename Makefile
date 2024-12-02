@@ -6,7 +6,7 @@ SRCS = 	./srcs/builtins/builtins.c ./srcs/builtins/cd.c ./srcs/builtins/cd_utils
 		./srcs/lexer/lexer_utils.c ./srcs/lexer/lexer.c ./srcs/lexer/trim_tokens.c ./srcs/lexer/checklexing.c\
 		./srcs/parser/ast.c ./srcs/parser/parse_cmd.c ./srcs/parser/parse_pipe.c ./srcs/parser/parse_redir.c \
 		./srcs/signals/signals.c \
-		./srcs/free_ast.c ./srcs/ft_error.c ./srcs/main.c ./srcs/utils.c \
+		./srcs/free_ast.c ./srcs/ft_error.c ./srcs/main.c ./srcs/utils.c ./srcs/utils2.c \
 		
 
 

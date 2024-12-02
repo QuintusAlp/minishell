@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 11:26:20 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/02 16:09:11 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/02 17:16:08 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void ft_exec_hd_cmd(char *prompt, t_env **g_env)
 	int		nbr_heredoc;
 	int		nbr_heredoc_bis;
 
+	(void)nbr_heredoc_bis;
 	if (!prompt)
 		return ;
 	tokens = NULL;
@@ -82,8 +83,7 @@ void ft_exec_hd_cmd(char *prompt, t_env **g_env)
 	//ast_printer(ast, 0);
 	ft_execute_ast(ast);
 	ft_free_ast(ast);
-	ft_del_hdfiles(nbr_heredoc_bis);
-	//system("leaks minishell");
+	ft_del_hdfiles(); 
 	return ;
 }
 

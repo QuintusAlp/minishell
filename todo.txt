@@ -1,17 +1,12 @@
-comment exit
 g_exit status in signals ?
 verifier exit code 
 remaining env 
 handle pwd and cd behaviour when the folder is remove.
-
 export a b -> cemse ne rien faire
 export z= -> z="" au lieu de just z
 gerer les guillemet avec export
-
 ctrl + c is printed It should not be
-
-verifier exit ca abord -> erreur de con I guess
 flag process
 ctrl + \ dans child process
-
+$? after exiting the program
 unset gerer plusieurs args
