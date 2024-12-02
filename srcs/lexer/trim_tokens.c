@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   trim_tokens.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 07:18:36 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/01 20:38:32 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/02 14:27:23 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static char	*ft_strndup(const char *s1, int len)
 	return (result);
 }
 
-static char *trim_quotes(char *str, bool *in_single_quotes, bool *in_double_quotes, bool *single_inside_double, int *c)
+static char *trim_quotes(char *str, bool *in_single_quotes, bool *in_double_quotes, int *c)
 {
     int i;
     int j;
@@ -61,17 +61,25 @@ static char *trim_quotes(char *str, bool *in_single_quotes, bool *in_double_quot
         return (NULL);
     while (str[i])
     {
-        if (str[i] == '\'' && *in_double_quotes)
-            *in_single_quotes = !(*in_single_quotes);
-        else if (str[i] == '\"' && (*in_single_quotes))
-            *in_double_quotes = !(*in_double_quotes);
-        else if (str[i] == '\'' && *in_double_quotes)
-            *single_inside_double = 1;
+        if (str[i] == '\'' && *in_double_quotes == 0)
+        {
+            if (!(*in_double_quotes))
+                *in_single_quotes = 1;
+            else 
+                *in_single_quotes = 0;
+        }
+        else if (str[i] == '\"' && *in_single_quotes == 0)
+        {
+            if (!(*in_double_quotes))
+                *in_double_quotes = 1;
+            else
+                *in_double_quotes = 0;
+        }
         else 
             result[j++] = str[i];
         if (str[i] == '\'')
             *c += 1;
-        printf("%c, %d, single quotes flag: %i, double quotes flag: %i, single in doubles flag: %i\n", str[i], i, *in_single_quotes, *in_double_quotes, *single_inside_double);
+        printf("%c, %d, single quotes flag: %i, double quotes flag: %i\n", str[i], i, *in_single_quotes, *in_double_quotes);
         i++;
     }
     result[j] = '\0';
@@ -113,19 +121,17 @@ void trim_tokens(t_list *tokens, t_env **g_env) {
     int end_index;
     bool in_single_quotes;
     bool    in_double_quotes;
-    bool    single_inside_double;
 
     i = 0;
     j = 0;
     c = 0;
-    in_single_quotes = 1;
-    in_double_quotes = 1;
-    single_inside_double = 0;
+    in_single_quotes = 0;
+    in_double_quotes = 0;
     while (tokens) 
     {
         str = (char *)tokens->value;
         printf("str: %s\n",  str);
-        str = trim_quotes(str, &in_single_quotes, &in_double_quotes, &single_inside_double, &c);
+        str = trim_quotes(str, &in_single_quotes, &in_double_quotes, &c);
         new_str = malloc(1024 * sizeof(char));
         if (!new_str)
             return;
@@ -133,8 +139,7 @@ void trim_tokens(t_list *tokens, t_env **g_env) {
         j = 0;
          while (str[i])
          {
-            if (str[i] == '$' && str[i + 1] && (!(in_single_quotes) || c == 0 || 
-                single_inside_double))
+            if (str[i] == '$' && str[i + 1] && (!(in_single_quotes) || c == 0))
             {
                 printf("LAAAAAAA\n");
                 char *expanded = replace_env_vars(&str[i], g_env, &end_index);

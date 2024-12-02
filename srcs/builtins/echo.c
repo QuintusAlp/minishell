@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:14:27 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/01 21:21:13 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/02 13:46:59 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 		then no \n after the string 
 */
 
-// DO I NEED THE ENVV VAR ?
 int	check_flag(char *str)
 {
 	int	i;
