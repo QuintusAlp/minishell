@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:55:32 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/03 08:56:25 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/03 09:55:38 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ void	unset(char **argv, t_env **env)
 	int		i;
 
 	i = 0;
-	(void)env;
-	(void)argv;
 	while(argv[i])
 		ft_delvar(argv[i++], env);
 }

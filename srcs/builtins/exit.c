@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:35:53 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/02 16:41:57 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/03 10:14:44 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,29 +33,26 @@ void    exit_code(char *argv)
     {
         if (!(ft_isdigit(argv[i])))
         {
-                g_exitcode = 1;
-               error("error: exit --> non-numeric character in the argument"); // moddifier le erreur message
-               return ;
+            g_exitcode = 1;
+            write(2, "bash: exit: ", 12);
+            write(2, argv, ft_strlen(argv));
+            write(2, "numerique argument required\n", 28);
         }
         i++;
     }
     nbr = ft_atoi(argv);
     if (nbr >= 0 && nbr <= 255)
-        g_exitcode = nbr;
+        exit(nbr);
     else if (nbr >= -255 && nbr < 0)
-        g_exitcode = 256 + nbr;
+        exit(256 + nbr);
     else if (nbr < -255)
-        g_exitcode = -nbr % 256;
+        exit(-nbr % 256);
     else if (nbr > 255)
-        g_exitcode = nbr % 256;
-    exit(g_exitcode);
+        exit(nbr % 256);
 }
 
 void    ft_exit(char **argv, t_env **env)
 {
-    (void)env;
-    if (argv[1] && argv[2])
-        error("exit: too many arguments");
     if (*env)
         free_env(*env);
     ft_del_hdfiles();
