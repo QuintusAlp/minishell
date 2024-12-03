@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/03 10:30:57 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/03 14:31:11 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int main(void)
 
 	g_exitcode = 0;
 	g_env = init_envv(); 
-	 
+	handle_signals();
 	prompt = readline("😎 \033[1;92mminishell$\033[0m ");
 	while (prompt)
 	{

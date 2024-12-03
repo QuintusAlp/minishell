@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:51:17 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/03 10:34:28 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/03 14:30:18 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ int	ft_checkarg(char *var)
 {
 	int	j;
 
+	if (!var)
+		return (0);
 	if (var[0] == '=' || (var[0] >= '0' && var[0] <= '9') )
 		return (ft_varerror(var), 1);
 	j = 0;
@@ -117,34 +119,45 @@ void ft_findplace(t_env *var, t_env *env)
 		env = (env)->next;
 	}
 }
-void ft_addvar(char *var, t_env **env)
+// static char * ft_getname(char *str)
+// {
+// 	return (str);
+// }
+// static char * ft_getvalue(char *str)
+// {
+// 	return (str);
+// }
+int ft_addvar(char *var, t_env **env)
 {
-	char		**data;
+	char *name = NULL;
+	char *value = NULL;
 	t_env	*env_var;
 
-	data = ft_split(var, '=');
-	if (ft_strchr((const char *)var, '=') && !data[1])
+	(void)var;
+	if (ft_checkarg(name))
 	{
-		data[1] = malloc(1);
-		data[1][1] = '\0';
+		if (name)
+			free(name);
+		if (value)
+			free(value);
+		return (1);
 	}
-	env_var = ft_newvar(data[0], data[1], 0);
+	env_var = ft_newvar(name, value, 0);
 	if (ft_strcmp((*env)->name, env_var->name) > 0)
-		return ft_lstadd_front_env(env, env_var);
+		return (ft_lstadd_front_env(env, env_var), 0);
 	ft_findplace(env_var, *env);
+	return (0);
 }
 int	export(char **argv, t_env **env)
 {
 	int	i;
-	
+
 	i = 1;
 	if (!argv[i])
 		return (ft_print_exportenv(*env));
 	while(argv[i])
 	{
-		if (!ft_checkarg(argv[i]))
-			ft_addvar(argv[i], env);
-		else
+		if (ft_addvar(argv[i], env))//!ft_checkarg(argv[i])
 		{
 			g_exitcode = 1;
 			return (1);

@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 23:56:01 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/03 10:40:37 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/03 16:31:31 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,25 @@
     SIGQUIT = Ctrl-\
 */
 
+void    hangle_sigquit(int signal)
+{
+    (void)signal;
+    rl_redisplay();
+}
+
 static void    handle_sigint(int signum)
 {
     (void)signum;
-    g_exitcode = 0;
-    write(1, "\n", 1);
-    rl_replace_line("", 0);
-    rl_on_new_line();
-    rl_redisplay();
+    g_exitcode = 1;
+    // printf("\n");
+    // rl_replace_line("", 0);
+    // rl_on_new_line();
+    // rl_redisplay();
 }
 
 void    handle_signals(void)
 {
+    rl_catch_signals = 0;
     signal(SIGINT, handle_sigint);
-    signal(SIGQUIT, SIG_IGN);
+    signal(SIGQUIT, hangle_sigquit);
 }

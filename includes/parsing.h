@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 10:41:47 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/28 12:00:14 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/03 14:37:55 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ typedef struct	s_node
 	t_node	*right;
 }	t_pipe;
 
-
+extern int rl_catch_signals;
 //GLOBAL VAR
 int g_exitcode;
 #endif

@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 11:26:20 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/03 10:29:50 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/03 16:29:00 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,20 +147,24 @@ void	ft_heredoc(char *delimiter, char *file, t_env **g_env)
 {
 	char *buff;
 	int	fd;
+	(void)g_env;
+	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	handle_signals();//signal(SIGINT, exit);
+	while(1)
+	{
 		
-	buff = readline("> ");
-	if (ft_strcmp2(buff, delimiter))
-	{
-		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		close (fd);
-	}
-	while (!ft_strcmp2(buff, delimiter))
-	{
-		ft_write_hdline(buff, g_env, file);
-		free(buff);
 		buff = readline("> ");
+		if (buff == NULL || g_exitcode == 1)
+			exit(0);
+		if (ft_strcmp(delimiter, buff) == 0)
+			break;
+		ft_putstr_fd(buff, fd);	
+		ft_putstr_fd("\n", fd);	
+		free(buff);
 	}
-	free (buff);
+	if (buff)
+		free (buff);
+	close(fd);
 }
 
 t_node	*ft_redirnode(char *file, t_node *cmd, int type, t_list **token)
@@ -224,7 +228,6 @@ char *ft_get_file_and_type(t_list *token, int *type, int *hd_index, t_env **g_en
 	t_list *start_lst;
 	char *hd_file;
 	char *index;
-	int pid;
 
 	start_lst = token;
 	(void) start_lst; // MODIF TO COMPILE 
@@ -240,9 +243,9 @@ char *ft_get_file_and_type(t_list *token, int *type, int *hd_index, t_env **g_en
 			hd_file = ft_strjoin("/tmp/hd_file", index);
 			free(index);
 			(*hd_index) --;
-			pid = fork();
+			int pid = fork();
 			if (pid == 0)
-			{
+			{	
 				ft_heredoc(token->value, hd_file, g_env);
 				exit(0);
 			}

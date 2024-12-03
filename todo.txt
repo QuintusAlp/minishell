@@ -6,3 +6,5 @@ eport gerer les characterers admis.
 ctrl + c is printed It should not be
 flag process
 ctrl + \ dans child process
+
+entrer "test" comme prompt -> trop bizare
