@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:55:32 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/01 20:55:13 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/03 09:55:38 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,6 @@
 		unset <VAR_NAME>
 */
 
-static void	update_index(int deleted_index, t_env **env)
-{
-	t_env	*current;
-	
-	current = *env;
-	while (current)
-	{
-		if (current->index > deleted_index)
-			current->index -= 1;
-		current = current->next;	
-	}
-}
-
 void	free_envv(t_env *current)
 {
 	if (current)
@@ -39,37 +26,36 @@ void	free_envv(t_env *current)
 		free(current);
 	}
 }
+void ft_delvar(char *varname, t_env **env)
+{
+	t_env *current;
+	t_env *prev;
+	int	i;
+
+	i = 0;
+	current = *env;
+	prev = NULL;
+	while (current)
+	{
+		if (!strcmp(current->name, varname))
+		{
+			if (prev == NULL)
+				*env = current->next;
+			else
+				prev->next = current->next;
+			free_envv(current);
+			return;
+		}
+		prev = current;
+		current = current->next;	
+	}
+}
 
 void	unset(char **argv, t_env **env)
 {
-	t_env	*current;
-	t_env	*prev;
-	char	**name;
 	int		i;
 
-	name = &argv[1];
 	i = 0;
-	if (name == NULL || **name == '\0')
-		return; // VERIFY BEHAVIOR 
-	while (name[i])
-	{
-		current = *env;
-		prev = NULL;
-		while (current)
-		{
-			if (strcmp(current->name, name[i]) == 0)
-			{
-				if (prev == NULL)
-					*env = current->next;
-				else
-					prev->next = current->next;
-				update_index(current->index, env);
-				free_envv(current);
-				return;
-			}
-			prev = current;
-			current = current->next;	
-		}
-		i++;
-	}
+	while(argv[i])
+		ft_delvar(argv[i++], env);
 }

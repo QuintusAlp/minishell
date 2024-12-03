@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:35:53 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/02 17:49:02 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/03 10:29:22 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,21 +58,23 @@ void    exit_code(char *argv)
     }
     nbr = ft_atoi(argv);
     if (nbr >= 0 && nbr <= 255)
-        g_exitcode = nbr;
+        exit(nbr);
     else if (nbr >= -255 && nbr < 0)
-        g_exitcode = 256 + nbr;
+        exit(256 + nbr);
     else if (nbr < -255)
-        g_exitcode = -nbr % 256;
+        exit(-nbr % 256);
     else if (nbr > 255)
-        g_exitcode = nbr % 256;
-    exit(g_exitcode);
+        exit(nbr % 256);
 }
 
 void    ft_exit(char **argv, t_env **env)
 {
     if ( argv[1] && argv[2] &&
             str_isdigit(argv[1]) && str_isdigit(argv[2]))
-        error("exit: too many arguments");
+        {
+            error("exit: too many arguments");
+            return ;
+        }
     if (*env)
         free_env(*env);
     ft_del_hdfiles();

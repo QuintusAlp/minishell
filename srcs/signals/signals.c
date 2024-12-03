@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 23:56:01 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/02 16:46:15 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/03 10:40:37 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ static void    handle_sigint(int signum)
 
 void    handle_signals(void)
 {
-    //printf("handle signals");
     signal(SIGINT, handle_sigint);
     signal(SIGQUIT, SIG_IGN);
 }
