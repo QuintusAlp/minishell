@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:51:17 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/02 16:19:29 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/03 08:36:20 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,16 @@ void ft_findplace(t_env *var, t_env *env)
 	{
 		if (!ft_strcmp((env)->name, var->name))
 		{
-			(env)->value = ft_strdup(var->value);
-			free(var->name);
-			free(var->value);
-			return (free(var));
+			if (var->value)
+			{
+				free((env)->value);
+				(env)->value = ft_strdup(var->value);
+				free(var->name);
+				free(var->value);
+				return (free(var));
+			}
+			else
+				return ;
 		}
 		if (((env)->next) && ft_strcmp(((env)->next)->name, var->name) > 0)
 		{
@@ -117,6 +123,11 @@ void ft_addvar(char *var, t_env **env)
 	t_env	*env_var;
 
 	data = ft_split(var, '=');
+	if (ft_strchr((const char *)var, '=') && !data[1])
+	{
+		data[1] = malloc(1);
+		data[1][1] = '\0';
+	}
 	env_var = ft_newvar(data[0], data[1], 0);
 	if (ft_strcmp((*env)->name, env_var->name) > 0)
 		return ft_lstadd_front_env(env, env_var);

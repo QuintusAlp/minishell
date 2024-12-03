@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/02 16:22:08 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/03 08:36:44 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int main(void)
 	g_env = init_envv();
 	//print_genv(&g_env); // PAS OUBLIER DE SUPP CA 
 	 
-	prompt = readline("\033[1;92mminishell$\033[0m ");
+	prompt = readline("😎 \033[1;92mminishell$\033[0m ");
 	while (prompt)
 	{
 		handle_signals();
