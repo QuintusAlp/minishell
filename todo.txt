@@ -1,8 +1,6 @@
 g_exit status in signals ?
 verifier exit code
 remaining env 
-handle pwd and cd behaviour when the folder is remove.
 eport gerer les characterers admis.
-ctrl + c is printed It should not be
 flag process
 ctrl + \ dans child process

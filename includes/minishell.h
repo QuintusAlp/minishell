@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/02 18:21:29 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:10:24 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,20 @@ void    cd(char **argv, t_env **env);
     //echo
 int     echo(char **argv);
     //env
+int     export_envi(char *argv, t_env **env);
+t_env *    remaining_env();
 t_env   *init_envv(void);
 void	env(t_env **env);
     //exit
 void    ft_exit(char **argv, t_env **env);
     //export
+int    ft_print_exportenv(t_env *env);
+void   ft_varerror(char *var);
+int    ft_checkarg(char *var);
+t_env  *ft_newvar(char *name, char *value);
+void   ft_lstadd_front_env(t_env **lst, t_env *new);
+void   ft_findplace(t_env *var, t_env *env);
+void   ft_addvar(char *var, t_env **env);
 int    export(char **argv, t_env **env);
     //pwd
 int     pwd(void);
@@ -126,6 +135,9 @@ void    free_array(char **array);
 char    *ft_getenv(char *name, t_env **g_env);
 // ********** utils2 **********
 char	*ft_itoa(int nbr);
+
+
+t_env *ft_newvar(char *name, char *value);
 //crash test functions
 int  ft_isbuiltins(t_node *node);
 #endif

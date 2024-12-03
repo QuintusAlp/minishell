@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 10:41:47 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/28 12:00:14 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/03 17:38:55 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ enum e_char_token
 typedef struct s_env {
 	char			*name;
 	char			*value;
-	int				index;
 	struct s_env	*next;
 }	t_env;
 //--
@@ -57,6 +56,7 @@ typedef struct	s_node
 	t_node	*right;
 }	t_pipe;
 
+extern int rl_catch_signals;
 
 //GLOBAL VAR
 int g_exitcode;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/03 10:30:57 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:11:40 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,13 @@ int main(void)
 
 	g_exitcode = 0;
 	g_env = init_envv(); 
-	 
+	//  while (g_env)
+	// {
+	// 	printf("COUCOUU\n");
+	// 	printf("%s, %s\n",g_env->value, g_env->name);
+	// 	g_env = g_env->next;
+	// }
+	handle_signals();
 	prompt = readline("😎 \033[1;92mminishell$\033[0m ");
 	while (prompt)
 	{

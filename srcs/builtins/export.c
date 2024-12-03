@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:51:17 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/03 10:34:28 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/03 17:46:25 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	ft_checkarg(char *var)
 	return (0);
 }
 //add var to env
-t_env *ft_newvar(char *name, char *value, int index)
+t_env *ft_newvar(char *name, char *value)
 {
 	t_env *newvar;
 
@@ -73,7 +73,6 @@ t_env *ft_newvar(char *name, char *value, int index)
 		return (NULL);
 	newvar->value = value;
 	newvar->name = name;
-	newvar->index = index;
 	newvar->next = NULL;
 	return (newvar);
 }
@@ -128,8 +127,8 @@ void ft_addvar(char *var, t_env **env)
 		data[1] = malloc(1);
 		data[1][1] = '\0';
 	}
-	env_var = ft_newvar(data[0], data[1], 0);
-	if (ft_strcmp((*env)->name, env_var->name) > 0)
+	env_var = ft_newvar(data[0], data[1]);
+	if (ft_strcmp((*env)->name, env_var->name) > 0 || *env == NULL)
 		return ft_lstadd_front_env(env, env_var);
 	ft_findplace(env_var, *env);
 }

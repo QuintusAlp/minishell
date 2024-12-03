@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:14:49 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/01 20:49:28 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/03 14:02:07 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static int  minus_cd(t_env **env)
         update_envv("PWD", oldpwd_var->value, env);
     }
     else
-        return(ft_putstr_fd("cd: OLDPWD not set\n", 2), 1);
+        return(ft_putstr_fd("bash: cd: OLDPWD not set\n", 2), 1);
     return (0);
 }
 
@@ -123,7 +123,7 @@ static int  symlink_cd(char *path, t_env **env)
             return(perror("getcwd"), 1);
     }
     else
-        return(ft_putstr_fd("cd: is not a symlink\n", 2), 1);
+        return(ft_putstr_fd("bash: cd: is not a symlink\n", 2), 1);
     return (0);
 }
 
@@ -132,7 +132,12 @@ static int  basic_cd(char *path, t_env **env)
     char    cwd[PATH_MAX];
     
     if (getcwd(cwd, sizeof(cwd)) == NULL)
-        return(perror("getcwd"), 1);
+    {
+        ft_putstr_fd("bash: cd: no such file or directory: ", 2);
+        ft_putstr_fd(path, 2);
+        ft_putchar_fd('\n', 2);
+        return (1);
+    }
     if (chdir(path) != 0)
         return(perror("cd"), 1);
     update_envv("OLDPWD", cwd, env);
@@ -177,7 +182,7 @@ void    cd(char **argv, t_env **env)
 
     input = &argv[1];
     if (list_size(input) > 1 || list_size(input) < 0)
-        error("cd: more than 1 relative/absolute path");
+        error("cd: too may arguments");
     if (list_size(input) == 0)
         only_cd(env);
     else if (ft_strncmp(input[0], "-", INT_MAX) == 0)

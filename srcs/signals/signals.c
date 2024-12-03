@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 23:56:01 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/03 10:40:37 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/03 14:33:21 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,10 @@ static void    handle_sigint(int signum)
     rl_redisplay();
 }
 
+// SI DANS UN CHILD RL_CATCH_SIGNALS = 1
 void    handle_signals(void)
 {
+    rl_catch_signals = 0;
     signal(SIGINT, handle_sigint);
     signal(SIGQUIT, SIG_IGN);
 }
