@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:51:17 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/04 11:39:38 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/04 16:00:49 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,14 @@
 	if "export new=new new2=new2" --> both appears
 */
 
+/*
+	A MODIF:
+	escaped char in the value with \ 
+		export SPECIAL='*'
+		export SPECIAL=\*
+	tirets dans la value
+	+=
+*/
 
 //print exporte env
 int ft_print_exportenv(t_env *env)
@@ -57,7 +65,8 @@ int	ft_checkarg(char *var)
 	j = 0;
 	while (var[j])
 	{
-		if (!ft_isalnum(var[j]) && !(var[j] == '_') && !(var[j] == '=') && !(var[j] == '\'') && !(var[j] == '\"'))
+		if (!ft_isalnum(var[j]) && !(var[j] == '_') && !(var[j] == '=') 
+				&& !(var[j] == '\'') && !(var[j] == '\"') && var[j] != '+')
 			return (ft_varerror(var), 1);
 		j++;
 	}
@@ -119,13 +128,35 @@ void ft_findplace(t_env *var, t_env *env)
 void ft_addvar(char *var, t_env **env)
 {
 	char		**data;
-	t_env	*env_var;
+	t_env		*env_var;
+	int			i;
+	char		*temp;
+	char		*new_value;
 
 	data = ft_split(var, '=');
+	if (data[2])
+	{
+			i = 2;
+			new_value = ft_strdup(data[1]);
+			while (data[i])
+			{
+				temp = new_value;
+				new_value = ft_strjoin(new_value, "=");
+				free(temp);
+				temp = new_value;
+				new_value = ft_strjoin(new_value, data[i]);
+				free(temp);
+				i++;
+			}
+			free(data[1]);
+			data[1] = new_value;
+	}
 	if (ft_strchr((const char *)var, '=') && !data[1])
 	{
-		data[1] = malloc(1);
-		data[1][1] = '\0';
+			data[1] = malloc(1);
+			if (!(data[1]))
+				return;
+			data[1][1] = '\0';
 	}
 	env_var = ft_newvar(data[0], data[1]);
 	if (ft_strcmp((*env)->name, env_var->name) > 0 || *env == NULL)
