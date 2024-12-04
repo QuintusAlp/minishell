@@ -1,6 +1,5 @@
 g_exit status in signals ?
 verifier exit code
-remaining env 
 eport gerer les characterers admis.
 flag process
 ctrl + \ dans child process
