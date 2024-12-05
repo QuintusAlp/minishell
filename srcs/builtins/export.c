@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:51:17 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/04 16:00:49 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/05 11:49:47 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,28 @@ void	ft_varerror(char *var)
 	write(2, var, ft_strlen(var));
 	write(2, "': not a valid identifier\n", 26);
 }
-int	ft_checkarg(char *var)
+int	ft_checkarg(char *var, int *plus_egal)
 {
 	int	j;
+	int	c;
 
+	printf("var name: %s\n", var);
+	c = 0;
 	if (var[0] == '=' || (var[0] >= '0' && var[0] <= '9') )
 		return (ft_varerror(var), 1);
 	j = 0;
 	while (var[j])
 	{
-		if (!ft_isalnum(var[j]) && !(var[j] == '_') && !(var[j] == '=') 
-				&& !(var[j] == '\'') && !(var[j] == '\"') && var[j] != '+')
+		if (var[j] == '+')
+		{
+			c++;
+			if (c > 1 || (var[j + 1] != '=' && var[j - 1] != '='))
+				return(ft_varerror(var), 1);
+			if (var[j + 1] == '=')
+				*plus_egal = 1;
+		}
+		else if (!ft_isalnum(var[j]) && !(var[j] == '_') && !(var[j] == '=') 
+				&& !(var[j] == '\'') && !(var[j] == '\"' && var[j] != '+'))
 			return (ft_varerror(var), 1);
 		j++;
 	}
@@ -125,6 +136,46 @@ void ft_findplace(t_env *var, t_env *env)
 		env = (env)->next;
 	}
 }
+
+void ft_addvar_plusegal(char *var, t_env **env)
+{
+	char		**data;
+	t_env		*env_var;
+	int			i;
+	char		*temp;
+	char		*new_value;
+
+	data = ft_split_str(var, "+=");
+	if (data[2]) // condition alors ca va dans le string 
+	{
+			i = 2;
+			new_value = ft_strdup(data[1]);
+			while (data[i])
+			{
+				temp = new_value;
+				new_value = ft_strjoin(new_value, "=");
+				free(temp);
+				temp = new_value;
+				new_value = ft_strjoin(new_value, data[i]);
+				free(temp);
+				i++;
+			}
+			free(data[1]);
+			data[1] = new_value;
+	}
+	if (ft_strchr((const char *)var, '=') && !data[1]) // adapt it for +=
+	{
+			data[1] = malloc(1);
+			if (!(data[1]))
+				return;
+			data[1][1] = '\0';
+	}
+	env_var = ft_newvar(data[0], data[1]);
+	if (ft_strcmp((*env)->name, env_var->name) > 0 || *env == NULL)
+		return ft_lstadd_front_env(env, env_var);
+	ft_findplace(env_var, *env);
+}
+
 void ft_addvar(char *var, t_env **env)
 {
 	char		**data;
@@ -166,14 +217,19 @@ void ft_addvar(char *var, t_env **env)
 int	export(char **argv, t_env **env)
 {
 	int	i;
+	int	plus_egal;
 	
 	i = 1;
+	plus_egal = 0;
 	if (!argv[i])
 		return (ft_print_exportenv(*env));
 	while(argv[i])
 	{
-		if (!ft_checkarg(argv[i]))
-			ft_addvar(argv[i], env);
+		if (!ft_checkarg(argv[i], &plus_egal))
+			// if (plus_egal == 1)
+			// 	ft_addvarr_plusegal(argv[i], env);
+			// else 
+				ft_addvar(argv[i], env);
 		else
 		{
 			g_exitcode = 1;

@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/03 18:10:24 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/05 11:46:17 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void    ft_exit(char **argv, t_env **env);
     //export
 int    ft_print_exportenv(t_env *env);
 void   ft_varerror(char *var);
-int    ft_checkarg(char *var);
+int    ft_checkarg(char *var, int *plusegal);
 t_env  *ft_newvar(char *name, char *value);
 void   ft_lstadd_front_env(t_env **lst, t_env *new);
 void   ft_findplace(t_env *var, t_env *env);
@@ -64,6 +64,8 @@ void   ft_addvar(char *var, t_env **env);
 int    export(char **argv, t_env **env);
     //pwd
 int     pwd(void);
+    //split_str
+char	**ft_split_str(char *s, char *charset);
     //unset
 void    unset(char **argv, t_env **env);
     //utils

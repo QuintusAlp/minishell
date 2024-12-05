@@ -3,3 +3,5 @@ verifier exit code
 eport gerer les characterers admis.
 flag process
 ctrl + \ dans child process
+implement shell level from the beginning
+verif memory leaks split_str

@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:22:35 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/04 11:39:30 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/05 10:53:35 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_env *	remaining_env(void)
 	pwd_struct = ft_newvar(ft_strdup("PWD"), ft_strdup(pwd));
 	_value = ft_strjoin(pwd, "/minishell");
 	free(pwd);
-	shlvl_struct = ft_newvar(ft_strdup("SHLVL"), ft_strdup("1"));
+	shlvl_struct = ft_newvar(ft_strdup("SHLVL"), ft_strdup("2"));
 	pwd_struct->next = shlvl_struct;
 	_struct = ft_newvar(ft_strdup("_"), ft_strdup(_value));
 	free(_value);
