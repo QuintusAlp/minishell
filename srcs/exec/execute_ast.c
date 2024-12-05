@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 19:01:11 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/20 20:37:56 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/05 16:09:20 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,28 @@ void	ft_exec(t_node *node, int dupfd, int *cmd_index)
 	if (node->type >= I_REDIR && node->type <= HEREDOC)
 		ft_exec_redir((t_redir *)node, dupfd, cmd_index);
 }
+
+static int ft_check_re(t_redir *redir)
+{
+	struct stat f_stat;
+
+	if (stat(redir->file, &f_stat) == -1)
+		perror("stat error");
+	if (redir->type == HEREDOC || redir->type == I_REDIR)
+	{
+		if (!(f_stat.st_mode & S_IRUSR))
+			return (0);
+	}
+	else if (redir->type == O_REDIR_APPEND || redir->type == O_REDIR_TRUNC)
+	{
+		if (!(f_stat.st_mode & S_IWUSR))
+			return (0);
+	}
+	return (1);
+}
 int ft_check_isbuiltin(t_node *node)
 {
 	char cwd[256];
-	struct stat f_stat;
 	t_redir *redir;
 
 	while (node && node->type >= I_REDIR && node->type <= HEREDOC)
@@ -39,18 +57,8 @@ int ft_check_isbuiltin(t_node *node)
 		}
 		else
 		{
-			if (stat(redir->file, &f_stat) == -1)
-				perror("stat error");
-			if (redir->type == HEREDOC || redir->type == I_REDIR)
-			{
-				if (!(f_stat.st_mode & S_IRUSR))
-					return (0);
-			}
-			else if (redir->type == O_REDIR_APPEND || redir->type == O_REDIR_TRUNC)
-			{
-				if (!(f_stat.st_mode & S_IWUSR))
-					return (0);
-			}
+			if (!ft_check_re(redir))
+				return (0);
 		}
 		node = redir->cmd;
 	}
@@ -82,10 +90,5 @@ void	ft_execute_ast(t_node *node)
 	if (pid == 0)
 		ft_exec(node, -1, &cmd_index);
 	else
-	{
-		int stat = 0;
-		waitpid(pid, &stat, 0);
-		if (WIFEXITED(stat))
-			g_exitcode =  WEXITSTATUS(stat);
-	}
+		ft_stats(pid);
 }

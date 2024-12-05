@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/02 18:21:29 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/05 16:03:11 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,4 +128,7 @@ char    *ft_getenv(char *name, t_env **g_env);
 char	*ft_itoa(int nbr);
 //crash test functions
 int  ft_isbuiltins(t_node *node);
+
+//utils :)
+void ft_stats(int pid);
 #endif

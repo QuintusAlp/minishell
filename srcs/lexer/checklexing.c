@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checklexing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 13:58:04 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/14 14:14:39 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/05 16:10:21 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,8 @@ int ft_checklexing(t_list *token)
 		{
 			if (!token->next)
 			{
-				g_exitcode = 258;
 				ft_tokenerror("bash: syntax error near unexpected token", "newline");
-				return (1);
+				return (g_exitcode = 258, 1);
 			}
 			if ((token->next)->type != WORD)
 			{
