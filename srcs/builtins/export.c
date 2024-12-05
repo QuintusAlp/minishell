@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:51:17 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/05 11:49:47 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:05:57 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,45 +137,6 @@ void ft_findplace(t_env *var, t_env *env)
 	}
 }
 
-void ft_addvar_plusegal(char *var, t_env **env)
-{
-	char		**data;
-	t_env		*env_var;
-	int			i;
-	char		*temp;
-	char		*new_value;
-
-	data = ft_split_str(var, "+=");
-	if (data[2]) // condition alors ca va dans le string 
-	{
-			i = 2;
-			new_value = ft_strdup(data[1]);
-			while (data[i])
-			{
-				temp = new_value;
-				new_value = ft_strjoin(new_value, "=");
-				free(temp);
-				temp = new_value;
-				new_value = ft_strjoin(new_value, data[i]);
-				free(temp);
-				i++;
-			}
-			free(data[1]);
-			data[1] = new_value;
-	}
-	if (ft_strchr((const char *)var, '=') && !data[1]) // adapt it for +=
-	{
-			data[1] = malloc(1);
-			if (!(data[1]))
-				return;
-			data[1][1] = '\0';
-	}
-	env_var = ft_newvar(data[0], data[1]);
-	if (ft_strcmp((*env)->name, env_var->name) > 0 || *env == NULL)
-		return ft_lstadd_front_env(env, env_var);
-	ft_findplace(env_var, *env);
-}
-
 void ft_addvar(char *var, t_env **env)
 {
 	char		**data;
@@ -226,9 +187,9 @@ int	export(char **argv, t_env **env)
 	while(argv[i])
 	{
 		if (!ft_checkarg(argv[i], &plus_egal))
-			// if (plus_egal == 1)
-			// 	ft_addvarr_plusegal(argv[i], env);
-			// else 
+			if (plus_egal == 1)
+				ft_addvarr_plusegal(argv[i], env);
+			else 
 				ft_addvar(argv[i], env);
 		else
 		{

@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:51:32 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/05 12:02:19 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:05:28 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void ft_addvar_plusegal(char *var, t_env **env)
 	char		*new_value;
 
 	data = ft_split_str(var, "+=");
-	if (data[2]) // condition alors ca va dans le string 
+	if (data[2]) // condition alors ca va dans le string genre export y+=x+=z --> y = x+=z
 	{
 			i = 2;
 			new_value = ft_strdup(data[1]);
@@ -83,7 +83,7 @@ void ft_addvar_plusegal(char *var, t_env **env)
 				return;
 			data[1][1] = '\0';
 	}
-	env_var = ft_newvar(data[0], data[1]);
+	env_var = ft_newvar_plusegal(data[0], data[1]);
 	if (ft_strcmp((*env)->name, env_var->name) > 0 || *env == NULL)
 		return ft_lstadd_front_env(env, env_var);
 	ft_findplace(env_var, *env);
