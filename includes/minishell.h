@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/05 16:03:11 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/06 16:00:00 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 #include <limits.h>
 #include <dirent.h>
 #include <stdbool.h> 
+#include <signal.h>
 
 #ifndef S_ISLNK
 #define S_ISLNK(m) (((m) & S_IFMT) == S_IFLNK)
@@ -107,6 +108,8 @@ char    *ft_get_file_and_type(t_list *token, int *type, int *hd_index, t_env **g
 // ********** signals **********
     //signals
 void    handle_signals(void);
+void handle_child_signals(void);
+void ignore_sigint();
 void	rl_replace_line(const char *text, int clear_undo);//readline lib
 // ********** free_ast **********
 void	ft_free_ast(t_node *node);

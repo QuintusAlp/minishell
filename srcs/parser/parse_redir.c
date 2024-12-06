@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 11:26:20 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/03 16:29:00 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/06 16:26:28 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	ft_hdcmd(char *str, int fd, t_env **g_env)
 	ft_strlcpy(buff, (str + 2), ft_cmdlen(str) + 1);
 	pid = fork();
 	if (pid == -1)
-	ft_error("fork error");
+		ft_error("fork error");
 	if (pid == 0)
 	{
 		if (dup2(fd, 1) == -1)
@@ -149,7 +149,7 @@ void	ft_heredoc(char *delimiter, char *file, t_env **g_env)
 	int	fd;
 	(void)g_env;
 	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	handle_signals();//signal(SIGINT, exit);
+	handle_child_signals();
 	while(1)
 	{
 		
@@ -249,6 +249,7 @@ char *ft_get_file_and_type(t_list *token, int *type, int *hd_index, t_env **g_en
 				ft_heredoc(token->value, hd_file, g_env);
 				exit(0);
 			}
+			ignore_sigint();
 			waitpid(pid, NULL, 0);
 			return (hd_file);
 		}

@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 10:41:47 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/03 14:37:55 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/06 14:20:01 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ typedef struct	s_node
 	int	type;
 }	t_node;
 
- typedef struct s_cmd
+typedef struct s_cmd
 {
 	int		type;
 	char 	**argv;
