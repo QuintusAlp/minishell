@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:14:49 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/03 14:02:07 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/09 14:44:48 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,35 +97,6 @@ static int  minus_cd(t_env **env)
     return (0);
 }
 
-static int  symlink_cd(char *path, t_env **env)
-{
-    struct stat statbuf;
-    char    resolved_path[PATH_MAX];
-    char    cwd[PATH_MAX];
-    ssize_t len;
-    
-    if (lstat(path, &statbuf) == -1)
-        return(perror("lstat"), 1);
-    if (S_ISLNK(statbuf.st_mode))
-    {
-        len = readlink(path, resolved_path, PATH_MAX - 1);
-        if (len == -1)
-            return(perror("readlink"), 1);
-        resolved_path[len] = '\0';
-        if (getcwd(cwd, sizeof(cwd)) == NULL)
-            return(perror("getcwd"), 1);
-        if (chdir(resolved_path) == -1)
-            return(perror("chdir"), 1);
-        update_envv("OLDPWD", cwd, env);
-        if (getcwd(cwd, sizeof(cwd)) != NULL)
-            update_envv("PWD", cwd, env);
-        else
-            return(perror("getcwd"), 1);
-    }
-    else
-        return(ft_putstr_fd("bash: cd: is not a symlink\n", 2), 1);
-    return (0);
-}
 
 static int  basic_cd(char *path, t_env **env)
 {
@@ -178,7 +149,6 @@ static int  tilde_cd(char *path, t_env **env)
 void    cd(char **argv, t_env **env)
 {
     char    **input;
-    struct stat  statbuf;
 
     input = &argv[1];
     if (list_size(input) > 1 || list_size(input) < 0)
@@ -189,12 +159,36 @@ void    cd(char **argv, t_env **env)
         minus_cd(env);
     else if (ft_strncmp(&input[0][0], "~", 1) == 0)
         tilde_cd(input[0], env);
-    else
-    {
-        if (lstat(input[0], &statbuf) == 0
-                && S_ISLNK(statbuf.st_mode))
-            symlink_cd(input[0], env);
-        else     
+    else    
             basic_cd(input[0], env);
-    }
 }
+
+// static int  symlink_cd(char *path, t_env **env)
+// {
+//     struct stat statbuf;
+//     char    resolved_path[PATH_MAX];
+//     char    cwd[PATH_MAX];
+//     ssize_t len;
+    
+//     if (lstat(path, &statbuf) == -1)
+//         return(perror("lstat"), 1);
+//     if (S_ISLNK(statbuf.st_mode))
+//     {
+//         len = readlink(path, resolved_path, PATH_MAX - 1);
+//         if (len == -1)
+//             return(perror("readlink"), 1);
+//         resolved_path[len] = '\0';
+//         if (getcwd(cwd, sizeof(cwd)) == NULL)
+//             return(perror("getcwd"), 1);
+//         if (chdir(resolved_path) == -1)
+//             return(perror("chdir"), 1);
+//         update_envv("OLDPWD", cwd, env);
+//         if (getcwd(cwd, sizeof(cwd)) != NULL)
+//             update_envv("PWD", cwd, env);
+//         else
+//             return(perror("getcwd"), 1);
+//     }
+//     else
+//         return(ft_putstr_fd("bash: cd: is not a symlink\n", 2), 1);
+//     return (0);
+// }

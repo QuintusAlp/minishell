@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:22:35 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/05 10:53:35 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/09 14:49:09 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,20 +41,14 @@ t_env *	remaining_env(void)
 	return (pwd_struct);
 }
 
-t_env *init_envv()
+t_env	*add_nodes(t_env *env, t_env *current, t_env *new_node, char **result)
 {
-	t_env	*env;
-	t_env	*current;
-	t_env	*new_node;
-	extern char	**environ;
+	extern char **environ;
 	int			i;
-	char		**result;
-
-	i = 0;
-	env = NULL;
-	current = NULL;
+	
 	if (environ == NULL || (*environ) == NULL)
 		return(remaining_env());
+	i = 0;
 	while (environ[i] != NULL)
 	{
 		new_node = (t_env *)malloc(sizeof(t_env));
@@ -73,6 +67,21 @@ t_env *init_envv()
 		current = new_node;
 		i++;
 	}
+	return (env);
+}
+
+t_env *init_envv()
+{
+	t_env	*env;
+	t_env	*current;
+	t_env	*new_node;
+	char	**result;
+
+	env = NULL;
+	current = NULL;
+	new_node = NULL;
+	result = NULL;
+	env = add_nodes(env, current, new_node, result);
 	return (env);
 }
 

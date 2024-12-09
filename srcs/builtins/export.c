@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:51:17 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/09 11:15:38 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/09 15:51:13 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,8 @@
 	if "export new=new new2=new2" --> both appears
 */
 
-/*
-	tirets dans la value
-	+=
-*/
+//TO DO: JUST EXPORT A 
 
-//print exporte env
 int ft_print_exportenv(t_env *env)
 {
 	t_env	*current;
@@ -34,8 +30,6 @@ int ft_print_exportenv(t_env *env)
 	current = env;
 	while (current && current->name)
 	{
-		if (ft_strcmp(current->name, "a")== 0)
-			printf("OUI\n");
 		write(1, "declare -x ", 11);
 		write(1, current->name, ft_strlen(current->name));
 		if (current->value)
@@ -50,18 +44,18 @@ int ft_print_exportenv(t_env *env)
 	}
 	return (0);
 }
-//check args are valides
+
 void	ft_varerror(char *var)
 {
 	write(2, "bash: export: `", 15);
 	write(2, var, ft_strlen(var));
 	write(2, "': not a valid identifier\n", 26);
 }
+
 int	ft_checkarg(char *var, int *plus_egal)
 {
 	int	j;
 
-	printf("CHECKARG FCT: var name: %s\n", var);
 	if (var[0] == '=' || (var[0] >= '0' && var[0] <= '9') )
 		return (ft_varerror(var), 1);
 	j = 0;
@@ -70,7 +64,6 @@ int	ft_checkarg(char *var, int *plus_egal)
 		while (ft_isalnum(var[j]) || var[j] == '_' || var[j] == '\''
 				|| var[j] == '\"')
 			j++;
-		printf("var[j]: %c, j: %d\n", var[j], j);
 		if (var[j] == '+')
 		{
 			if (var[j + 1] != '=')
@@ -106,7 +99,7 @@ t_env *ft_newvar(char *name, char *value)
 	newvar->next = NULL;
 	return (newvar);
 }
-//add var to env
+
 t_env *ft_newvar_export(char *name, char *value, t_env **env)
 {
 	t_env *newvar;
@@ -124,12 +117,13 @@ t_env *ft_newvar_export(char *name, char *value, t_env **env)
 	current->next = newvar;
 	return (newvar);
 }
-//insert var into the env
+
 void	ft_lstadd_front_env(t_env **lst, t_env *new)
 {
 	new->next = *lst;
 	*lst = new;
 }
+
 void ft_findplace(t_env *env, t_env *var)
 {
 	t_env 	*subvar;
@@ -138,24 +132,11 @@ void ft_findplace(t_env *env, t_env *var)
 	current = env;
 	while(current)
 	{
-		printf("FT FIND PLACE:\ncurrent: %s\nvar: %s\nvar value: %s\n", current->name, var->name, var->value);
 		if (ft_strcmp((current)->name, var->name) == 0)
 		{
 			if (var->value)
 			{
-				// if ((current)->value)
-				// {
-				// 	printf("%p\n", (current)->value);
-				// 	free((current)->value);
-				// }
-				//free(current->value);
-				printf("VAR VALUE IN THE IF: %s\n", var->value);
 				(current)->value = ft_strdup(var->value);
-				printf("CURRENT VALUE IN THE IF: %s\n", current->value);
-				//free(var->name);
-				// if (var->value)
-				// 	free(var->value);
-				printf("ici\n");
 				return ;
 			}
 		}
@@ -203,15 +184,12 @@ void ft_addvar(char *var, t_env **env)
 	}
 	if (ft_strchr((const char *)var, '=') && !data[1])
 	{
-		printf("Pas ici\n");
 		data[1] = malloc(1);
 		if (!(data[1]))
 			return;
 		data[1][1] = '\0';
 	}
 	env_var = ft_newvar(data[0], data[1]);
-	// if (ft_strcmp((*env)->name, env_var->name) > 0 || *env == NULL)
-	// 	return ft_lstadd_front_env(env, env_var);
 	ft_findplace(*env, env_var);
 }
 
@@ -228,7 +206,7 @@ int	export(char **argv, t_env **env)
 	{
 		if (!ft_checkarg(argv[i], &plus_egal))
 		{
-			printf("ICIIII\n");
+			printf("coucou\n");
 			if (plus_egal == 1)
 				ft_addvar_plusegal(argv[i], env);
 			else 

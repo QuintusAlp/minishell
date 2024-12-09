@@ -6,13 +6,14 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:02:22 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/05 11:47:22 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/09 15:51:00 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static int	ft_charset_check(char c, char *charset)
+
+int	ft_charset_check(char c, char *charset)
 {
 	int	i;
 
@@ -26,7 +27,7 @@ static int	ft_charset_check(char c, char *charset)
 	return (0);
 }
 
-static int	ft_split_count(char *str, char *charset)
+int	ft_split_count(char *str, char *charset)
 {
 	int	i;
 	int	c;
@@ -45,7 +46,7 @@ static int	ft_split_count(char *str, char *charset)
 	return (c);
 }
 
-static int	ft_wordlen(char *str, char *charset)
+int	ft_wordlen(char *str, char *charset)
 {
 	int	l;
 
