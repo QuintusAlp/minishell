@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/06 16:12:46 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/09 12:16:13 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,11 @@ void ft_pars_and_exec(char *prompt, t_env **g_env)
 	// ft_printlst(tokens);
 	nbr_heredoc = ft_countheredocs(tokens);
 	ast = ft_parsetoken(&tokens, g_env, &nbr_heredoc);
-	ast_printer(ast, 0);
-	// ft_execute_ast(ast);
+	// ast_printer(ast, 0);
+	ft_execute_ast(ast);
 
-	// ft_free_ast(ast);
-	// ft_del_hdfiles();
+	ft_free_ast(ast);
+	ft_del_hdfiles();
 	// dprintf(2, "final exit code: %d\n", g_exitcode);
 	// system("leaks minishell");
 	return ;

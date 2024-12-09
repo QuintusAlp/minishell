@@ -6,13 +6,11 @@
 /*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 12:09:30 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/05 16:02:17 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/09 11:40:14 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-
 
 void	ft_exec_redir(t_redir *redir, int dupfd, int *cmd_index)
 {

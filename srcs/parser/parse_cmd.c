@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 11:25:55 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/12 14:41:13 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/09 12:32:51 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ t_node	*ft_cmdnode(char **argv, t_env **g_env, t_list **token)
 	return ((t_node *)cmd);
 }
 
-char **ft_getargv(t_list *token)
+char	**ft_getargv(t_list *token)
 {
-	char **argv;
-	int	i;
+	char	**argv;
+	int		i;
 
 	argv = malloc((ft_lstsize(token) + 1) * sizeof(char *));
 	i = 0;

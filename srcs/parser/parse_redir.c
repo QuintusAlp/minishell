@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 11:26:20 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/06 16:26:28 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/09 17:02:06 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
+void    handle_signals_bis(void);
 int	ft_strcmp2(char *str, char *str_to_find)
 {
 	int	i;
@@ -149,12 +149,12 @@ void	ft_heredoc(char *delimiter, char *file, t_env **g_env)
 	int	fd;
 	(void)g_env;
 	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	handle_child_signals();
+	handle_signals_bis();
 	while(1)
 	{
 		
 		buff = readline("> ");
-		if (buff == NULL || g_exitcode == 1)
+		if (buff == NULL)
 			exit(0);
 		if (ft_strcmp(delimiter, buff) == 0)
 			break;
@@ -245,12 +245,22 @@ char *ft_get_file_and_type(t_list *token, int *type, int *hd_index, t_env **g_en
 			(*hd_index) --;
 			int pid = fork();
 			if (pid == 0)
-			{	
+			{
 				ft_heredoc(token->value, hd_file, g_env);
 				exit(0);
 			}
-			ignore_sigint();
-			waitpid(pid, NULL, 0);
+			int status;
+			
+			waitpid(pid, &status, 0);
+			printf("hdh process finished\n");
+			if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+                {
+                    // If child terminated by SIGINT, refresh readline prompt
+				printf("test\n");
+                    // rl_replace_line("", 0);
+                    // rl_on_new_line();
+                    // rl_redisplay();
+                }
 			return (hd_file);
 		}
 		else
