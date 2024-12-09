@@ -17,7 +17,7 @@ LIB = make -C ./libft
 INCS = includes
 CC = gcc
 RM = rm -rf
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address -g3
+CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address -g3
 NAME = minishell
 
 ARCH := $(shell uname -m)

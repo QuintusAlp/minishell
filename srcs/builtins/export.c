@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:51:17 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/09 15:51:13 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/09 15:58:07 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	ft_checkarg(char *var, int *plus_egal)
 			|| var[j] == '\"' || var[j] == '+' || var[j] == '=' || var[j] == '-')
 				j++;
 		}
-		else
+		else if (var[j] != '\0')
 			return (ft_varerror(var), 1);
 	}
 	return (0);
@@ -206,7 +206,6 @@ int	export(char **argv, t_env **env)
 	{
 		if (!ft_checkarg(argv[i], &plus_egal))
 		{
-			printf("coucou\n");
 			if (plus_egal == 1)
 				ft_addvar_plusegal(argv[i], env);
 			else 
