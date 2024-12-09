@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/05 11:46:17 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/05 16:43:19 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,13 @@ int    ft_print_exportenv(t_env *env);
 void   ft_varerror(char *var);
 int    ft_checkarg(char *var, int *plusegal);
 t_env  *ft_newvar(char *name, char *value);
+t_env *ft_newvar_export(char *name, char *value, t_env **env);
 void   ft_lstadd_front_env(t_env **lst, t_env *new);
 void   ft_findplace(t_env *var, t_env *env);
 void   ft_addvar(char *var, t_env **env);
 int    export(char **argv, t_env **env);
+    //export_plusegal
+void ft_addvar_plusegal(char *var, t_env **env);
     //pwd
 int     pwd(void);
     //split_str
@@ -139,7 +142,6 @@ char    *ft_getenv(char *name, t_env **g_env);
 char	*ft_itoa(int nbr);
 
 
-t_env *ft_newvar(char *name, char *value);
 //crash test functions
 int  ft_isbuiltins(t_node *node);
 #endif

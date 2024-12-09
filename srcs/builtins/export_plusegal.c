@@ -6,37 +6,13 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:51:32 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/05 12:05:28 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/09 11:04:05 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-
-// si var existe deja alors ajouter le string a la value actuelle 
-t_env *ft_newvar_plusegal(char *name, char *value, t_env **env)
-{
-	t_env   *newvar;
-    char    *new_value;
-    t_env   *env_value;
-    char    *temp;
-
-    env_value = ft_getenv(name, env);
-    if (env_value == NULL)
-        return(ft_newvar(name, value));
-    else // add new value to current value 
-    {
-        new_value = malloc((ft_strlen(value) + ft_strlen(env_value) + 1) * sizeof(char));
-        if (!new_value)
-            return (NULL);
-        new_value = ft_strdup(env_value);
-        temp = new_value;
-        new_value = ft_strjoin(temp, value);
-        //HOW TO REFER TO THE CORRECT ENV VALUE ??
-    }
-}
-
-char	*ft_getenv(char *name, t_env **g_env)
+t_env	*env_match(char *name, t_env **g_env)
 {
 	t_env	*current;
 
@@ -44,11 +20,28 @@ char	*ft_getenv(char *name, t_env **g_env)
 	while (current)
 	{
 		if (ft_strcmp(name, current->name) == 0)
-			return (current->value);
+			return (current);
 		current = current->next;
 	}
 	return (NULL);
 }
+t_env *ft_newvar_plusegal(char *name, char *value, t_env **env)
+{
+    char    *new_value;
+    t_env   *match;
+
+    match = env_match(name, env);
+    if (match == NULL)
+        return(ft_newvar_export(name, value, env));
+    else // add new value to current value 
+    {
+        new_value = ft_strjoin(match->value, value);
+        free(match->value);
+        match->value = ft_strdup(new_value);
+        return (match);
+    }
+}
+
 
 void ft_addvar_plusegal(char *var, t_env **env)
 {
@@ -62,14 +55,14 @@ void ft_addvar_plusegal(char *var, t_env **env)
 	if (data[2]) // condition alors ca va dans le string genre export y+=x+=z --> y = x+=z
 	{
 			i = 2;
-			new_value = ft_strdup(data[1]);
+            if (data[1])
+			    new_value = ft_strdup(data[1]);
 			while (data[i])
 			{
 				temp = new_value;
-				new_value = ft_strjoin(new_value, "=");
-				free(temp);
+				new_value = ft_strjoin(new_value, "+=");
 				temp = new_value;
-				new_value = ft_strjoin(new_value, data[i]);
+				new_value = ft_strjoin(temp, data[i]);
 				free(temp);
 				i++;
 			}
@@ -83,8 +76,9 @@ void ft_addvar_plusegal(char *var, t_env **env)
 				return;
 			data[1][1] = '\0';
 	}
-	env_var = ft_newvar_plusegal(data[0], data[1]);
-	if (ft_strcmp((*env)->name, env_var->name) > 0 || *env == NULL)
-		return ft_lstadd_front_env(env, env_var);
-	ft_findplace(env_var, *env);
+	env_var = ft_newvar_plusegal(data[0], data[1], env);
+	printf("ft_addvar_pluseagal, var name to be added: %s\n var value: %s\n", env_var->name, env_var->value);
+    if (!env_var)
+        return ;
+	ft_findplace(*env, env_var);
 }

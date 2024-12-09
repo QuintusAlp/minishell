@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/05 11:11:30 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/05 14:08:11 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,33 +104,26 @@ void	print_genv(t_env **g_env)
 
 int main(void)
 {
-	// char	*prompt;
-	// t_env *g_env;
+	char	*prompt;
+	t_env *g_env;
 
-	// g_exitcode = 0;
-	// g_env = init_envv(); 
-	// handle_signals();
-	// prompt = readline("😎 \033[1;92mminishell$\033[0m ");
-	// while (prompt)
-	// {
-	// 	handle_signals();
-	// 	if (prompt && *prompt)
-	// 	{
-	// 		add_history(prompt);
-	// 		ft_pars_and_exec(prompt, &g_env);
-	// 	}
-	// 	free(prompt);
-	// 	if (g_exitcode == 0)
-	// 		prompt = readline("😎 \033[1;92mminishell$\033[0m ");
-	// 	else
-	// 		prompt = readline("😡 \033[1;92mminishell$\033[0m ");
-	// }
-	char **result = ft_split_str("coucou+=cest+=moi+=", "+=");
-    int i =0;
-    while (result[i])
-    {
-        printf("%s\n", result[i]);
-        i++;
-    }
+	g_exitcode = 0;
+	g_env = init_envv(); 
+	handle_signals();
+	prompt = readline("😎 \033[1;92mminishell$\033[0m ");
+	while (prompt)
+	{
+		handle_signals();
+		if (prompt && *prompt)
+		{
+			add_history(prompt);
+			ft_pars_and_exec(prompt, &g_env);
+		}
+		free(prompt);
+		if (g_exitcode == 0)
+			prompt = readline("😎 \033[1;92mminishell$\033[0m ");
+		else
+			prompt = readline("😡 \033[1;92mminishell$\033[0m ");
+	}
 	return (0);
 }

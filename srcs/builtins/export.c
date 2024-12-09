@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:51:17 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/05 12:05:57 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/09 11:15:38 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,6 @@
 */
 
 /*
-	A MODIF:
-	escaped char in the value with \ 
-		export SPECIAL='*'
-		export SPECIAL=\*
 	tirets dans la value
 	+=
 */
@@ -33,19 +29,24 @@
 //print exporte env
 int ft_print_exportenv(t_env *env)
 {
-	while (env && env->name)
+	t_env	*current;
+
+	current = env;
+	while (current && current->name)
 	{
+		if (ft_strcmp(current->name, "a")== 0)
+			printf("OUI\n");
 		write(1, "declare -x ", 11);
-		write(1, env->name, ft_strlen(env->name));
-		if (env->value)
+		write(1, current->name, ft_strlen(current->name));
+		if (current->value)
 		{	
 			write(1, "=", 1);
 			write(1, "\"", 1);
-			write(1, env->value, ft_strlen(env->value));
+			write(1, current->value, ft_strlen(current->value));
 			write(1, "\"", 1);
 		}
 		write(1, "\n", 1);
-		env = env->next;
+		current = current->next;
 	}
 	return (0);
 }
@@ -59,31 +60,40 @@ void	ft_varerror(char *var)
 int	ft_checkarg(char *var, int *plus_egal)
 {
 	int	j;
-	int	c;
 
-	printf("var name: %s\n", var);
-	c = 0;
+	printf("CHECKARG FCT: var name: %s\n", var);
 	if (var[0] == '=' || (var[0] >= '0' && var[0] <= '9') )
 		return (ft_varerror(var), 1);
 	j = 0;
 	while (var[j])
 	{
+		while (ft_isalnum(var[j]) || var[j] == '_' || var[j] == '\''
+				|| var[j] == '\"')
+			j++;
+		printf("var[j]: %c, j: %d\n", var[j], j);
 		if (var[j] == '+')
 		{
-			c++;
-			if (c > 1 || (var[j + 1] != '=' && var[j - 1] != '='))
-				return(ft_varerror(var), 1);
-			if (var[j + 1] == '=')
-				*plus_egal = 1;
+			if (var[j + 1] != '=')
+				return (ft_varerror(var), 1);
+			*plus_egal = 1;
+			j += 2;
+			while (ft_isalnum(var[j]) || var[j] == '_' || var[j] == '\''
+			|| var[j] == '\"' || var[j] == '+' || var[j] == '=' || var[j] == '-')
+				j++;
 		}
-		else if (!ft_isalnum(var[j]) && !(var[j] == '_') && !(var[j] == '=') 
-				&& !(var[j] == '\'') && !(var[j] == '\"' && var[j] != '+'))
+		else if (var[j] == '=')
+		{
+			j++;
+			while (ft_isalnum(var[j]) || var[j] == '_' || var[j] == '\''
+			|| var[j] == '\"' || var[j] == '+' || var[j] == '=' || var[j] == '-')
+				j++;
+		}
+		else
 			return (ft_varerror(var), 1);
-		j++;
 	}
 	return (0);
 }
-//add var to env
+
 t_env *ft_newvar(char *name, char *value)
 {
 	t_env *newvar;
@@ -91,9 +101,27 @@ t_env *ft_newvar(char *name, char *value)
 	newvar = malloc(sizeof(t_env));
 	if (!newvar)
 		return (NULL);
-	newvar->value = value;
-	newvar->name = name;
+	newvar->value = ft_strdup(value);
+	newvar->name = ft_strdup(name);
 	newvar->next = NULL;
+	return (newvar);
+}
+//add var to env
+t_env *ft_newvar_export(char *name, char *value, t_env **env)
+{
+	t_env *newvar;
+	t_env	*current;
+
+	newvar = malloc(sizeof(t_env));
+	if (!newvar)
+		return (NULL);
+	newvar->value = ft_strdup(value);
+	newvar->name = ft_strdup(name);
+	newvar->next = NULL;
+	current = *env;
+	while (current->next)
+		current = current->next;
+	current->next = newvar;
 	return (newvar);
 }
 //insert var into the env
@@ -102,38 +130,48 @@ void	ft_lstadd_front_env(t_env **lst, t_env *new)
 	new->next = *lst;
 	*lst = new;
 }
-void ft_findplace(t_env *var, t_env *env)
+void ft_findplace(t_env *env, t_env *var)
 {
-	t_env *subvar;
+	t_env 	*subvar;
+	t_env	*current;
 
-	while(env)
+	current = env;
+	while(current)
 	{
-		if (!ft_strcmp((env)->name, var->name))
+		printf("FT FIND PLACE:\ncurrent: %s\nvar: %s\nvar value: %s\n", current->name, var->name, var->value);
+		if (ft_strcmp((current)->name, var->name) == 0)
 		{
 			if (var->value)
 			{
-				free((env)->value);
-				(env)->value = ft_strdup(var->value);
-				free(var->name);
-				free(var->value);
-				return (free(var));
-			}
-			else
+				// if ((current)->value)
+				// {
+				// 	printf("%p\n", (current)->value);
+				// 	free((current)->value);
+				// }
+				//free(current->value);
+				printf("VAR VALUE IN THE IF: %s\n", var->value);
+				(current)->value = ft_strdup(var->value);
+				printf("CURRENT VALUE IN THE IF: %s\n", current->value);
+				//free(var->name);
+				// if (var->value)
+				// 	free(var->value);
+				printf("ici\n");
 				return ;
+			}
 		}
-		if (((env)->next) && ft_strcmp(((env)->next)->name, var->name) > 0)
+		if (((current)->next) && ft_strcmp(((current)->next)->name, var->name) > 0)
 		{
-			subvar = (env)->next;
-			(env)->next = var;
+			subvar = (current)->next;
+			(current)->next = var;
 			var->next = subvar;
 			return ;
 		}
-		if ((env)->next == NULL)
+		if ((current)->next == NULL)
 		{
-			(env)->next = var;
+			(current)->next = var;
 			return ;
 		}
-		env = (env)->next;
+		current = (current)->next;
 	}
 }
 
@@ -165,16 +203,18 @@ void ft_addvar(char *var, t_env **env)
 	}
 	if (ft_strchr((const char *)var, '=') && !data[1])
 	{
-			data[1] = malloc(1);
-			if (!(data[1]))
-				return;
-			data[1][1] = '\0';
+		printf("Pas ici\n");
+		data[1] = malloc(1);
+		if (!(data[1]))
+			return;
+		data[1][1] = '\0';
 	}
 	env_var = ft_newvar(data[0], data[1]);
-	if (ft_strcmp((*env)->name, env_var->name) > 0 || *env == NULL)
-		return ft_lstadd_front_env(env, env_var);
-	ft_findplace(env_var, *env);
+	// if (ft_strcmp((*env)->name, env_var->name) > 0 || *env == NULL)
+	// 	return ft_lstadd_front_env(env, env_var);
+	ft_findplace(*env, env_var);
 }
+
 int	export(char **argv, t_env **env)
 {
 	int	i;
@@ -187,10 +227,13 @@ int	export(char **argv, t_env **env)
 	while(argv[i])
 	{
 		if (!ft_checkarg(argv[i], &plus_egal))
+		{
+			printf("ICIIII\n");
 			if (plus_egal == 1)
-				ft_addvarr_plusegal(argv[i], env);
+				ft_addvar_plusegal(argv[i], env);
 			else 
 				ft_addvar(argv[i], env);
+		}
 		else
 		{
 			g_exitcode = 1;
