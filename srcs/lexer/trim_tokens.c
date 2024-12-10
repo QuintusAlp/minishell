@@ -6,26 +6,19 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 07:18:36 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/09 14:53:49 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/10 13:32:27 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/*
-    ft_strlcpy(char *dest, const char *src, size_t dstsize)
-    typedef struct s_list
-	{
-		void			*value;
-		int				type;
-		struct s_list	*next;
-	}	t_list;
-
-    1) enlever les " / ' si le string commence et finit par ca
-        --> si il ne commence/finit que avec ' : quote>
-                                             " : dquote>
-    2) remplacer $<VAR> par le contenu de la envv correspondante
-*/
+typedef struct s_trim
+{
+    bool    in_single;
+    bool    in_double;
+    int     c;
+    int     end_index;
+}   t_trim;
 
 static char	*ft_strndup(const char *s1, int len)
 {
@@ -48,8 +41,74 @@ static char	*ft_strndup(const char *s1, int len)
 	result[i] = '\0';
 	return (result);
 }
+// void ft_putinresult(char *result, char *str, t_trim *trim, int *i, int *j)
+// {
+//     while (str[*i])
+//     {
+//         if (str[*i] == '\'' && trim->in_double == 0)
+//         {
+//             if (!(trim->in_double))
+//                 trim->in_single = 1;
+//             else 
+//                 trim->in_single = 0;
+//         }
+//         else if (str[*i] == '\"' && trim->in_single == 0)
+//         {
+//             if (!(trim->in_double))
+//                 trim->in_double = 1;
+//             else
+//                 trim->in_double = 0;
+//         }
+//         else 
+//             result[*j++] = str[*i];
+//         if (str[*i] == '\'')
+//             trim->c += 1;
+//         (*i)++;
+//     }
+//     result[*j] = '\0';
+// }
+// static char *trim_quotes(char *str, t_trim *trim)
+// {
+//     char    *result;
+//     int     i;
+//     int     j;
+    
+//     i = 0;
+//     j = 0;
+//     result = malloc((ft_strlen(str) + 1) * sizeof(char));
+//     if (!result)
+//         return (NULL);
+//     ft_putinresult(result, str, trim, &i, &j);
 
-static char *trim_quotes(char *str, bool *in_single_quotes, bool *in_double_quotes, int *c)
+//     return (result);
+// }
+
+// void    set_flags(char c, t_trim *trim, char **result, int *j)
+// {
+//     if (c == '\'' && trim->in_double == 0)
+//     {
+//         if (!(trim->in_double))
+//             trim->in_single = 1;
+//         else 
+//             trim->in_single = 0;
+//     }
+//     else if (c == '\"' && trim->in_single == 0)
+//     {
+//         if (!(trim->in_double))
+//             trim->in_double = 1;
+//         else
+//             trim->in_double = 0;
+//     }
+//     else
+//     {
+//         *result[*j] = c;
+//         (*j)++;
+//     }
+//     if (c == '\'')
+//         trim->c += 1;
+// }
+
+static char *trim_quotes(char *str, t_trim *trim)
 {
     int i;
     int j;
@@ -62,31 +121,33 @@ static char *trim_quotes(char *str, bool *in_single_quotes, bool *in_double_quot
         return (NULL);
     while (str[i])
     {
-        if (str[i] == '\'' && *in_double_quotes == 0)
+        if (str[i] == '\'' && trim->in_double == 0)
         {
-            if (!(*in_double_quotes))
-                *in_single_quotes = 1;
+            if (!(trim->in_double))
+               trim->in_single = 1;
             else 
-                *in_single_quotes = 0;
+                trim->in_single = 0;
         }
-        else if (str[i] == '\"' && *in_single_quotes == 0)
+        else if (str[i] == '\"' && trim->in_single == 0)
         {
-            if (!(*in_double_quotes))
-                *in_double_quotes = 1;
+            if (!(trim->in_double))
+                trim->in_double = 1;
             else
-                *in_double_quotes = 0;
+                trim->in_double = 0;
         }
         else 
             result[j++] = str[i];
         if (str[i] == '\'')
-            *c += 1;
+            trim->c += 1;
+        // set_flags(str[i], trim, &result, &j);
         i++;
     }
     result[j] = '\0';
     return (result);
 }
 
-char *replace_env_vars(char *str, t_env **g_env, int *end_index) {
+char *replace_env_vars(char *str, t_env **g_env, t_trim *trim) 
+{
     char    *new_str;
     char    *env_value;
     char    *var_name;
@@ -105,29 +166,28 @@ char *replace_env_vars(char *str, t_env **g_env, int *end_index) {
         new_str = ft_strdup("");
     else 
         new_str = ft_strdup(env_value);
-    *end_index = i;
+    trim->end_index = i;
     return (new_str);
 }
 
-void trim_tokens(t_list *tokens, t_env **g_env) {
+void trim_tokens(t_list *tokens, t_env **g_env)
+{
     char *str;
     char *new_str;
     int  i;
     int  j;
-    int c;
-    int end_index;
-    bool in_single_quotes;
-    bool    in_double_quotes;
+    t_trim  trim;
 
     i = 0;
     j = 0;
-    c = 0;
-    in_single_quotes = 0;
-    in_double_quotes = 0;
+    trim.in_double = 0;
+    trim.in_single = 0;
+    trim.c = 0;
+    trim.end_index = 0;
     while (tokens) 
     {
         str = (char *)tokens->value;
-        str = trim_quotes(str, &in_single_quotes, &in_double_quotes, &c);
+        str = trim_quotes(str, &trim);
         new_str = malloc(1024 * sizeof(char));
         if (!new_str)
             return;
@@ -135,7 +195,7 @@ void trim_tokens(t_list *tokens, t_env **g_env) {
         j = 0;
          while (str[i])
          {
-            if (str[i] == '$' && str[i + 1] && (!(in_single_quotes) || c == 0))
+            if (str[i] == '$' && str[i + 1] && (!(trim.in_single) || trim.c == 0))
             {
                 if (str[i + 1] == '?')
                 {
@@ -147,11 +207,11 @@ void trim_tokens(t_list *tokens, t_env **g_env) {
                 }
                 else 
                 {
-                    char *expanded = replace_env_vars(&str[i], g_env, &end_index);
+                    char *expanded = replace_env_vars(&str[i], g_env, &trim);
                     strncpy(&new_str[j], expanded, ft_strlen(expanded));
                     j += ft_strlen(expanded);
                     free(expanded);
-                    i += end_index - 1;  
+                    i += trim.end_index - 1;  
                 }
             } 
             else
