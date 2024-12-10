@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:40:11 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/09 15:36:15 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/10 15:43:54 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ void	ft_exec_cmd(t_cmd *cmd)
 
 	builtins(cmd);
 	c_env = ft_lst_to_matrice(cmd->g_env);
+	// signal(SIGINT, SIG_DFL);
+    // signal(SIGQUIT, SIG_DFL);
 	if (execve(ft_path(cmd->argv[0], c_env), cmd->argv, c_env) == -1)
 	{
 		ft_free_matrice(c_env);

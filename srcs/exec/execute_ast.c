@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execute_ast.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 19:01:11 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/09 15:38:53 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/10 16:10:09 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-void    handle_signals_bis(void);
 
 void	ft_exec(t_node *node, int dupfd, int *cmd_index)
 {
@@ -70,7 +69,11 @@ int	ft_check_isbuiltin(t_node *node)
 		return (0);
 	return (1);
 }
-
+// static void    handle_sigint_bis(int signum)
+// {
+// 	(void)signum;
+// 	printf("helooooo\n");
+// }
 void	ft_execute_ast(t_node *node)
 {
 	int	pid;
@@ -93,9 +96,11 @@ void	ft_execute_ast(t_node *node)
 		ft_error("fork");
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
+		
 		ft_exec(node, -1, &cmd_index);
 	}
 	else
+	{
 		ft_stats(pid);
+	}
 }

@@ -23,10 +23,15 @@ NAME = minishell
 ARCH := $(shell uname -m)
 
 
-READINC = /usr/local/Cellar/readline/8.2.13/include/readline
-READLIB = /usr/local/Cellar/readline/8.2.13/lib
-
+ifeq ($(ARCH),arm64) # command to check the ARCH variable : uname -m
+READINC = /opt/homebrew/Cellar/readline/8.2.10/include/
+READLIB = /opt/homebrew/Cellar/readline/8.2.10/lib/
+else
+READINC = /Users/qalpesse/.brew/opt/readline/include
+READLIB = /Users/qalpesse/.brew/opt/readline/lib
+endif
 READLINE = -L$(READLIB) -I$(READINC) -lreadline
+
 
 FLUO_GREEN = \033[1;92m
 YELLOW = \033[0;33m

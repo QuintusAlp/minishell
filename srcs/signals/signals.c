@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 23:56:01 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/09 17:02:22 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/10 16:45:54 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,47 +18,28 @@
     SIGQUIT = Ctrl-\
 */
 
-static void    handle_sigint(int signum)
+static void set_ctrl_d(int mode)
 {
-    (void)signum;
-    g_exitcode = 1;
-    write(1, "\n", 1);
-//     rl_replace_line("", 0);
-//     rl_on_new_line();
-//     rl_redisplay();
+    struct termios term;
+    tcgetattr(0, &term);
+    if (mode == 1)
+    {
+        term.c_cc[VEOF] = 4;
+        term.c_lflag &= ~(ECHOCTL);
+    }
+    else if(mode == 2)
+    {
+       term.c_cc[VEOF] = _POSIX_VDISABLE;
+        term.c_lflag &= ~(ECHOCTL);
+    }
+    else if(mode == 3)
+    {
+        term.c_cc[VEOF] = 4;
+        term.c_lflag &= ~(ECHOCTL);
+    }
+    tcsetattr(0, TCSANOW, &term);
 }
 
-static void    handle_sigint_bis(int signum)
-{
-    (void)signum;
-    g_exitcode = 0;
-    printf("coucou \n");
-    exit(1);
-//     rl_replace_line("", 0);
-//     rl_on_new_line();
-//     rl_redisplay();
-	// rl_done = 1; 
-}
 
-// SI DANS UN CHILD RL_CATCH_SIGNALS = 1
-void    handle_signals(void)
-{
-    rl_catch_signals = 0;
-    //-- ctr + c--
-    struct sigaction sa;
-    sa.sa_handler = handle_sigint;
-    sa.sa_flags = SA_RESTART;
-    sigemptyset(&sa.sa_mask);
-    sigaction(SIGINT, &sa, NULL);
-    //-- ctrl + d --
-    signal(SIGQUIT, SIG_IGN);
-}
-
-void    handle_signals_bis(void)
-{
-    rl_catch_signals = 0;
-    signal(SIGINT, handle_sigint_bis);
-    signal(SIGQUIT, SIG_IGN);
-}
 
 

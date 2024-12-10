@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 10:10:24 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/09 15:40:51 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/10 14:48:22 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	ft_stats(int pid)
 	waitpid(pid, &stat, 0);
 	if (WIFSIGNALED(stat) && WTERMSIG(stat) == SIGINT)
 	{
+		// printf("child ended width ctrl + c\n");
 		g_exitcode = 130;
 	}
 	if (WIFEXITED(stat))

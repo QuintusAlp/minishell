@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 11:26:20 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/09 17:02:06 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/10 14:15:28 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,86 +62,6 @@ t_list	*ft_delheredoc(t_list **token)
 	return (new_lst);
 }
 
-void ft_exec_hd_cmd(char *prompt, t_env **g_env)
-{
-	t_list *tokens;
-	t_node *ast;
-	int		nbr_heredoc;
-	int		nbr_heredoc_bis;
-
-	(void)nbr_heredoc_bis;
-	if (!prompt)
-		return ;
-	tokens = NULL;
-	ast = NULL;
-	ft_lexer(prompt, &tokens);
-	tokens = ft_delheredoc(&tokens);
-	//ft_printlst(tokens);
-	nbr_heredoc = ft_countheredocs(tokens);
-	nbr_heredoc_bis = nbr_heredoc;
-	ast = ft_parsetoken(&tokens, g_env, &nbr_heredoc);
-	//ast_printer(ast, 0);
-	ft_execute_ast(ast);
-	ft_free_ast(ast);
-	ft_del_hdfiles(); 
-	return ;
-}
-
-void	ft_hdcmd(char *str, int fd, t_env **g_env)
-{
-	char	*buff;
-	int		pid;
-	int 	fd2;
-
-	buff = malloc(ft_cmdlen(str) + 1);
-	ft_strlcpy(buff, (str + 2), ft_cmdlen(str) + 1);
-	pid = fork();
-	if (pid == -1)
-		ft_error("fork error");
-	if (pid == 0)
-	{
-		if (dup2(fd, 1) == -1)
-			ft_error("dup2");
-		if (dup2(fd, 2) == -1)
-			ft_error("dup2");
-		close(fd);
-		fd2 = open("/tmp/tmp_hdfile", O_WRONLY | O_CREAT | O_APPEND, 0644);
-		if (dup2(fd2, 0) == -1)
-			ft_error("dup2");
-		close(fd2);
-		ft_exec_hd_cmd(buff, g_env);
-		free(buff);
-		exit(0);
-	}
-	else
-		waitpid(pid, NULL, 0);
-	free(buff);
-}
-
-void	ft_write_hdline(char *str, t_env **g_env, char *file)
-{
-	int		fd;
-
-	fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (fd == -1)
-		ft_error("open");
-	while (*str)
-	{
-		if (*str == '$' && *(str + 1) == '(' && ft_strchr(str, ')'))
-		{
-			ft_hdcmd(str, fd, g_env);
-			str += ft_cmdlen(str) + 3;
-		}
-		else
-		{
-			write(fd, str, 1);
-			if (*(str + 1) == '\0')
-				write(fd, "\n", 1);
-			str++;
-		}
-	}
-	close(fd);
-}
 
 void	ft_heredoc(char *delimiter, char *file, t_env **g_env)
 {
@@ -149,7 +69,7 @@ void	ft_heredoc(char *delimiter, char *file, t_env **g_env)
 	int	fd;
 	(void)g_env;
 	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	handle_signals_bis();
+	// handle_signals_bis();
 	while(1)
 	{
 		
@@ -254,13 +174,13 @@ char *ft_get_file_and_type(t_list *token, int *type, int *hd_index, t_env **g_en
 			waitpid(pid, &status, 0);
 			printf("hdh process finished\n");
 			if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-                {
-                    // If child terminated by SIGINT, refresh readline prompt
+			{
+				// If child terminated by SIGINT, refresh readline prompt
 				printf("test\n");
-                    // rl_replace_line("", 0);
-                    // rl_on_new_line();
-                    // rl_redisplay();
-                }
+				// rl_replace_line("", 0);
+				// rl_on_new_line();
+				// rl_redisplay();
+			}
 			return (hd_file);
 		}
 		else
