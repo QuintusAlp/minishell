@@ -6,13 +6,31 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:51:32 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/09 15:50:12 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/10 12:21:32 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-t_env	*env_match(char *name, t_env **g_env)
+t_env *ft_newvar_export(char *name, char *value, t_env **env)
+{
+	t_env *newvar;
+	t_env	*current;
+
+	newvar = malloc(sizeof(t_env));
+	if (!newvar)
+		return (NULL);
+	newvar->value = ft_strdup(value);
+	newvar->name = ft_strdup(name);
+	newvar->next = NULL;
+	current = *env;
+	while (current->next)
+		current = current->next;
+	current->next = newvar;
+	return (newvar);
+}
+
+static t_env	*env_match(char *name, t_env **g_env)
 {
 	t_env	*current;
 
@@ -25,7 +43,7 @@ t_env	*env_match(char *name, t_env **g_env)
 	}
 	return (NULL);
 }
-t_env *ft_newvar_plusegal(char *name, char *value, t_env **env)
+static t_env *ft_newvar_plusegal(char *name, char *value, t_env **env)
 {
     char    *new_value;
     t_env   *match;

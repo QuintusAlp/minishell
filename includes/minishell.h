@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/05 16:43:19 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/10 12:27:00 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,18 +53,20 @@ t_env   *init_envv(void);
 void	env(t_env **env);
     //exit
 void    ft_exit(char **argv, t_env **env);
-    //export
+    //export_plusegal
+t_env   *ft_newvar_export(char *name, char *value, t_env **env);
+void    ft_addvar_plusegal(char *var, t_env **env);
+    //export_utils
 int    ft_print_exportenv(t_env *env);
-void   ft_varerror(char *var);
+void    update_or_insert(t_env *current, t_env *var, t_env *subvar);
+int     further_check(char *var, int *j, int *plus_egal);
 int    ft_checkarg(char *var, int *plusegal);
-t_env  *ft_newvar(char *name, char *value);
-t_env *ft_newvar_export(char *name, char *value, t_env **env);
-void   ft_lstadd_front_env(t_env **lst, t_env *new);
 void   ft_findplace(t_env *var, t_env *env);
+    //export
+t_env  *ft_newvar(char *name, char *value);
+void   ft_lstadd_front_env(t_env **lst, t_env *new);
 void   ft_addvar(char *var, t_env **env);
 int    export(char **argv, t_env **env);
-    //export_plusegal
-void ft_addvar_plusegal(char *var, t_env **env);
     //pwd
 int     pwd(void);
     //split_str
@@ -75,7 +77,8 @@ void    unset(char **argv, t_env **env);
 int		is_space(char c);
 int     ft_strcmp(const char *s1, const char *s2);
 int     list_size(char **argv); // DO WE USE IT ?
-void    remove_first(char **argv, int *size); // DO WE USE IT ?
+void	ft_lstadd_front_env(t_env **lst, t_env *new);
+void   ft_varerror(char *var);
 // ********** exec **********
     //exec_cmd
 void	ft_exec_cmd(t_cmd *cmd);

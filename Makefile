@@ -1,6 +1,6 @@
 
 SRCS = 	./srcs/builtins/builtins.c ./srcs/builtins/cd.c ./srcs/builtins/cd_utils.c ./srcs/builtins/echo.c \
-		./srcs/builtins/env.c ./srcs/builtins/exit.c ./srcs/builtins/export.c ./srcs/builtins/export_plusegal.c \
+		./srcs/builtins/env.c ./srcs/builtins/exit.c ./srcs/builtins/export.c ./srcs/builtins/export_utils.c ./srcs/builtins/export_plusegal.c \
 		./srcs/builtins/pwd.c ./srcs/builtins/split_str.c ./srcs/builtins/unset.c ./srcs/builtins/utils.c \
 		./srcs/exec/exec_cmd.c ./srcs/exec/exec_pipe.c ./srcs/exec/exec_redir.c ./srcs/exec/execute_ast.c  ./srcs/exec/ft_checkredir.c\
 		./srcs/lexer/lexer_utils.c ./srcs/lexer/lexer.c ./srcs/lexer/trim_tokens.c ./srcs/lexer/checklexing.c\

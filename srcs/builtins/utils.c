@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:34:33 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/01 20:56:48 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/10 12:25:37 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,17 @@ int	list_size(char **argv)
 	while (argv[i])
 		i++;
 	return (i);
+}
+
+void	ft_lstadd_front_env(t_env **lst, t_env *new)
+{
+	new->next = *lst;
+	*lst = new;
+}
+
+void	ft_varerror(char *var)
+{
+	write(2, "bash: export: `", 15);
+	write(2, var, ft_strlen(var));
+	write(2, "': not a valid identifier\n", 26);
 }
