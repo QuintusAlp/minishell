@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/11 12:00:14 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/11 14:38:38 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ void	ft_exec_cmd(t_cmd *cmd);
 char	**ft_lst_to_matrice(t_env **g_env);
 void	ft_free_matrice(char **matrice);
     //exec_pipe
-void	ft_exec_pipe(t_pipe *node, int dupfd, int *cmd_index, int *exitcode);
+void	ft_exec_pipe(t_pipe *node, int dupfd, int *cmd_index);
 void	ft_dup2(int fd1, int fd2);
     //exec_redir
-void	ft_exec_redir(t_redir *redir, int dupfd, int *cmd_index, int *exitcode);
+void	ft_exec_redir(t_redir *redir, int dupfd, int *cmd_index);
     //exec_ast
-void	ft_exec(t_node *node, int dupfd, int *cmd_index, int *exitcode);
-void	ft_execute_ast(t_node *node, int *exitcode);
+void	ft_exec(t_node *node, int dupfd, int *cmd_index);
+void	ft_execute_ast(t_node *node);
     //check redir
 void    ft_checkredir(t_redir *redir);
 // ********** lexer **********
@@ -89,10 +89,10 @@ void	ft_lexer(char *str, t_list **tokens);
     //trim_tokens
     void trim_tokens(t_list *tokens, t_env **g_env);
     //error lexing
-int ft_checklexing(t_list *token, int *exitcode);
+int ft_checklexing(t_list *token);
 // ********** parser **********
     //ast
-t_node	*ft_parsetoken(t_list **token, t_env **g_env, int *hd_index, int *exitcode);
+t_node	*ft_parsetoken(t_list **token, t_env **g_env, int *hd_index);
 void    ast_printer(t_node *node, int level);
     //parse_cmd
 t_node	*ft_cmdnode(char **argv, t_env **g_env, t_list **token);
@@ -106,12 +106,11 @@ int	    ft_strcmp2(char *str, char *str_to_find);
 t_node	*ft_redirnode(char *file, t_node *cmd, int type, t_list **token);
 int     ft_token_isredir(t_list *token);
 t_list  *ft_get_prevredir(t_list *token);
-char    *ft_get_file_and_type(t_list *token, int *type, int *hd_index, int *exitcode);
+char    *ft_get_file_and_type(t_list *token, int *type, int *hd_index, t_env **g_env);
 // ********** signals **********
     //signals
-void    handle_signals(void);
-void handle_child_signals(void);
-void ignore_sigint();
+void ft_set_sig(int mode);
+void rl_redisplay(void);
 void	rl_replace_line(const char *text, int clear_undo);//readline lib
 // ********** free_ast **********
 void	ft_free_ast(t_node *node);
@@ -122,6 +121,7 @@ void	ft_panic(char *str, char *name, int exit_code);
 void	ft_printlst(t_list *e); // for debug
 int	    ft_countheredocs(t_list *token);
 void	ft_del_hdfiles();
+void    ft_pars_and_exec(char *prompt, t_env **g_env);
 // ********** utils **********
 void    error(const char *error);
 void    free_str(char *str);
@@ -134,5 +134,5 @@ char	*ft_itoa(int nbr);
 int  ft_isbuiltins(t_node *node);
 
 //utils :)
-void ft_stats(int pid, int *exitcode);
+void ft_stats(int pid);
 #endif

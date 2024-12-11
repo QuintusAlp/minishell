@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 11:26:20 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/11 11:48:17 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/11 14:54:16 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
+void    handle_signals_bis(void);
 int	ft_strcmp2(char *str, char *str_to_find)
 {
 	int	i;
@@ -62,12 +62,18 @@ t_list	*ft_delheredoc(t_list **token)
 	return (new_lst);
 }
 
-
-void	ft_heredoc(char *delimiter, char *file)
+void ft_exit_hd(int sig)
+{
+	(void)sig;
+	exit(1);
+}
+void	ft_heredoc(char *delimiter, char *file, t_env **g_env)
 {
 	char *buff;
 	int	fd;
+	(void)g_env;
 	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	signal(SIGINT, ft_exit_hd);
 	while(1)
 	{
 		buff = readline("> ");
@@ -140,7 +146,7 @@ t_list	*ft_get_prevredir(t_list *token)
 	return (prev);
 }
 
-char *ft_get_file_and_type(t_list *token, int *type, int *hd_index, int *exitcode)
+char *ft_get_file_and_type(t_list *token, int *type, int *hd_index, t_env **g_env)
 {
 	t_list *start_lst;
 	char *hd_file;
@@ -160,21 +166,14 @@ char *ft_get_file_and_type(t_list *token, int *type, int *hd_index, int *exitcod
 			hd_file = ft_strjoin("/tmp/hd_file", index);
 			free(index);
 			(*hd_index) --;
+			ft_set_sig(2);
 			int pid = fork();
 			if (pid == 0)
 			{
-				ft_heredoc(token->value, hd_file);
+				ft_heredoc(token->value, hd_file, g_env);
 				exit(0);
 			}
-			int status;
-			
-			waitpid(pid, &status, 0);
-			printf("hdh process finished\n");
-			if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-			{
-				printf("test\n");
-				*exitcode = 1;
-			}
+			ft_stats(pid);
 			return (hd_file);
 		}
 		else

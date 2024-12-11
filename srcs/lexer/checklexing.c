@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 13:58:04 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/11 11:37:13 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/09 12:25:52 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ void	terr(char *str, char *u_token)
 	write(2, "\n", 1);
 }
 
-int	ft_checklexing(t_list *token, int *exitcode)
+int	ft_checklexing(t_list *token)
 {
 	if (token && token->type == PIPE)
 	{
-		*exitcode = 258;
+		g_exitcode = 258;
 		terr("bash: syntax error near unexpected token", token->value);
 		return (1);
 	}
@@ -36,13 +36,13 @@ int	ft_checklexing(t_list *token, int *exitcode)
 			if (!token->next)
 			{
 				terr("bash: syntax error near unexpected token", "newline");
-				return (*exitcode = 258, 1);
+				return (g_exitcode = 258, 1);
 			}
 			if ((token->next)->type != WORD)
 			{
 				terr("bash: syntax error near unexpected token",
 					(token->next)->value);
-				return (*exitcode = 258, 1);
+				return (g_exitcode = 258, 1);
 			}
 		}
 		token = token->next;

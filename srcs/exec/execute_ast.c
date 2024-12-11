@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   execute_ast.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 19:01:11 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/11 12:01:20 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/11 14:35:15 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	ft_exec(t_node *node, int dupfd, int *cmd_index, int *exitcode)
+void	ft_exec(t_node *node, int dupfd, int *cmd_index)
 {
 	if (node->type == PIPE)
-		ft_exec_pipe((t_pipe *)node, dupfd, cmd_index, exitcode);
+		ft_exec_pipe((t_pipe *)node, dupfd, cmd_index);
 	if (node->type == CMD)
 		ft_exec_cmd((t_cmd *)node);
 	if (node->type >= I_REDIR && node->type <= HEREDOC)
-		ft_exec_redir((t_redir *)node, dupfd, cmd_index, exitcode);
+		ft_exec_redir((t_redir *)node, dupfd, cmd_index);
 }
 
 static int	ft_check_re(t_redir *redir)
@@ -69,8 +69,12 @@ int	ft_check_isbuiltin(t_node *node)
 		return (0);
 	return (1);
 }
-
-void	ft_execute_ast(t_node *node, int *exitcode)
+// static void    handle_sigint_bis(int signum)
+// {
+// 	(void)signum;
+// 	printf("helooooo\n");
+// }
+void	ft_execute_ast(t_node *node)
 {
 	int	pid;
 	int	cmd_index;
@@ -82,21 +86,21 @@ void	ft_execute_ast(t_node *node, int *exitcode)
 	cmd_index = 0;
 	if (node->type == PIPE)
 	{
-		ft_exec(node, -1, &cmd_index,exitcode);
+		ft_exec(node, -1, &cmd_index);
 		while (wait(NULL) > 0)
 			;
 		return ;
 	}
+	ft_set_sig(3);
 	pid = fork();
 	if (pid == -1)
 		ft_error("fork");
 	if (pid == 0)
 	{
-		
-		ft_exec(node, -1, &cmd_index, exitcode);
+		ft_exec(node, -1, &cmd_index);
 	}
 	else
 	{
-		ft_stats(pid, exitcode);
+		ft_stats(pid);
 	}
 }
