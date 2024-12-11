@@ -6,12 +6,12 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 11:26:20 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/11 14:54:16 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:45:28 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-void    handle_signals_bis(void);
+
 int	ft_strcmp2(char *str, char *str_to_find)
 {
 	int	i;
@@ -28,7 +28,7 @@ int	ft_strcmp2(char *str, char *str_to_find)
 	return (1);
 }
 
-int ft_cmdlen(char *str)
+int	ft_cmdlen(char *str)
 {
 	int	i;
 
@@ -41,8 +41,8 @@ int ft_cmdlen(char *str)
 
 t_list	*ft_delheredoc(t_list **token)
 {
-	t_list *current;
-	t_list *new_lst;
+	t_list	*current;
+	t_list	*new_lst;
 
 	current = *token;
 	new_lst = NULL;
@@ -54,7 +54,8 @@ t_list	*ft_delheredoc(t_list **token)
 		}
 		else
 		{
-			ft_lstadd_back(&new_lst, ft_lstnew(ft_strdup(current->value), current->type));
+			ft_lstadd_back(&new_lst,
+				ft_lstnew(ft_strdup(current->value), current->type));
 			current = current->next;
 		}
 	}
@@ -62,27 +63,29 @@ t_list	*ft_delheredoc(t_list **token)
 	return (new_lst);
 }
 
-void ft_exit_hd(int sig)
+void	ft_exit_hd(int sig)
 {
 	(void)sig;
 	exit(1);
 }
+
 void	ft_heredoc(char *delimiter, char *file, t_env **g_env)
 {
-	char *buff;
-	int	fd;
+	char	*buff;
+	int		fd;
+
 	(void)g_env;
 	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	signal(SIGINT, ft_exit_hd);
-	while(1)
+	while (1)
 	{
 		buff = readline("> ");
 		if (buff == NULL)
 			exit(0);
 		if (ft_strcmp(delimiter, buff) == 0)
-			break;
-		ft_putstr_fd(buff, fd);	
-		ft_putstr_fd("\n", fd);	
+			break ;
+		ft_putstr_fd(buff, fd);
+		ft_putstr_fd("\n", fd);
 		free(buff);
 	}
 	if (buff)
@@ -102,7 +105,7 @@ t_node	*ft_redirnode(char *file, t_node *cmd, int type, t_list **token)
 	return ((t_node *)redir);
 }
 
-int ft_token_isredir(t_list *token)
+int	ft_token_isredir(t_list *token)
 {
 	if (!token)
 		return (0);
@@ -115,7 +118,9 @@ int ft_token_isredir(t_list *token)
 
 int	ft_check_other_redir(t_list *token)
 {
-	t_list 		*tokens = token->next;
+	t_list	*tokens;
+
+	tokens = token->next;
 	while (tokens)
 	{
 		if (ft_token_isredir(tokens))
@@ -138,7 +143,7 @@ t_list	*ft_get_prevredir(t_list *token)
 	token = token->next;
 	if (token && token-> type == WORD)
 		token = token->next;
-	while(token)
+	while (token)
 	{
 		ft_lstadd_back(&prev, ft_lstnew(ft_strdup(token->value), token->type));
 		token = token->next;
@@ -146,39 +151,35 @@ t_list	*ft_get_prevredir(t_list *token)
 	return (prev);
 }
 
-char *ft_get_file_and_type(t_list *token, int *type, int *hd_index, t_env **g_env)
+char	*ft_get_file_and_type(t_list *token, int *type,
+		int *hd_index, t_env **g_env)
 {
-	t_list *start_lst;
-	char *hd_file;
-	char *index;
+	t_list	*start_lst;
+	char	*hd_file;
+	char	*index;
+	int		pid;
 
 	start_lst = token;
-	(void) start_lst; // MODIF TO COMPILE 
 	while (!ft_token_isredir(token))
 		token = token->next;
 	*type = token->type;
 	token = token->next;
-	if (token)
+	if (*type == HEREDOC)
 	{
-		if (*type == HEREDOC)
+		index = ft_itoa(*hd_index);
+		hd_file = ft_strjoin("/tmp/hd_file", index);
+		free(index);
+		(*hd_index)--;
+		ft_set_sig(2);
+		pid = fork();
+		if (pid == 0)
 		{
-			index = ft_itoa(*hd_index);
-			hd_file = ft_strjoin("/tmp/hd_file", index);
-			free(index);
-			(*hd_index) --;
-			ft_set_sig(2);
-			int pid = fork();
-			if (pid == 0)
-			{
-				ft_heredoc(token->value, hd_file, g_env);
-				exit(0);
-			}
-			ft_stats(pid);
-			return (hd_file);
+			ft_heredoc(token->value, hd_file, g_env);
+			exit(0);
 		}
-		else
-			return (ft_strdup(token->value));
+		ft_stats(pid);
+		return (hd_file);
 	}
 	else
-		return (ft_strdup("\n"));
+		return (ft_strdup(token->value));
 }

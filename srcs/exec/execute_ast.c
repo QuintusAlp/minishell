@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 19:01:11 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/11 14:35:15 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:09:10 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,7 @@ int	ft_check_isbuiltin(t_node *node)
 		return (0);
 	return (1);
 }
-// static void    handle_sigint_bis(int signum)
-// {
-// 	(void)signum;
-// 	printf("helooooo\n");
-// }
+
 void	ft_execute_ast(t_node *node)
 {
 	int	pid;
@@ -96,11 +92,7 @@ void	ft_execute_ast(t_node *node)
 	if (pid == -1)
 		ft_error("fork");
 	if (pid == 0)
-	{
 		ft_exec(node, -1, &cmd_index);
-	}
 	else
-	{
 		ft_stats(pid);
-	}
 }
