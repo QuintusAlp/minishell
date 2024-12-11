@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 07:18:36 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/10 13:32:27 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/11 11:01:58 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,30 +83,30 @@ static char	*ft_strndup(const char *s1, int len)
 //     return (result);
 // }
 
-// void    set_flags(char c, t_trim *trim, char **result, int *j)
-// {
-//     if (c == '\'' && trim->in_double == 0)
-//     {
-//         if (!(trim->in_double))
-//             trim->in_single = 1;
-//         else 
-//             trim->in_single = 0;
-//     }
-//     else if (c == '\"' && trim->in_single == 0)
-//     {
-//         if (!(trim->in_double))
-//             trim->in_double = 1;
-//         else
-//             trim->in_double = 0;
-//     }
-//     else
-//     {
-//         *result[*j] = c;
-//         (*j)++;
-//     }
-//     if (c == '\'')
-//         trim->c += 1;
-// }
+void    set_flags(char c, t_trim *trim, char *result, int *j)
+{
+    if (c == '\'' && trim->in_double == 0)
+    {
+        if (!(trim->in_double))
+            trim->in_single = 1;
+        else 
+            trim->in_single = 0;
+    }
+    else if (c == '\"' && trim->in_single == 0)
+    {
+        if (!(trim->in_double))
+            trim->in_double = 1;
+        else
+            trim->in_double = 0;
+    }
+    else
+    {
+        result[*j] = c;
+        (*j)++;
+    }
+    if (c == '\'')
+        trim->c += 1;
+}
 
 static char *trim_quotes(char *str, t_trim *trim)
 {
@@ -121,25 +121,7 @@ static char *trim_quotes(char *str, t_trim *trim)
         return (NULL);
     while (str[i])
     {
-        if (str[i] == '\'' && trim->in_double == 0)
-        {
-            if (!(trim->in_double))
-               trim->in_single = 1;
-            else 
-                trim->in_single = 0;
-        }
-        else if (str[i] == '\"' && trim->in_single == 0)
-        {
-            if (!(trim->in_double))
-                trim->in_double = 1;
-            else
-                trim->in_double = 0;
-        }
-        else 
-            result[j++] = str[i];
-        if (str[i] == '\'')
-            trim->c += 1;
-        // set_flags(str[i], trim, &result, &j);
+        set_flags(str[i], trim, result, &j);
         i++;
     }
     result[j] = '\0';
