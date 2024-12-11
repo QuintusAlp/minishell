@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 07:18:36 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/11 11:01:58 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/11 11:09:15 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,47 +41,6 @@ static char	*ft_strndup(const char *s1, int len)
 	result[i] = '\0';
 	return (result);
 }
-// void ft_putinresult(char *result, char *str, t_trim *trim, int *i, int *j)
-// {
-//     while (str[*i])
-//     {
-//         if (str[*i] == '\'' && trim->in_double == 0)
-//         {
-//             if (!(trim->in_double))
-//                 trim->in_single = 1;
-//             else 
-//                 trim->in_single = 0;
-//         }
-//         else if (str[*i] == '\"' && trim->in_single == 0)
-//         {
-//             if (!(trim->in_double))
-//                 trim->in_double = 1;
-//             else
-//                 trim->in_double = 0;
-//         }
-//         else 
-//             result[*j++] = str[*i];
-//         if (str[*i] == '\'')
-//             trim->c += 1;
-//         (*i)++;
-//     }
-//     result[*j] = '\0';
-// }
-// static char *trim_quotes(char *str, t_trim *trim)
-// {
-//     char    *result;
-//     int     i;
-//     int     j;
-    
-//     i = 0;
-//     j = 0;
-//     result = malloc((ft_strlen(str) + 1) * sizeof(char));
-//     if (!result)
-//         return (NULL);
-//     ft_putinresult(result, str, trim, &i, &j);
-
-//     return (result);
-// }
 
 void    set_flags(char c, t_trim *trim, char *result, int *j)
 {
@@ -152,6 +111,18 @@ char *replace_env_vars(char *str, t_env **g_env, t_trim *trim)
     return (new_str);
 }
 
+void    interrogation(char *new_str, int *j, int *i)
+{
+    char    *exitcode_str;
+    
+    exitcode_str = ft_itoa(g_exitcode);
+    strncpy(&new_str[*j], exitcode_str, ft_strlen(exitcode_str));
+    *j += ft_strlen(exitcode_str);
+    free(exitcode_str);
+    (*i)++;
+
+}
+
 void trim_tokens(t_list *tokens, t_env **g_env)
 {
     char *str;
@@ -180,13 +151,7 @@ void trim_tokens(t_list *tokens, t_env **g_env)
             if (str[i] == '$' && str[i + 1] && (!(trim.in_single) || trim.c == 0))
             {
                 if (str[i + 1] == '?')
-                {
-                    char    *exitcode_str = ft_itoa(g_exitcode);
-                    strncpy(&new_str[j], exitcode_str, ft_strlen(exitcode_str));
-                    j += ft_strlen(exitcode_str);
-                    free(exitcode_str);
-                    i++;
-                }
+                    interrogation(new_str, &j, &i);
                 else 
                 {
                     char *expanded = replace_env_vars(&str[i], g_env, &trim);
