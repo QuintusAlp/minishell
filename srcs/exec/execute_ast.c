@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   execute_ast.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 19:01:11 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/10 16:10:09 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/11 12:01:20 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	ft_exec(t_node *node, int dupfd, int *cmd_index)
+void	ft_exec(t_node *node, int dupfd, int *cmd_index, int *exitcode)
 {
 	if (node->type == PIPE)
-		ft_exec_pipe((t_pipe *)node, dupfd, cmd_index);
+		ft_exec_pipe((t_pipe *)node, dupfd, cmd_index, exitcode);
 	if (node->type == CMD)
 		ft_exec_cmd((t_cmd *)node);
 	if (node->type >= I_REDIR && node->type <= HEREDOC)
-		ft_exec_redir((t_redir *)node, dupfd, cmd_index);
+		ft_exec_redir((t_redir *)node, dupfd, cmd_index, exitcode);
 }
 
 static int	ft_check_re(t_redir *redir)
@@ -69,12 +69,8 @@ int	ft_check_isbuiltin(t_node *node)
 		return (0);
 	return (1);
 }
-// static void    handle_sigint_bis(int signum)
-// {
-// 	(void)signum;
-// 	printf("helooooo\n");
-// }
-void	ft_execute_ast(t_node *node)
+
+void	ft_execute_ast(t_node *node, int *exitcode)
 {
 	int	pid;
 	int	cmd_index;
@@ -86,7 +82,7 @@ void	ft_execute_ast(t_node *node)
 	cmd_index = 0;
 	if (node->type == PIPE)
 	{
-		ft_exec(node, -1, &cmd_index);
+		ft_exec(node, -1, &cmd_index,exitcode);
 		while (wait(NULL) > 0)
 			;
 		return ;
@@ -97,10 +93,10 @@ void	ft_execute_ast(t_node *node)
 	if (pid == 0)
 	{
 		
-		ft_exec(node, -1, &cmd_index);
+		ft_exec(node, -1, &cmd_index, exitcode);
 	}
 	else
 	{
-		ft_stats(pid);
+		ft_stats(pid, exitcode);
 	}
 }

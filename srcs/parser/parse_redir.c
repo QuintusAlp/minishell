@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 11:26:20 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/10 14:15:28 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/11 11:48:17 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-void    handle_signals_bis(void);
+
 int	ft_strcmp2(char *str, char *str_to_find)
 {
 	int	i;
@@ -63,16 +63,13 @@ t_list	*ft_delheredoc(t_list **token)
 }
 
 
-void	ft_heredoc(char *delimiter, char *file, t_env **g_env)
+void	ft_heredoc(char *delimiter, char *file)
 {
 	char *buff;
 	int	fd;
-	(void)g_env;
 	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	// handle_signals_bis();
 	while(1)
 	{
-		
 		buff = readline("> ");
 		if (buff == NULL)
 			exit(0);
@@ -143,7 +140,7 @@ t_list	*ft_get_prevredir(t_list *token)
 	return (prev);
 }
 
-char *ft_get_file_and_type(t_list *token, int *type, int *hd_index, t_env **g_env)
+char *ft_get_file_and_type(t_list *token, int *type, int *hd_index, int *exitcode)
 {
 	t_list *start_lst;
 	char *hd_file;
@@ -166,7 +163,7 @@ char *ft_get_file_and_type(t_list *token, int *type, int *hd_index, t_env **g_en
 			int pid = fork();
 			if (pid == 0)
 			{
-				ft_heredoc(token->value, hd_file, g_env);
+				ft_heredoc(token->value, hd_file);
 				exit(0);
 			}
 			int status;
@@ -175,11 +172,8 @@ char *ft_get_file_and_type(t_list *token, int *type, int *hd_index, t_env **g_en
 			printf("hdh process finished\n");
 			if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 			{
-				// If child terminated by SIGINT, refresh readline prompt
 				printf("test\n");
-				// rl_replace_line("", 0);
-				// rl_on_new_line();
-				// rl_redisplay();
+				*exitcode = 1;
 			}
 			return (hd_file);
 		}

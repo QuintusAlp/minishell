@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/10 16:36:47 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/11 12:33:35 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,30 +63,32 @@ void	ft_del_hdfiles()
 		free(index);
 	}
 }
-void ft_pars_and_exec(char *prompt, t_env **g_env)
+void ft_pars_and_exec(char *prompt, t_env **g_env, int *exitcode)
 {
-	(void)prompt;
 	t_list *tokens;
 	t_node *ast;
 	int		nbr_heredoc;
-	//(void)g_env;
 	if (!prompt)
 		return ;
 	tokens = NULL;
-	// ast = NULL;
+	ast = NULL;
 	ft_lexer(prompt, &tokens);
-	if (ft_checklexing(tokens))
+	if (ft_checklexing(tokens, exitcode))
 		return ;
 	trim_tokens(tokens, g_env);
 	// ft_printlst(tokens);
 	nbr_heredoc = ft_countheredocs(tokens);
-	ast = ft_parsetoken(&tokens, g_env, &nbr_heredoc);
+	ast = ft_parsetoken(&tokens, g_env, &nbr_heredoc, exitcode);
 	// ast_printer(ast, 0);
-	ft_execute_ast(ast);
+	ft_execute_ast(ast, exitcode);if (WIFSIGNALED(stat) && WTERMSIG(stat) == SIGINT)
+	{
+		// printf("child ended width ctrl + c\n");
+		g_exitcode = 130;
+	}
 
 	ft_free_ast(ast);
 	ft_del_hdfiles();
-	// dprintf(2, "final exit code: %d\n", g_exitcode);
+	dprintf(2, "final exit code: %d\n", *exitcode);
 	// system("leaks minishell");
 	return ;
 }
@@ -107,19 +109,22 @@ int main(void)
 {
 	char	*prompt;
 	t_env *g_env;
+	int	exitcode;
 
-	g_exitcode = 0;
+	exitcode = 0;
 	g_env = init_envv();
+	ft_set_sig(1);
 	prompt = readline("😎 \033[1;92mminishell$\033[0m ");
 	while (prompt)
 	{
 		if (prompt && *prompt)
 		{
 			add_history(prompt);
-			ft_pars_and_exec(prompt, &g_env);
+			ft_pars_and_exec(prompt, &g_env, &exitcode);
 		}
 		free(prompt);
-		if (g_exitcode == 0)
+		ft_set_sig(1);
+		if (exitcode == 0)
 			prompt = readline("😎 \033[1;92mminishell$\033[0m ");
 		else
 			prompt = readline("😡 \033[1;92mminishell$\033[0m ");
