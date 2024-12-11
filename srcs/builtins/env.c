@@ -3,32 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:22:35 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/09 14:49:09 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:13:41 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 /*
-	env displays a list of all environmental variables of the sessions and their current values 
-		-> getenv(const char *name) with name = a given environmental variable 
-			--> to retrieve the value of a variable with its name , returns a char *
+	env displays a list of all environmental 
+	variables of the sessions and their current values
+		-> getenv(const char *name) with name = a given environmental variable
+			--> to retrieve the value of a variable with its name ,
+				returns a char *
 */
 
-t_env *	remaining_env(void)
+t_env	*remaining_env(void)
 {
 	t_env	*pwd_struct;
 	t_env	*shlvl_struct;
 	t_env	*_struct;
 	char	*pwd;
 	char	*_value;
-	
+
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
-		return NULL;
+		return (NULL);
 	pwd_struct = ft_newvar(ft_strdup("PWD"), ft_strdup(pwd));
 	_value = ft_strjoin(pwd, "/minishell");
 	free(pwd);
@@ -43,26 +45,26 @@ t_env *	remaining_env(void)
 
 t_env	*add_nodes(t_env *env, t_env *current, t_env *new_node, char **result)
 {
-	extern char **environ;
+	extern char	**environ;
 	int			i;
-	
+
 	if (environ == NULL || (*environ) == NULL)
-		return(remaining_env());
+		return (remaining_env());
 	i = 0;
 	while (environ[i] != NULL)
 	{
 		new_node = (t_env *)malloc(sizeof(t_env));
 		if (!new_node)
-			return(error("Malloc error\n"), NULL);
+			return (error("Malloc error\n"), NULL);
 		result = ft_split(environ[i], '=');
 		if (!result)
-			return(free(new_node), NULL);
-		new_node->name = result[0]; 
+			return (free(new_node), NULL);
+		new_node->name = result[0];
 		new_node->value = result[1];
 		new_node->next = NULL;
 		if (!env)
 			env = new_node;
-		else 
+		else
 			current->next = new_node;
 		current = new_node;
 		i++;
@@ -70,7 +72,7 @@ t_env	*add_nodes(t_env *env, t_env *current, t_env *new_node, char **result)
 	return (env);
 }
 
-t_env *init_envv()
+t_env	*init_envv(void)
 {
 	t_env	*env;
 	t_env	*current;
@@ -87,10 +89,10 @@ t_env *init_envv()
 
 void	env(t_env **env)
 {
-	t_env *var;
+	t_env	*var;
 
-	var =  *env;
-	while(var)
+	var = *env;
+	while (var)
 	{
 		if (var->value)
 		{

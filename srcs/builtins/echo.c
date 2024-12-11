@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:14:27 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/03 14:03:00 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:13:04 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 	Handling the -n option:
 		-> if command == "echo -n <string>"
 		--> if -nnnnnnnnnnn...n then behaves as -n
-		--> if "echo -n" then new cmd line 
-		then no \n after the string 
+		--> if "echo -n" then new cmd line
+		then no \n after the string
 */
 
 int	ft_check_newline(char *arg, int *newline)
@@ -28,9 +28,9 @@ int	ft_check_newline(char *arg, int *newline)
 		return (1);
 	*newline = 0;
 	j = 2;
-	while(arg[j])
+	while (arg[j])
 	{
-		if(arg[j] != 'n')
+		if (arg[j] != 'n')
 		{
 			*newline = 1;
 			return (1);
@@ -40,10 +40,10 @@ int	ft_check_newline(char *arg, int *newline)
 	return (0);
 }
 
-int echo(char **argv)
+int	echo(char **argv)
 {
 	int	i;
-	int newline;
+	int	newline;
 
 	i = 1;
 	newline = 1;

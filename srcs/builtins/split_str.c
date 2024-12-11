@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   split_str.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:02:22 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/09 15:51:00 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:15:51 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
 
 int	ft_charset_check(char c, char *charset)
 {
@@ -84,7 +83,7 @@ char	**ft_split_str(char *str, char *charset)
 
 	i = 0;
 	j = 0;
-	array = (char **) malloc((ft_split_count(str, charset) + 1) 
+	array = (char **)malloc((ft_split_count(str, charset) + 1)
 			* sizeof(char *));
 	if (array == NULL)
 		return (0);
@@ -103,17 +102,3 @@ char	**ft_split_str(char *str, char *charset)
 	array[j] = 0;
 	return (array);
 }
-
-// int main()
-// {
-//     //printf("count: %d\n", ft_count("coucou+=cest+=moi", "+="));
-//     char **data = ft_split_str("coucou+=cest+=moi", "+=");
-//     int i = 0;
-//     while (data[i])
-//     {
-//         printf("string nbr %d: %s\n", i, data[i]);
-//         if (!data[1])
-//             printf("que un string mskn\n");
-//         i++;
-//     }
-// }

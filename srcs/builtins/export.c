@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:51:17 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/10 12:29:01 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:15:19 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 /*
 	1. to create/change an environment variable
 		export MY_VAR="voici la nouvelle valeur"
-	2. to display all exported variables 
+	2. to display all exported variables
 		export
 
 	if "export new=new new2=new2" --> both appears
 */
 
-t_env *ft_newvar(char *name, char *value)
+t_env	*ft_newvar(char *name, char *value)
 {
-	t_env *newvar;
+	t_env	*newvar;
 
 	newvar = malloc(sizeof(t_env));
 	if (!newvar)
@@ -39,7 +39,7 @@ static char	*data1_maker(char **data)
 	int		i;
 	char	*new_value;
 	char	*temp;
-	
+
 	i = 2;
 	new_value = ft_strdup(data[1]);
 	while (data[i])
@@ -57,10 +57,10 @@ static char	*data1_maker(char **data)
 	return (data[1]);
 }
 
-void ft_addvar(char *var, t_env **env)
+void	ft_addvar(char *var, t_env **env)
 {
-	char		**data;
-	t_env		*env_var;
+	char	**data;
+	t_env	*env_var;
 
 	data = ft_split(var, '=');
 	if (data[1] && data[2])
@@ -69,7 +69,7 @@ void ft_addvar(char *var, t_env **env)
 	{
 		data[1] = malloc(1);
 		if (!(data[1]))
-			return;
+			return ;
 		data[1][1] = '\0';
 	}
 	env_var = ft_newvar(data[0], data[1]);
@@ -80,18 +80,18 @@ int	export(char **argv, t_env **env)
 {
 	int	i;
 	int	plus_egal;
-	
+
 	i = 1;
 	plus_egal = 0;
 	if (!argv[i])
 		return (ft_print_exportenv(*env));
-	while(argv[i])
+	while (argv[i])
 	{
 		if (!ft_checkarg(argv[i], &plus_egal))
 		{
 			if (plus_egal == 1)
 				ft_addvar_plusegal(argv[i], env);
-			else 
+			else
 				ft_addvar(argv[i], env);
 		}
 		else
@@ -101,5 +101,5 @@ int	export(char **argv, t_env **env)
 		}
 		i++;
 	}
-	return 0;
+	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:50:24 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/01 20:53:09 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:15:32 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 	using getcwd(char *buf, size_t size)
 */
 
-int pwd(void)
+int	pwd(void)
 {
 	char	*pwd;
 
