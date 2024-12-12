@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:53:14 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/03 10:12:42 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:28:17 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	*ft_getenv(char *name, t_env **g_env)
 	current = *g_env;
 	while (current)
 	{
-		if (ft_strcmp(name, current->name) == 0)
+		if (ft_strncmp(name, current->name, ft_strlen(name)) == 0)
 			return (current->value);
 		current = current->next;
 	}

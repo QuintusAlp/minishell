@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 07:18:36 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/11 14:32:16 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:48:15 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ typedef struct s_trim
     int     end_index;
     int     i;
     int     j;
+    int     flag;
 }   t_trim;
 
 
@@ -98,7 +99,7 @@ char *replace_env_vars(char *str, t_env **g_env, t_trim *trim)
     if (!str[trim->i] || !str[trim->i + 1] || !(ft_isalnum(str[trim->i + 1])))
         return (NULL);
     trim->i++;
-    while (str[trim->i] && (isalnum(str[trim->i]) || str[trim->i] == '_')) 
+    while (str[trim->i] && (isalnum(str[trim->i]) || str[trim->i] == '_' || str[trim->i] == '$')) 
         trim->i++;
     var_name = ft_strndup(&str[1], trim->i - 1);
     env_value = ft_getenv(var_name, g_env);
@@ -122,17 +123,6 @@ static void interrogation(char *new_str, t_trim *trim)
     (trim->i)++;
 }
 
-// static void expanded(char *new_str, int *i, int *j, t_env **g_env)
-// {
-//     char    *expanded;
-    
-//     expanded = replace_env_vars(&str[*i], g_env, &trim);
-//     strncpy(&new_str[*j], expanded, ft_strlen(expanded));
-//     j += ft_strlen(expanded);
-//     free(expanded);
-//     i += trim.end_index - 1;  
-// }
-
 static void    init_trim(t_trim *trim)
 {
     trim->in_double = 0;
@@ -141,7 +131,91 @@ static void    init_trim(t_trim *trim)
     trim->end_index = 0;
     trim->j = 0;
     trim->i = 0;
+    trim->flag = 0;
 }
+
+void    expand_value(char *str, char *new_str, t_env **g_env, t_trim *trim)
+{
+    char    *expanded;
+    int     len;
+
+    expanded = replace_env_vars(&str[trim->i], g_env, trim);
+    len = ft_strlen(expanded);
+    strncpy(&new_str[trim->j], expanded, len);
+    trim->j += len;
+    trim->i = trim->end_index;
+    free(expanded);
+}
+
+static void    cases(char *str,char *new_str, t_trim *trim, t_env **g_env)
+{
+    if (str[trim->i] == '$' && str[trim->i + 1] && (!trim->in_single || trim->c == 0))
+    {
+        trim->flag = 1;
+        if (str[trim->i + 1] == '?')
+            interrogation(new_str, trim);
+        else
+            expand_value(str, new_str, g_env, trim);
+    }
+    else
+    {
+        new_str[trim->j] = str[trim->i];
+        trim->j++;
+    }
+}
+
+char    *expand_var(char *str, t_env **g_env, t_trim *trim)
+{
+    char    *new_str;
+
+    trim->i = 0;
+    trim->j = 0;
+    new_str = malloc(1024 * sizeof(char));
+    if (!new_str)
+        return (NULL);
+    while (str[trim->i])
+    {
+        cases(str, new_str, trim, g_env);
+        trim->i++;
+    }
+    if (trim->flag == 0)
+    {
+        new_str = ft_strdup(str);
+        return (new_str);
+    }
+    new_str[trim->j] = '\0';
+    return (new_str);
+}
+
+char    *process_token(char *str, t_env **g_env, t_trim *trim)
+{
+    char    *trimmed;
+    char    *expanded;
+
+    trimmed = trim_quotes(str, trim);
+    expanded = expand_var(trimmed, g_env, trim);
+    free(trimmed);
+    return (expanded);
+}
+
+void    trim_tokens(t_list *tokens, t_env **g_env)
+{
+    t_trim  trim;
+    char    *str;
+    t_list     *current;
+    
+    init_trim(&trim);
+    current = tokens;
+    while (current)
+    {
+        str = ft_strdup((char *)current->value);
+        free(current->value);
+        current->value = NULL;
+        current->value = process_token(str, g_env, &trim);
+        current = current->next;
+    }
+}
+
 
 // void trim_tokens(t_list *tokens, t_env **g_env)
 // {
@@ -188,84 +262,3 @@ static void    init_trim(t_trim *trim)
 //         tokens = tokens->next;
 //     }  
 // }
-
-void    expand_value(char *str, char *new_str, t_env **g_env, t_trim *trim)
-{
-    char    *expanded;
-    int     len;
-
-    expanded = replace_env_vars(&str[trim->i], g_env, trim);
-    len = ft_strlen(expanded);
-    strncpy(&new_str[trim->j], expanded, len);
-    trim->j += len;
-    trim->i = trim->end_index;
-    free(expanded);
-}
-
-char    *expand_var(char *str, t_env **g_env, t_trim *trim)
-{
-    char    *new_str;
-    int     flag = 0;
-
-    trim->i = 0;
-    trim->j = 0;
-    new_str = malloc(1024 * sizeof(char));
-    if (!new_str)
-        return (NULL);
-    while (str[trim->i])
-    {
-        if (str[trim->i] == '$' && str[trim->i + 1] && (!trim->in_single || trim->c == 0))
-        {
-            flag = 1;
-            if (str[trim->i + 1] == '?')
-                interrogation(new_str, trim);
-            else
-                expand_value(str, new_str, g_env, trim);
-        }
-        else
-        {
-            new_str[trim->j] = str[trim->i];
-            trim->j++;
-        }
-        trim->i++;
-    }
-    if (flag == 0)
-    {
-        new_str = ft_strdup(str);
-        return (new_str);
-    }
-    new_str[trim->j] = '\0';
-    return (new_str);
-}
-
-char    *process_token(char *str, t_env **g_env, t_trim *trim)
-{
-    char    *trimmed;
-    char    *expanded;
-
-    printf("str: %s\n", str);
-    trimmed = trim_quotes(str, trim);
-    printf("trimmed: %s\n", trimmed);
-    expanded = expand_var(trimmed, g_env, trim);
-    printf("expanded: %s\n", expanded);
-    free(trimmed);
-    return (expanded);
-}
-
-void    trim_tokens(t_list *tokens, t_env **g_env)
-{
-    t_trim  trim;
-    char    *str;
-    t_list     *current;
-    
-    init_trim(&trim);
-    current = tokens;
-    while (current)
-    {
-        str = ft_strdup((char *)current->value);
-        free(current->value);
-        current->value = NULL;
-        current->value = process_token(str, g_env, &trim);
-        current = current->next;
-    }
-}
