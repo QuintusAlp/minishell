@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 18:18:18 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/12 16:51:12 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/12 17:10:53 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int ft_len_int(int nbr)
+static int	ft_len_int(int nbr)
 {
 	int	len;
 
@@ -33,7 +33,7 @@ static int ft_len_int(int nbr)
 char	*ft_itoa(int nbr)
 {
 	long	n;
-	int	len;
+	int		len;
 	char	*string;
 
 	n = nbr;
@@ -53,7 +53,7 @@ char	*ft_itoa(int nbr)
 	{
 		len--;
 		string[len] = '0' + (n % 10);
-		n /= 10;	
+		n /= 10;
 	}
 	return (string);
 }

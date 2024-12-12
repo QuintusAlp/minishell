@@ -3,21 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redir.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 12:09:30 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/14 15:08:41 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/09 11:40:14 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-
-//file permission: rwx : 
-// valeurs octals:
-// x: 1
-// w: 2
-// r: 4
 void	ft_exec_redir(t_redir *redir, int dupfd, int *cmd_index)
 {
 	int	fd;

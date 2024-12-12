@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 11:26:20 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/03 10:29:50 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:29:03 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_strcmp2(char *str, char *str_to_find)
 	return (1);
 }
 
-int ft_cmdlen(char *str)
+int	ft_cmdlen(char *str)
 {
 	int	i;
 
@@ -41,8 +41,8 @@ int ft_cmdlen(char *str)
 
 t_list	*ft_delheredoc(t_list **token)
 {
-	t_list *current;
-	t_list *new_lst;
+	t_list	*current;
+	t_list	*new_lst;
 
 	current = *token;
 	new_lst = NULL;
@@ -54,7 +54,8 @@ t_list	*ft_delheredoc(t_list **token)
 		}
 		else
 		{
-			ft_lstadd_back(&new_lst, ft_lstnew(ft_strdup(current->value), current->type));
+			ft_lstadd_back(&new_lst,
+				ft_lstnew(ft_strdup(current->value), current->type));
 			current = current->next;
 		}
 	}
@@ -62,105 +63,34 @@ t_list	*ft_delheredoc(t_list **token)
 	return (new_lst);
 }
 
-void ft_exec_hd_cmd(char *prompt, t_env **g_env)
+void	ft_exit_hd(int sig)
 {
-	t_list *tokens;
-	t_node *ast;
-	int		nbr_heredoc;
-	int		nbr_heredoc_bis;
-
-	(void)nbr_heredoc_bis;
-	if (!prompt)
-		return ;
-	tokens = NULL;
-	ast = NULL;
-	ft_lexer(prompt, &tokens);
-	tokens = ft_delheredoc(&tokens);
-	//ft_printlst(tokens);
-	nbr_heredoc = ft_countheredocs(tokens);
-	nbr_heredoc_bis = nbr_heredoc;
-	ast = ft_parsetoken(&tokens, g_env, &nbr_heredoc);
-	//ast_printer(ast, 0);
-	ft_execute_ast(ast);
-	ft_free_ast(ast);
-	ft_del_hdfiles(); 
-	return ;
-}
-
-void	ft_hdcmd(char *str, int fd, t_env **g_env)
-{
-	char	*buff;
-	int		pid;
-	int 	fd2;
-
-	buff = malloc(ft_cmdlen(str) + 1);
-	ft_strlcpy(buff, (str + 2), ft_cmdlen(str) + 1);
-	pid = fork();
-	if (pid == -1)
-	ft_error("fork error");
-	if (pid == 0)
-	{
-		if (dup2(fd, 1) == -1)
-			ft_error("dup2");
-		if (dup2(fd, 2) == -1)
-			ft_error("dup2");
-		close(fd);
-		fd2 = open("/tmp/tmp_hdfile", O_WRONLY | O_CREAT | O_APPEND, 0644);
-		if (dup2(fd2, 0) == -1)
-			ft_error("dup2");
-		close(fd2);
-		ft_exec_hd_cmd(buff, g_env);
-		free(buff);
-		exit(0);
-	}
-	else
-		waitpid(pid, NULL, 0);
-	free(buff);
-}
-
-void	ft_write_hdline(char *str, t_env **g_env, char *file)
-{
-	int		fd;
-
-	fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (fd == -1)
-		ft_error("open");
-	while (*str)
-	{
-		if (*str == '$' && *(str + 1) == '(' && ft_strchr(str, ')'))
-		{
-			ft_hdcmd(str, fd, g_env);
-			str += ft_cmdlen(str) + 3;
-		}
-		else
-		{
-			write(fd, str, 1);
-			if (*(str + 1) == '\0')
-				write(fd, "\n", 1);
-			str++;
-		}
-	}
-	close(fd);
+	(void)sig;
+	exit(1);
 }
 
 void	ft_heredoc(char *delimiter, char *file, t_env **g_env)
 {
-	char *buff;
-	int	fd;
-		
-	buff = readline("> ");
-	if (ft_strcmp2(buff, delimiter))
+	char	*buff;
+	int		fd;
+
+	(void)g_env;
+	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	signal(SIGINT, ft_exit_hd);
+	while (1)
 	{
-		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		close (fd);
-	}
-	while (!ft_strcmp2(buff, delimiter))
-	{
-		ft_write_hdline(buff, g_env, file);
-		free(buff);
 		buff = readline("> ");
+		if (buff == NULL)
+			exit(0);
+		if (ft_strcmp(delimiter, buff) == 0)
+			break ;
+		ft_putstr_fd(buff, fd);
+		ft_putstr_fd("\n", fd);
+		free(buff);
 	}
-	free (buff);
+	if (buff)
+		free (buff);
+	close(fd);
 }
 
 t_node	*ft_redirnode(char *file, t_node *cmd, int type, t_list **token)
@@ -175,7 +105,7 @@ t_node	*ft_redirnode(char *file, t_node *cmd, int type, t_list **token)
 	return ((t_node *)redir);
 }
 
-int ft_token_isredir(t_list *token)
+int	ft_token_isredir(t_list *token)
 {
 	if (!token)
 		return (0);
@@ -188,7 +118,9 @@ int ft_token_isredir(t_list *token)
 
 int	ft_check_other_redir(t_list *token)
 {
-	t_list 		*tokens = token->next;
+	t_list	*tokens;
+
+	tokens = token->next;
 	while (tokens)
 	{
 		if (ft_token_isredir(tokens))
@@ -211,7 +143,7 @@ t_list	*ft_get_prevredir(t_list *token)
 	token = token->next;
 	if (token && token-> type == WORD)
 		token = token->next;
-	while(token)
+	while (token)
 	{
 		ft_lstadd_back(&prev, ft_lstnew(ft_strdup(token->value), token->type));
 		token = token->next;
@@ -219,39 +151,32 @@ t_list	*ft_get_prevredir(t_list *token)
 	return (prev);
 }
 
-char *ft_get_file_and_type(t_list *token, int *type, int *hd_index, t_env **g_env)
+char	*ft_get_file_and_type(t_list *token, int *type,
+		int *hd_index, t_env **g_env)
 {
-	t_list *start_lst;
-	char *hd_file;
-	char *index;
-	int pid;
+	char	*hd_file;
+	char	*index;
+	int		pid;
 
-	start_lst = token;
-	(void) start_lst; // MODIF TO COMPILE 
 	while (!ft_token_isredir(token))
 		token = token->next;
 	*type = token->type;
 	token = token->next;
-	if (token)
+	if (*type == HEREDOC)
 	{
-		if (*type == HEREDOC)
+		index = ft_itoa(*hd_index);
+		hd_file = ft_strjoin("/tmp/hd_file", index);
+		free(index);
+		(*hd_index)--;
+		ft_set_sig(2);
+		pid = fork();
+		if (pid == 0)
 		{
-			index = ft_itoa(*hd_index);
-			hd_file = ft_strjoin("/tmp/hd_file", index);
-			free(index);
-			(*hd_index) --;
-			pid = fork();
-			if (pid == 0)
-			{
-				ft_heredoc(token->value, hd_file, g_env);
-				exit(0);
-			}
-			waitpid(pid, NULL, 0);
-			return (hd_file);
+			ft_heredoc(token->value, hd_file, g_env);
+			exit(0);
 		}
-		else
-			return (ft_strdup(token->value));
+		ft_stats(pid);
+		return (hd_file);
 	}
-	else
-		return (ft_strdup("\n"));
+	return (ft_strdup(token->value));
 }

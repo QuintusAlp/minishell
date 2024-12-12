@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/12 16:55:52 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/12 17:08:21 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@
 #include <stddef.h>
 #include <limits.h>
 #include <dirent.h>
-
+#include <stdbool.h> 
+#include <signal.h>
+#include <termios.h>
 #ifndef S_ISLNK
 #define S_ISLNK(m) (((m) & S_IFMT) == S_IFLNK)
 #endif
@@ -81,6 +83,8 @@ void   ft_varerror(char *var);
 // ********** exec **********
     //exec_cmd
 void	ft_exec_cmd(t_cmd *cmd);
+char	**ft_lst_to_matrice(t_env **g_env);
+void	ft_free_matrice(char **matrice);
     //exec_pipe
 void	ft_exec_pipe(t_pipe *node, int dupfd, int *cmd_index);
 void	ft_dup2(int fd1, int fd2);
@@ -128,7 +132,8 @@ t_list  *ft_get_prevredir(t_list *token);
 char    *ft_get_file_and_type(t_list *token, int *type, int *hd_index, t_env **g_env);
 // ********** signals **********
     //signals
-void    handle_signals(void);
+void ft_set_sig(int mode);
+void rl_redisplay(void);
 void	rl_replace_line(const char *text, int clear_undo);//readline lib
 // ********** free_ast **********
 void	ft_free_ast(t_node *node);
@@ -152,4 +157,7 @@ char	*ft_strndup(const char *s1, int len);
 
 //crash test functions
 int  ft_isbuiltins(t_node *node);
+
+//utils :)
+void ft_stats(int pid);
 #endif

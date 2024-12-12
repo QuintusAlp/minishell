@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:35:53 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/11 15:13:53 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/12 17:07:30 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,44 +41,39 @@ static int	str_isdigit(char *str)
 
 void	exit_code(char *argv)
 {
-	int	i;
-	int	nbr;
+    int i;
+    uint8_t nbr;
 
-	i = 0;
-	while (argv[i])
-	{
-		if (!(ft_isdigit(argv[i])))
-		{
-			ft_putstr_fd("bash: exit: ", 2);
-			ft_putstr_fd(argv, 2);
-			ft_putstr_fd(": numeric argument required\n", 2);
-			exit(g_exitcode);
-		}
-		i++;
-	}
-	nbr = ft_atoi(argv);
-	if (nbr >= 0 && nbr <= 255)
-		exit(nbr);
-	else if (nbr >= -255 && nbr < 0)
-		exit(256 + nbr);
-	else if (nbr < -255)
-		exit(-nbr % 256);
-	else if (nbr > 255)
-		exit(nbr % 256);
+    i = 0;
+    while (argv[i])
+    {
+        if (!(ft_isdigit(argv[i])) && !(argv[i] == '-' && i == 0))
+        {
+            ft_putstr_fd("bash: exit: ", 2);
+            ft_putstr_fd(argv, 2);
+            ft_putstr_fd(": numeric argument required\n", 2);
+            exit(g_exitcode);
+        }
+        i++;
+    }
+    nbr = ft_atoi(argv);
+    exit (nbr);
 }
 
 void	ft_exit(char **argv, t_env **env)
 {
-	if (argv[1] && argv[2] && str_isdigit(argv[1]) && str_isdigit(argv[2]))
-	{
-		error("exit: too many arguments");
-		return ;
-	}
-	if (*env)
-		free_env(*env);
-	ft_del_hdfiles();
-	if (argv[1])
-		exit_code(argv[1]);
-	else
-		exit(0);
+    if ( argv[1] && argv[2] &&
+            str_isdigit(argv[1]) && str_isdigit(argv[2]))
+        {
+            error("exit: too many arguments");
+            g_exitcode = 1;
+            return ;
+        }
+    if (*env)
+        free_env(*env);
+    ft_del_hdfiles();
+    if (argv[1])
+        exit_code(argv[1]);
+    else 
+        exit(0);
 }

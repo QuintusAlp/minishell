@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/11 14:32:38 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/12 17:09:55 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,23 +69,21 @@ void ft_pars_and_exec(char *prompt, t_env **g_env)
 	t_list *tokens;
 	t_node *ast;
 	int		nbr_heredoc;
-	//(void)g_env;
 	if (!prompt)
 		return ;
 	tokens = NULL;
-	// ast = NULL;
-	
+	ast = NULL;
 	ft_lexer(prompt, &tokens);
-	//ft_printlst(tokens);
+	if (ft_checklexing(tokens))
+		return ;
 	trim_tokens(tokens, g_env);
 	nbr_heredoc = ft_countheredocs(tokens);
 	ast = ft_parsetoken(&tokens, g_env, &nbr_heredoc);
-	// // ast_printer(ast, 0);
+	// ast_printer(ast, 0);
 	ft_execute_ast(ast);
-
 	ft_free_ast(ast);
 	ft_del_hdfiles();
-	dprintf(2, "final exit code: %d\n", g_exitcode);
+	// dprintf(2, "final exit code: %d\n", g_exitcode);
 	// system("leaks minishell");
 	return ;
 }
@@ -108,18 +106,18 @@ int main(void)
 	t_env *g_env;
 
 	g_exitcode = 0;
-	g_env = init_envv(); 
-	handle_signals();
+	g_env = init_envv();
+	ft_set_sig(1);
 	prompt = readline("😎 \033[1;92mminishell$\033[0m ");
 	while (prompt)
 	{
-		handle_signals();
 		if (prompt && *prompt)
 		{
 			add_history(prompt);
 			ft_pars_and_exec(prompt, &g_env);
 		}
 		free(prompt);
+		ft_set_sig(1);
 		if (g_exitcode == 0)
 			prompt = readline("😎 \033[1;92mminishell$\033[0m ");
 		else

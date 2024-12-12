@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_pipe.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 11:26:09 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/10/17 16:21:00 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/09 14:16:42 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_node	*ft_pipenode(t_node *left, t_node *right, t_list **token)
 {
 	t_pipe	*pipe;
-	
+
 	pipe = malloc(sizeof(t_pipe));
 	pipe->type = PIPE;
 	pipe->left = left;
@@ -26,7 +26,7 @@ t_node	*ft_pipenode(t_node *left, t_node *right, t_list **token)
 
 t_list	*ft_get_prevpipe(t_list *token)
 {
-	t_list *prev;
+	t_list	*prev;
 
 	prev = NULL;
 	while (token && token->type != PIPE)
@@ -39,7 +39,7 @@ t_list	*ft_get_prevpipe(t_list *token)
 
 t_list	*ft_get_nextpipe(t_list *token)
 {
-	t_list *next;
+	t_list	*next;
 
 	next = NULL;
 	while (token && token->type != PIPE)
@@ -57,4 +57,3 @@ t_list	*ft_get_nextpipe(t_list *token)
 	}
 	return (next);
 }
-

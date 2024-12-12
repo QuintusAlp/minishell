@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 10:10:24 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/11/18 13:11:45 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/11 14:48:49 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,16 @@ void	ft_dup2(int fd1, int fd2)
 {
 	if (dup2(fd1, fd2) == -1)
 		ft_error("");
+}
+
+void	ft_stats(int pid)
+{
+	int	stat;
+
+	stat = 0;
+	waitpid(pid, &stat, 0);
+	if (WIFEXITED(stat))
+		g_exitcode = WEXITSTATUS(stat);
 }
 
 void	ft_process(t_node *node, int dupfd, int *pipefd, int *cmd_index)
@@ -48,18 +58,13 @@ void	ft_process(t_node *node, int dupfd, int *pipefd, int *cmd_index)
 		ft_exec(node, dupfd, cmd_index);
 	}
 	if (*cmd_index == -1)
-	{
-		int stat = 0;
-		waitpid(pid, &stat, 0);
-		if (WIFEXITED(stat))
-			g_exitcode =  WEXITSTATUS(stat);
-	}
+		ft_stats(pid);
 }
 
 void	ft_exec_pipe(t_pipe *node, int dupfd, int *cmd_index)
 {
 	int	pipefd[2];
-	
+
 	if (pipe(pipefd) == -1)
 		ft_error("pipe");
 	ft_process(node->left, dupfd, pipefd, cmd_index);
