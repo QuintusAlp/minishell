@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 18:18:18 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/02 18:20:47 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:51:12 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,26 @@ char	*ft_itoa(int nbr)
 		n /= 10;	
 	}
 	return (string);
+}
+
+char	*ft_strndup(const char *s1, int len)
+{
+	char	*result;
+	int		i;
+
+    if (!s1)
+        return (NULL);
+    if (len > (int)ft_strlen(s1))
+        len = ft_strlen(s1);
+	result = malloc((len + 1) * sizeof(char));
+	if (!result)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		result[i] = s1[i];
+		i++;
+	}
+	result[i] = '\0';
+	return (result);
 }

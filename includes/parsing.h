@@ -6,12 +6,15 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 10:41:47 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/03 17:38:55 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:55:45 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
+
+#include <stdbool.h>
+
 enum e_char_token
 {
 	PIPE,
@@ -57,6 +60,17 @@ typedef struct	s_node
 }	t_pipe;
 
 extern int rl_catch_signals;
+
+typedef struct s_trim
+{
+    bool    in_single;
+    bool    in_double;
+    int     c;
+    int     end_index;
+    int     i;
+    int     j;
+    int     flag;
+}   t_trim;
 
 //GLOBAL VAR
 int g_exitcode;

@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/10 12:27:00 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:55:52 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@
 #include <stddef.h>
 #include <limits.h>
 #include <dirent.h>
-#include <stdbool.h> 
 
 #ifndef S_ISLNK
 #define S_ISLNK(m) (((m) & S_IFMT) == S_IFLNK)
@@ -102,6 +101,12 @@ char	*ft_get_token(char *s, int *i, int *d_quote, int *s_quote);
 void	ft_lexer(char *str, t_list **tokens);
     //trim_tokens
     void trim_tokens(t_list *tokens, t_env **g_env);
+    //trim_tokens2
+void    set_flags(char c, t_trim *trim, char *result);
+char    *trim_quotes(char *str, t_trim *trim);
+char    *replace_env_vars(char *str, t_env **g_env, t_trim *trim);
+void    interrogation(char *new_str, t_trim *trim);
+void    init_trim(t_trim *trim);
     //error lexing
 int ft_checklexing(t_list *token);
 // ********** parser **********
@@ -143,7 +148,7 @@ void    free_array(char **array);
 char    *ft_getenv(char *name, t_env **g_env);
 // ********** utils2 **********
 char	*ft_itoa(int nbr);
-
+char	*ft_strndup(const char *s1, int len);
 
 //crash test functions
 int  ft_isbuiltins(t_node *node);
