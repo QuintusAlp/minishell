@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:35:53 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/03 10:29:22 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:57:49 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ static int    str_isdigit(char *str)
 void    exit_code(char *argv)
 {
     int i;
-    int nbr;
-    
+    uint8_t nbr;
+
     i = 0;
     while (argv[i])
     {
-        if (!(ft_isdigit(argv[i])))
+        if (!(ft_isdigit(argv[i])) && !(argv[i] == '-' && i == 0))
         {
             ft_putstr_fd("bash: exit: ", 2);
             ft_putstr_fd(argv, 2);
@@ -57,14 +57,7 @@ void    exit_code(char *argv)
         i++;
     }
     nbr = ft_atoi(argv);
-    if (nbr >= 0 && nbr <= 255)
-        exit(nbr);
-    else if (nbr >= -255 && nbr < 0)
-        exit(256 + nbr);
-    else if (nbr < -255)
-        exit(-nbr % 256);
-    else if (nbr > 255)
-        exit(nbr % 256);
+    exit (nbr);
 }
 
 void    ft_exit(char **argv, t_env **env)
@@ -73,6 +66,7 @@ void    ft_exit(char **argv, t_env **env)
             str_isdigit(argv[1]) && str_isdigit(argv[2]))
         {
             error("exit: too many arguments");
+            g_exitcode = 1;
             return ;
         }
     if (*env)

@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:40:11 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/11 14:48:58 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:37:46 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,6 @@ void	ft_exec_cmd(t_cmd *cmd)
 	if (execve(ft_path(cmd->argv[0], c_env), cmd->argv, c_env) == -1)
 	{
 		ft_free_matrice(c_env);
-		ft_panic("cmd not found", cmd->argv[0], 127);
+		ft_panic("command not found", cmd->argv[0], 127);
 	}
 }

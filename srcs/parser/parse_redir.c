@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 11:26:20 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/11 15:45:28 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:29:03 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,12 +154,10 @@ t_list	*ft_get_prevredir(t_list *token)
 char	*ft_get_file_and_type(t_list *token, int *type,
 		int *hd_index, t_env **g_env)
 {
-	t_list	*start_lst;
 	char	*hd_file;
 	char	*index;
 	int		pid;
 
-	start_lst = token;
 	while (!ft_token_isredir(token))
 		token = token->next;
 	*type = token->type;
@@ -180,6 +178,5 @@ char	*ft_get_file_and_type(t_list *token, int *type,
 		ft_stats(pid);
 		return (hd_file);
 	}
-	else
-		return (ft_strdup(token->value));
+	return (ft_strdup(token->value));
 }

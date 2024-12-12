@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:53:14 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/03 10:12:42 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:23:35 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	error(const char *error)
 void	free_str(char *str)
 {
 	if (!str)
-		return;
+		return ;
 	free(str);
 	str = NULL;
 }
@@ -35,7 +35,6 @@ void	free_env(t_env *env)
 	tmp = NULL;
 	while (env)
 	{
-		//printf("%s\n", env->name);
 		tmp = env;
 		free(tmp->name);
 		if (tmp->value)
@@ -51,7 +50,7 @@ void	free_array(char **array)
 
 	i = 0;
 	if (!array)
-		return;
+		return ;
 	while (array[i])
 	{
 		free(array[i]);
