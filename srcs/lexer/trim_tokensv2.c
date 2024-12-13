@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 10:59:12 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/13 15:14:00 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/13 15:19:27 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,18 @@ void    process_dollar(char *str, t_trim *trim, t_env **g_env)
 void    process_singles(char *str, t_trim *trim)
 {
     char    *tmp;
+    char    *tmp2;
     
-    trim->k = trim->i + 1;
-    while (str[trim->k] != '\'')
+    trim->k = 1;
+    while (str[trim->k] != '\'' && str[trim->k])
         trim->k++;
-    tmp = ft_strndup(str, (trim->k - trim->i)); // DOIT SKIP LE PREMIER DONC I ET LE DERNIER DONC K ? 
-    trim->i += ft_strlen(tmp);
-    ft_strjoin(trim->new_str, tmp);
+    tmp = ft_strndup(&str[1], (trim->k - 1));
+    tmp2 = ft_strdup(trim->new_str);
+    trim->new_str = ft_strjoin(tmp2, tmp);
+    trim->i += ft_strlen(tmp) + 2;
+    trim->j += ft_strlen(tmp);
     free(tmp);
+    free(tmp2);
 }
 
 void    process_doubles(char *str, t_trim *trim, t_env **g_env)
@@ -91,10 +95,7 @@ char    *process_token(char *str, t_env **g_env, t_trim *trim)
     {
         
         if (str[trim->i] == '\"')
-        {
-            printf("CC\n");
             process_doubles(&str[trim->i], trim, g_env);
-        }
         else if (str[trim->i] == '\'')
             process_singles(&str[trim->i], trim);
         else if (str[trim->i] == '$' && str[trim->i + 1])
