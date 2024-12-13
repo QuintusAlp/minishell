@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 23:56:01 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/12 17:09:37 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/13 15:47:23 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	ft_set_term(int mode)
 void	ft_default_sig(int sig)
 {
 	(void)sig;
+	g_exitcode = 1;
 	printf("\n");
 	rl_replace_line("", 0);
 	rl_on_new_line();
@@ -47,12 +48,12 @@ void	ft_block(int sig)
 	if (sig == SIGQUIT)
 	{
 		printf("Quit: 3\n");
-		g_exitcode = 131;
+		g_exitcode = 130;
 	}
 	else if (sig == SIGINT)
 	{
 		printf("\n");
-		g_exitcode = 131;
+		g_exitcode = 130;
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 11:37:42 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/09 11:38:39 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/13 11:17:40 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,15 @@ void	ft_free_matrice(char **matrice)
 		free(matrice[i]);
 		i++;
 	}
+}
+void ft_free_paths(char **paths)
+{
+	int i;
+	if (!paths)
+		return ;
+	i = 0;
+	while(paths[i])
+		free(paths[i++]);
+	free(paths);
+	
 }
