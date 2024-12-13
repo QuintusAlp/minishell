@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/12 17:08:21 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:17:00 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,14 +103,21 @@ char	*ft_get_token(char *s, int *i, int *d_quote, int *s_quote);
 
     //lexer
 void	ft_lexer(char *str, t_list **tokens);
-    //trim_tokens
-    void trim_tokens(t_list *tokens, t_env **g_env);
-    //trim_tokens2
-void    set_flags(char c, t_trim *trim, char *result);
-char    *trim_quotes(char *str, t_trim *trim);
-char    *replace_env_vars(char *str, t_env **g_env, t_trim *trim);
-void    interrogation(char *new_str, t_trim *trim);
-void    init_trim(t_trim *trim);
+    //trim_tokensv2
+void trim_tokensv2(t_list *tokens, t_env **g_env);
+    //trim_tokens_env
+char *replace_env_vars(char *str, t_trim *trim, t_env **g_env);
+
+
+//     //trim_tokens
+//     //trim_tokens2
+// void    set_flags(char c, t_trim *trim, char *result);
+// char    *trim_quotes(char *str, t_trim *trim);
+// char    *replace_env_vars(char *str, t_env **g_env, t_trim *trim);
+// void    interrogation(char *new_str, t_trim *trim);
+
+
+
     //error lexing
 int ft_checklexing(t_list *token);
 // ********** parser **********

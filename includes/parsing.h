@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 10:41:47 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/12 17:08:50 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/13 11:17:15 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,10 @@ typedef struct s_trim
     int     end_index;
     int     i;
     int     j;
+	int		k;
     int     flag;
+	char	*new_str;
+	char	*temp;
 }   t_trim;
 
 //GLOBAL VAR

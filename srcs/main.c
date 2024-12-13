@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/12 17:09:55 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:20:53 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void ft_pars_and_exec(char *prompt, t_env **g_env)
 	ft_lexer(prompt, &tokens);
 	if (ft_checklexing(tokens))
 		return ;
-	trim_tokens(tokens, g_env);
+	trim_tokensv2(tokens, g_env);
 	nbr_heredoc = ft_countheredocs(tokens);
 	ast = ft_parsetoken(&tokens, g_env, &nbr_heredoc);
 	// ast_printer(ast, 0);
