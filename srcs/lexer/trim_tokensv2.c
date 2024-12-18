@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   trim_tokensv2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 10:59:12 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/17 16:55:29 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/18 15:30:47 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,83 +14,86 @@
 
 void    add_to_newstr(char *str, t_trim *trim)
 {
-    char    *tmp;
-    
-    tmp = trim->new_str;
-    trim->new_str = ft_strjoin(tmp, str);
-    free (tmp);
-}
-char *process_interrogation(char *str, t_trim *trim)
-{
-    char    *exitcode_str;
-    char    *tmp;
-    char    *result;
-   int     i;
+    char *dup;
 
-    printf("str: %s k dans ?: %d\n", str, trim->k);
-    i = 1;
-    tmp = malloc(ft_strlen(str) * sizeof(char));
-    if (!tmp)  
-        return (NULL);
-    exitcode_str = ft_itoa(g_exitcode);
-    if (str[1])
+    if(!str)
+        return ;
+    dup = trim->new_str;
+    trim->new_str = ft_strjoin(dup, str);
+    free(dup);
+    free(str);
+}
+
+//process dollar
+char *get_env_value(char *var_name, t_env **env)
+{
+    t_env *var;
+
+    var = *env;
+    while(var)
     {
-        printf("yooooo\n");
-        while (str[i])
+        if (!ft_strcmp(var_name, var->name))
         {
-            tmp[i - 1] = str[i];     
-            i++;
+            return (free(var_name), ft_strdup(var->value));
         }
-        tmp[i - 1] = '\0';
+        else
+        var = var->next;
     }
-    printf("temp: %s\n", tmp);
-    result = ft_strjoin(exitcode_str, tmp);
-    free(exitcode_str);
-    free(tmp);
-    printf("result process ?: %s\n", result);
-    return (result);
+    return (free(var_name), NULL);
 }
 
 void    process_dollar(char *str, t_trim *trim, t_env **g_env)
 {
-    char    *tmp;
-    char    *result;
+    char *var;
     int     i;
-    
-    printf("into $: %s\n", str);
-    trim->k = 1;
-    i = 0;
-    tmp = ft_strdup("");
-    while (str[trim->k])
+    int     len;
+
+    if (str[0] == '?')
     {
-        i = 0;
-        while (str[trim->k] != '$' && str[trim->k])
-            tmp[i++] = str[trim->k++];
-        printf("tmp: %s, k after tm: %d\n", tmp, trim->k);
-        printf("tmp[0]: %c\n", tmp[0]);
-        if (tmp[0] == '?')
-        {
-            result = ft_strdup(process_interrogation(tmp, trim)); 
-            printf("apres ? trimk: %d\n", trim->k);
-            add_to_newstr(result, trim);
-            trim->j += ft_strlen(result);
-            trim->k += ft_strlen(tmp);
-            //free (result);
-        }
-        else 
-        {
-            printf("string sent into replace env: %s\n",&str[trim->k]);
-            result = ft_strdup(replace_env_vars(&str[trim->k], trim, g_env));
-        }
-        free(tmp);
-        //trim->k++;
+        var = ft_itoa(g_exitcode);
+        len = 1;
     }
-    printf("result process $: %s\n", result);
-    trim->i += ft_strlen(str);
-    //free (result);
-    printf("new str after strjon: %s\n", trim->new_str);
+    else
+    {
+        len = 0;
+        while (str[len] && str[len] != '$' && str[len] != ' ' 
+                && str[len] != '\'' && str[len] != '\"')
+            len++;
+        var = malloc(len + 1);
+        i = -1;
+        while (i++, i < len)
+            var[i] = str[i];
+        var[i] = '\0';
+        var = get_env_value(var, g_env);
+    }
+    add_to_newstr(var, trim);
+    trim->i += len;
+    trim->k += len;
 }
 
+//process simples str
+void process_simple_str(char *str, t_trim *trim)
+{
+    int len;
+    int i;
+    char *buff;
+
+    len = 0;
+    while (str[len] && str[len] != '\'' && str[len] != '\"' && str[len] != '$')
+        len++;
+    buff = malloc(len + 1);
+    i = 0;
+    while (i < len)
+    {
+        buff[i] = str[i];
+        i++;
+    }
+    buff[i] = '\0';
+    add_to_newstr(buff, trim);
+    trim->i += len;
+    trim->k += len;
+}
+//process singles
 void    process_singles(char *str, t_trim *trim)
 {
     char    *tmp;
@@ -101,94 +104,77 @@ void    process_singles(char *str, t_trim *trim)
     tmp = ft_strndup(&str[1], (trim->k - 1));
     add_to_newstr(tmp, trim);
     trim->i += ft_strlen(tmp) + 2;
-    trim->j += ft_strlen(tmp);
-    free(tmp);
 }
 
+//process double
 void    process_doubles(char *str, t_trim *trim, t_env **g_env)
 {
     char    *tmp;
     char    *result;
-    int     i;
 
     result = ft_strdup("");
     trim->k = 1;
     while (str[trim->k] && str[trim->k] != '\"')
         trim->k++;
-    tmp = ft_strndup(&str[1], (trim->k - 1));  
-    if (ft_strchr (tmp, '$') != NULL)
+    tmp = ft_strndup(&str[1], (trim->k - 1));
+    if (ft_strchr(tmp, '$') != NULL)
     {
-        i = 0;
-        while (tmp[i] && tmp[i] != '$')
+        trim->k = 0;
+        while(trim->k < (int)ft_strlen(tmp))
         {
-            result[i] = tmp[i];
-            i++;
-            trim->i++;
+            if (tmp[trim->k] != '$')
+                process_simple_str(&tmp[trim->k], trim);
+            trim->k += 1;
+            if (trim->k < (int)ft_strlen(tmp))
+                process_dollar(&tmp[trim->k], trim, g_env);
         }
-        add_to_newstr(result, trim);
-        process_dollar(&tmp[i], trim, g_env);
-        trim->i += 2;
-        trim->j += ft_strlen(result);
+        trim->i += 4;
         return ;
     }
-    printf("tmp dans process doubles: %s\n", tmp);
-    add_to_newstr(tmp, trim);
-    printf("new str procces doubles: %s\n", trim->new_str);
-    trim->i += ft_strlen(tmp) + 2;
-    trim->j += ft_strlen(tmp);
+    process_simple_str(tmp, trim);
+    trim->i += 2;
     free(tmp);
 }
 
-
 char    *process_token(char *str, t_env **g_env, t_trim *trim)
 {
-    if (ft_strchr(str, '$') == NULL && ft_strchr(str, '\'') == NULL
-            && ft_strchr(str, '\"') == NULL)
-        return (ft_strdup(str));
+    if (!ft_strchr(str, '$') && !ft_strchr(str, '\'')
+            && !ft_strchr(str, '\"'))
+        return (str);
     while (str[trim->i])
     {
-        
         if (str[trim->i] == '\"')
         {
             process_doubles(&str[trim->i], trim, g_env);
-            printf("i apres process doubles dans grande fct: %d\n", trim->i);
         }
         else if (str[trim->i] == '\'')
         {
             process_singles(&str[trim->i], trim);
-            printf("i apres process singles dans grande fct: %d\n", trim->i);
         }
         else if (str[trim->i] == '$' && str[trim->i + 1])
         {
+            trim->i += 1;
             process_dollar(&str[trim->i], trim, g_env);
-            printf("i apres process $ dans grande fct: %d\n", trim->i);
         }
         else
         {
-            printf("else: i=%d, str: %c\n", trim->i, str[trim->i]);
-            trim->new_str[trim->j++] = str[trim->i++];
+            process_simple_str(&str[trim->i], trim);
         } 
         printf("new_str: %s, i: %d, j: %d\n", trim->new_str, trim->i, trim->j);
-        trim->new_str[trim->j] = '\0';
     }
     return (trim->new_str);
 }
 
 void    init_trim(t_trim *trim)
 {
-    trim->in_double = 0;
-    trim->in_single = 0;
-    trim->c = 0;
-    trim->end_index = 0;
     trim->j = 0;
     trim->i = 0;
     trim->k = 0;
-    trim->flag = 0;
     trim->new_str = ft_strdup("");
     trim->temp = ft_strdup("");
 }
 
-void    trim_tokensv2(t_list *tokens, t_env **g_env)
+void    trim_tokens(t_list *tokens, t_env **g_env)
 {
     t_trim     trim;
     char       *str;
@@ -202,7 +188,6 @@ void    trim_tokensv2(t_list *tokens, t_env **g_env)
         free(current->value);
         current->value = NULL;
         current->value = process_token(str, g_env, &trim);
-        printf("current token value: %s\n", (char *)current->value);
         current = current->next;
     }
 }
