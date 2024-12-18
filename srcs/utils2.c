@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 18:18:18 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/18 17:54:08 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/18 21:10:43 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,20 @@ char	*ft_strndup(const char *s1, int len)
 	}
 	result[i] = '\0';
 	return (result);
+}
+
+char *get_env_value(char *var_name, t_env **env)
+{
+    t_env *var;
+
+    var = *env;
+    while(var)
+    {
+        if (!ft_strcmp(var_name, var->name))
+        {
+            return (ft_strdup(var->value));
+        }
+        var = var->next;
+    }
+    return (NULL);
 }
