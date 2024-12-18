@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 23:56:01 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/12 17:09:37 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:09:01 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	ft_block(int sig)
 	else if (sig == SIGINT)
 	{
 		printf("\n");
-		g_exitcode = 131;
+		g_exitcode = 130;
 	}
 }
 

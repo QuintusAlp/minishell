@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checklexing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 13:58:04 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/09 12:25:52 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:43:10 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	terr(char *str, char *u_token)
 
 int	ft_checklexing(t_list *token)
 {
+	char *buffer;
+	t_list	*next;
 	if (token && token->type == PIPE)
 	{
 		g_exitcode = 258;
@@ -43,6 +45,28 @@ int	ft_checklexing(t_list *token)
 				terr("bash: syntax error near unexpected token",
 					(token->next)->value);
 				return (g_exitcode = 258, 1);
+			}
+		}
+		if (token->type == PIPE)
+		{
+			if (token->next == NULL)
+			{
+				while(1)
+				{
+					buffer = readline("> ");
+					if (!buffer || buffer[0] != '\0')
+						break ;
+				}
+				if (buffer)
+				{
+					printf("buffer: %s\n", buffer);
+					ft_lexer(buffer, &next);
+					printf("okok\n");
+					
+					token->next = next;
+				}
+				else
+					return (1);
 			}
 		}
 		token = token->next;

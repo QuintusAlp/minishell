@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 11:04:17 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/09 12:31:53 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:27:11 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ t_node	*ft_parsetoken(t_list **token, t_env **g_env, int *hd_index)
 	{
 		prev = ft_get_prevpipe(*token);
 		next = ft_get_nextpipe(*token);
+		if (!prev || !next)
+			return(ft_pipenode(NULL, NULL, token));
 		return (ft_pipenode(ft_parsetoken(&prev, g_env, hd_index),
 				ft_parsetoken(&next, g_env, hd_index), token));
 	}

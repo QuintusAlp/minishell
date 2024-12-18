@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:14:27 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/18 17:48:00 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:01:52 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	echo(char  **argv)
 	if (!(argv[1]))
 	{
 		write(1, "\n", 1);
-		return 1;
+		return 0;
 	}
 	i = 1;
 	new_line = option_new_line(argv, &i);
