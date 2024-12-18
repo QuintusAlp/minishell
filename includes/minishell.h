@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/13 12:17:00 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/18 16:47:07 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,11 @@ char	*ft_get_token(char *s, int *i, int *d_quote, int *s_quote);
     //lexer
 void	ft_lexer(char *str, t_list **tokens);
     //trim_tokensv2
+void    add_to_newstr(char *str, t_trim *trim);
+void    init_trim(t_trim *trim);
 void trim_tokensv2(t_list *tokens, t_env **g_env);
-    //trim_tokens_env
-char *replace_env_vars(char *str, t_trim *trim, t_env **g_env);
+char *get_env_value(char *var_name, t_env **env);
+   
 
 
 //     //trim_tokens

@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 18:18:18 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/12 17:10:53 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/18 17:54:08 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ char	*ft_itoa(int nbr)
 	char	*string;
 
 	n = nbr;
+	if (nbr == 0)
+		return (ft_strdup("0"));
 	len = ft_len_int(nbr);
 	string = malloc((len + 1) * sizeof(char));
 	if (string == NULL)
