@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:35:53 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/19 14:57:08 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:01:14 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ void	exit_code(char *argv)
 	i = 0;
 	while (argv[i])
 	{
-		if (!(ft_isdigit(argv[i])) && !(argv[i] == '-' && i == 0) && !(argv[i] != '\"'))
+		if (!(ft_isdigit(argv[i])) && !(argv[i] == '-' && i == 0) 
+				&& !(argv[i] != '\"') && (argv[i] != '\''))
 		{
 			ft_putstr_fd("bash: exit: ", 2);
 			ft_putstr_fd(argv, 2);
