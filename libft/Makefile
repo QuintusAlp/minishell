@@ -21,7 +21,7 @@ NAME	= libft.a
 LIBC	= ar -rcs
 CC		= cc
 RM 		= rm -f
-CFLAGS 	= -Wall -Wextra -Werror
+CFLAGS 	= -Wall -Wextra -Werror -g
 
 GREEN = \033[0;32m
 YELLOW = \033[0;33m

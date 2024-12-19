@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:58:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/19 15:51:46 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/19 16:40:18 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ void	ft_pars_and_exec(char *prompt, t_env **g_env)
 	ft_execute_ast(ast);
 	ft_free_ast(ast);
 	ft_del_hdfiles();
-	// system("leaks minishell");
 	return ;
 }
 
