@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 14:41:39 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/11 13:37:04 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/19 13:33:44 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	ft_lexer(char *str, t_list **tokens)
 	i = 0;
 	d_quote_status = 0;
 	s_quote_status = 0;
-	while (str[i])
+	while (str && str[i])
 	{
 		if (!ft_is_sp(str[i], &d_quote_status, &s_quote_status))
 			ft_lstadd_back(tokens,

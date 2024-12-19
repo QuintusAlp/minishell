@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 23:56:01 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/13 15:47:23 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/19 12:44:45 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,10 @@ void	ft_set_term(int mode)
 void	ft_default_sig(int sig)
 {
 	(void)sig;
-	g_exitcode = 1;
 	printf("\n");
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
+	// rl_replace_line("", 0);
+	// rl_on_new_line();
+	// rl_redisplay();
 }
 
 void	ft_no_actions(int sig)
@@ -48,7 +47,7 @@ void	ft_block(int sig)
 	if (sig == SIGQUIT)
 	{
 		printf("Quit: 3\n");
-		g_exitcode = 130;
+		g_exitcode = 131;
 	}
 	else if (sig == SIGINT)
 	{
@@ -61,21 +60,21 @@ void	ft_set_sig(int mode)
 {
 	if (mode == 1)
 	{
-		signal(SIGINT, ft_default_sig);
-		signal(SIGQUIT, SIG_IGN);
-		ft_set_term(1);
+		// signal(SIGINT, ft_default_sig);
+		// signal(SIGQUIT, SIG_IGN);
+		// ft_set_term(1);
 	}
 	if (mode == 2)
 	{
-		signal(SIGINT, ft_no_actions);
-		signal(SIGQUIT, SIG_IGN);
-		ft_set_term(2);
+		// signal(SIGINT, ft_no_actions);
+		// signal(SIGQUIT, SIG_IGN);
+		// ft_set_term(2);
 	}
 	if (mode == 3)
 	{
-		signal(SIGINT, ft_block);
-		signal(SIGQUIT, ft_block);
-		ft_set_term(2);
+		// signal(SIGINT, ft_block);
+		// signal(SIGQUIT, ft_block);
+		// ft_set_term(2);
 	}
 	else
 		return ;

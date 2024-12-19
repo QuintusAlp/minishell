@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/13 11:19:26 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/18 16:47:07 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ void   ft_varerror(char *var);
 void	ft_exec_cmd(t_cmd *cmd);
 char	**ft_lst_to_matrice(t_env **g_env);
 void	ft_free_matrice(char **matrice);
-void ft_free_paths(char **paths);
     //exec_pipe
 void	ft_exec_pipe(t_pipe *node, int dupfd, int *cmd_index);
 void	ft_dup2(int fd1, int fd2);
@@ -104,14 +103,23 @@ char	*ft_get_token(char *s, int *i, int *d_quote, int *s_quote);
 
     //lexer
 void	ft_lexer(char *str, t_list **tokens);
-    //trim_tokens
-    void trim_tokens(t_list *tokens, t_env **g_env);
-    //trim_tokens2
-void    set_flags(char c, t_trim *trim, char *result);
-char    *trim_quotes(char *str, t_trim *trim);
-char    *replace_env_vars(char *str, t_env **g_env, t_trim *trim);
-void    interrogation(char *new_str, t_trim *trim);
+    //trim_tokensv2
+void    add_to_newstr(char *str, t_trim *trim);
 void    init_trim(t_trim *trim);
+void trim_tokensv2(t_list *tokens, t_env **g_env);
+char *get_env_value(char *var_name, t_env **env);
+   
+
+
+//     //trim_tokens
+//     //trim_tokens2
+// void    set_flags(char c, t_trim *trim, char *result);
+// char    *trim_quotes(char *str, t_trim *trim);
+// char    *replace_env_vars(char *str, t_env **g_env, t_trim *trim);
+// void    interrogation(char *new_str, t_trim *trim);
+
+
+
     //error lexing
 int ft_checklexing(t_list *token);
 // ********** parser **********

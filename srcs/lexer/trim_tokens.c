@@ -3,89 +3,210 @@
 /*                                                        :::      ::::::::   */
 /*   trim_tokens.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/07 07:18:36 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/12 16:52:31 by marlonco         ###   ########.fr       */
+/*   Created: 2024/12/13 10:59:12 by marlonco          #+#    #+#             */
+/*   Updated: 2024/12/18 17:25:19 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void    expand_value(char *str, char *new_str, t_env **g_env, t_trim *trim)
+
+//process dollar
+void    process_dollar(char *str, t_trim *trim, t_env **g_env)
 {
-    char    *expanded;
+    char *var;
+    int     i;
     int     len;
 
-    expanded = replace_env_vars(&str[trim->i], g_env, trim);
-    len = ft_strlen(expanded);
-    strncpy(&new_str[trim->j], expanded, len);
-    trim->j += len;
-    trim->i = trim->end_index;
-    free(expanded);
-}
-
-static void    cases(char *str,char *new_str, t_trim *trim, t_env **g_env)
-{
-    if (str[trim->i] == '$' && str[trim->i + 1] && (!trim->in_single || trim->c == 0))
+    if (str[0] == '?')
     {
-        trim->flag = 1;
-        if (str[trim->i + 1] == '?')
-            interrogation(new_str, trim);
-        else
-            expand_value(str, new_str, g_env, trim);
+        var = ft_itoa(g_exitcode);
+        len = 1;
     }
     else
     {
-        new_str[trim->j] = str[trim->i];
-        trim->j++;
+        len = 0;
+        while (str[len] && str[len] != '$' && str[len] != ' ' 
+                && str[len] != '\'' && str[len] != '\"')
+            len++;
+        var = malloc(len + 1);
+        i = -1;
+        while (i++, i < len)
+            var[i] = str[i];
+        var[i] = '\0';
+        var = get_env_value(var, g_env);
     }
+    add_to_newstr(var, trim);
+    trim->i += len;
+    trim->k += len;
 }
 
-char    *expand_var(char *str, t_env **g_env, t_trim *trim)
+//process simples str
+void process_simple_str(char *str, t_trim *trim)
 {
-    char    *new_str;
+    int len;
+    int i;
+    char *buff;
 
-    trim->i = 0;
-    trim->j = 0;
-    new_str = malloc(1024 * sizeof(char));
-    if (!new_str)
-        return (NULL);
-    while (str[trim->i])
+    len = 0;
+    while (str[len] && str[len] != '\'' && str[len] != '\"' && str[len] != '$')
+        len++;
+    buff = malloc(len + 1);
+    i = 0;
+    while (i < len)
     {
-        cases(str, new_str, trim, g_env);
-        trim->i++;
+        buff[i] = str[i];
+        i++;
     }
-    if (trim->flag == 0)
+    buff[i] = '\0';
+    add_to_newstr(buff, trim);
+    trim->i += len;
+    trim->k += len;
+}
+//process singles
+void    process_singles(char *str, t_trim *trim)
+{
+    char    *tmp;
+    
+    trim->k = 1;
+    while (str[trim->k] != '\'')
+        trim->k++;
+    tmp = ft_strndup(&str[1], (trim->k - 1));
+    add_to_newstr(tmp, trim);
+    trim->i += ft_strlen(tmp) + 2;
+}
+
+//process double
+int ft_dolar(char *str, t_trim *trim, t_env **g_env)
+{
+    char *var;
+    int len;
+    int i;
+
+    if (str[0] == '?')
     {
-        new_str = ft_strdup(str);
-        return (new_str);
+        var = ft_itoa(g_exitcode);
+        len = 1;
     }
-    new_str[trim->j] = '\0';
-    return (new_str);
+    else
+    {
+        len = 0;
+        while (str[len] && str[len] != '$' && str[len] != ' ' && str[len] != '\"' && str[len] != '\'')
+            len++;
+        var = malloc(len + 1);
+        i = -1;
+        while (i++, i < len)
+            var[i] = str[i];
+        var[i] = '\0';
+        var = get_env_value(var, g_env);
+    }
+    add_to_newstr(var, trim);
+    return len;
+}
+int ft_str(char *str, t_trim *trim)
+{
+    int len;
+    int i;
+    char *buff;
+
+    len = 0;
+    while (str[len] && str[len] != '\"' && str[len] != '$')
+        len++;
+    buff = malloc(len + 1);
+    i = 0;
+    while (i < len)
+    {
+        buff[i] = str[i];
+        i++;
+    }
+    buff[i] = '\0';
+    add_to_newstr(buff, trim);
+    return (len);
+}
+void    process_doubles(char *str, t_trim *trim, t_env **g_env)
+{
+    char    *tmp;
+    char    *result;
+
+    result = ft_strdup("");
+    trim->k = 1;
+    while (str[trim->k] && str[trim->k] != '\"')
+        trim->k++;
+    tmp = ft_strndup(&str[1], (trim->k - 1));
+    if (ft_strchr(tmp, '$') != NULL)
+    {
+        trim->k = 0;
+        while(trim->k < (int)ft_strlen(tmp))
+        {
+            if (tmp[trim->k] == '$')
+            {
+                trim->k += 1;
+                trim->k += ft_dolar(&tmp[trim->k], trim, g_env);
+            }
+            else
+            {
+               trim->k += ft_str(&tmp[trim->k], trim);
+            }
+        }
+        trim->i += trim->k;
+        trim->i += 2;
+        return ;
+    }
+    process_simple_str(tmp, trim);
+    trim->i += 2;
+    free(tmp);
 }
 
 char    *process_token(char *str, t_env **g_env, t_trim *trim)
 {
-    char    *trimmed;
-    char    *expanded;
-
-    trimmed = trim_quotes(str, trim);
-    expanded = expand_var(trimmed, g_env, trim);
-    free(trimmed);
-    return (expanded);
+    printf("TOKEN VALUE:%s\n", str);
+    if (!ft_strchr(str, '$') && !ft_strchr(str, '\'')
+            && !ft_strchr(str, '\"'))
+        return (str);
+    printf("while and i = %d\n", trim->i);
+    while (str[trim->i])
+    {
+        printf("str[%i] = %c\n", trim->i, str[trim->i]);
+        if (str[trim->i] == '\"')
+        {
+            printf("double process\n");
+            process_doubles(&str[trim->i], trim, g_env);
+        }
+        else if (str[trim->i] == '\'')
+        {
+             printf("singles process\n");
+            process_singles(&str[trim->i], trim);
+        }
+        else if (str[trim->i] == '$' && str[trim->i + 1])
+        {
+            trim->i += 1;
+             printf("dollar process\n");
+            process_dollar(&str[trim->i], trim, g_env);
+        }
+        else
+        {
+             printf("str process\n");
+            process_simple_str(&str[trim->i], trim);
+        } 
+        printf("new_str: %s, i: %d, j: %d\n", trim->new_str, trim->i, trim->j);
+    }
+    printf("end of while\n");
+    return (trim->new_str);
 }
 
-void    trim_tokens(t_list *tokens, t_env **g_env)
+void    trim_tokensv2(t_list *tokens, t_env **g_env)
 {
-    t_trim  trim;
-    char    *str;
+    t_trim     trim;
+    char       *str;
     t_list     *current;
     
-    init_trim(&trim);
+    
     current = tokens;
     while (current)
     {
+        init_trim(&trim);
         str = ft_strdup((char *)current->value);
         free(current->value);
         current->value = NULL;
@@ -93,50 +214,3 @@ void    trim_tokens(t_list *tokens, t_env **g_env)
         current = current->next;
     }
 }
-
-
-// void trim_tokens(t_list *tokens, t_env **g_env)
-// {
-//     char *str;
-//     char *new_str;
-//     int  i;
-//     int  j;
-//     t_trim  trim;
-
-//     i = 0;
-//     j = 0;
-//     init_trim(&trim);
-//     while (tokens) 
-//     {
-//         str = (char *)tokens->value;
-//         str = trim_quotes(str, &trim);
-//         new_str = malloc(1024 * sizeof(char));
-//         if (!new_str)
-//             return;
-//         i = 0;
-//         j = 0;
-//          while (str[i])
-//          {
-//             if (str[i] == '$' && str[i + 1] && (!(trim.in_single) || trim.c == 0))
-//             {
-//                 if (str[i + 1] == '?')
-//                     interrogation(new_str, &j, &i);
-//                 else 
-//                 {
-//                     //char *expanded = replace_env_vars(&str[i], g_env, &trim);
-//                     strncpy(&new_str[j], replace_env_vars(&str[i], g_env, &trim), ft_strlen(replace_env_vars(&str[i], g_env, &trim)));
-//                     j += ft_strlen(replace_env_vars(&str[i], g_env, &trim));
-//                     //free(expanded);
-//                     i += trim.end_index - 1;  
-//                 }
-//             } 
-//             else
-//                 new_str[j++] = str[i];
-//             i++;
-//         }
-//         new_str[j] = '\0';
-//         free(tokens->value);
-//         tokens->value = new_str;
-//         tokens = tokens->next;
-//     }  
-// }

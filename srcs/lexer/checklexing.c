@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 13:58:04 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/09 12:25:52 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/19 13:34:51 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,35 @@ void	terr(char *str, char *u_token)
 	write(2, "\'", 1);
 	write(2, "\n", 1);
 }
+int ft_checkpipe(t_list *token)
+{
+	char 	*buffer;
+	t_list	*next;
 
-int	ft_checklexing(t_list *token)
+	next = NULL;
+	if (token->type != PIPE)
+		return 0;
+	if (token->next == NULL)
+	{
+		while(1)
+		{
+			buffer = readline("> ");
+			if (!buffer || buffer[0] != '\0')
+				break ;
+		}
+		if (buffer)
+		{
+			ft_lexer(buffer, &next);
+			if (ft_checklexing(next))
+				return 1;
+			token->next = next;
+		}
+		else
+			return (1);
+	}
+	return (0);
+}
+int ft_check_firstnode(t_list *token)
 {
 	if (token && token->type == PIPE)
 	{
@@ -29,6 +56,13 @@ int	ft_checklexing(t_list *token)
 		terr("bash: syntax error near unexpected token", token->value);
 		return (1);
 	}
+	else
+		return 0;
+}
+int	ft_checklexing(t_list *token)
+{
+	if (ft_check_firstnode(token))
+		return (1);
 	while (token)
 	{
 		if (token->type >= I_REDIR && token->type <= HEREDOC)
@@ -45,6 +79,8 @@ int	ft_checklexing(t_list *token)
 				return (g_exitcode = 258, 1);
 			}
 		}
+		if (ft_checkpipe(token))
+			return (1);
 		token = token->next;
 	}
 	return (0);
