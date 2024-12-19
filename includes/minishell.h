@@ -32,6 +32,7 @@
 #include <stdbool.h> 
 #include <signal.h>
 #include <termios.h>
+#include <stdint.h>
 #ifndef S_ISLNK
 #define S_ISLNK(m) (((m) & S_IFMT) == S_IFLNK)
 #endif

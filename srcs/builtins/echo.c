@@ -53,7 +53,7 @@ bool	option_new_line(char **args, int *p)
 	return (result);
 }
 
-int	echo(char  **argv)
+int	echo(char **argv)
 {
 	bool	new_line;
 	int		i;
@@ -62,7 +62,7 @@ int	echo(char  **argv)
 	if (!(argv[1]))
 	{
 		write(1, "\n", 1);
-		return 0;
+		return (0);
 	}
 	i = 1;
 	new_line = option_new_line(argv, &i);
@@ -76,5 +76,5 @@ int	echo(char  **argv)
 	}
 	if (new_line == false)
 		write(1, "\n", 1);
-	return 0;
+	return (0);
 }

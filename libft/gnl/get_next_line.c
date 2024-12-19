@@ -59,7 +59,7 @@ void	ft_bzero(char *str, int size)
 char	*get_next_line(int fd)
 {
 	char		*str;
-	char static	buffer[BUFFER_SIZE + 1];
+	static char	buffer[BUFFER_SIZE + 1];
 	int			rd;
 
 	if ((fd < 0 || fd > OPEN_MAX) || BUFFER_SIZE < 0)

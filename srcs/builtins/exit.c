@@ -41,39 +41,38 @@ static int	str_isdigit(char *str)
 
 void	exit_code(char *argv)
 {
-    int i;
-    uint8_t nbr;
+	int		i;
+	uint8_t	nbr;
 
-    i = 0;
-    while (argv[i])
-    {
-        if (!(ft_isdigit(argv[i])) && !(argv[i] == '-' && i == 0))
-        {
-            ft_putstr_fd("bash: exit: ", 2);
-            ft_putstr_fd(argv, 2);
-            ft_putstr_fd(": numeric argument required\n", 2);
-            exit(g_exitcode);
-        }
-        i++;
-    }
-    nbr = ft_atoi(argv);
-    exit (nbr);
+	i = 0;
+	while (argv[i])
+	{
+		if (!(ft_isdigit(argv[i])) && !(argv[i] == '-' && i == 0))
+		{
+			ft_putstr_fd("bash: exit: ", 2);
+			ft_putstr_fd(argv, 2);
+			ft_putstr_fd(": numeric argument required\n", 2);
+			exit(g_exitcode);
+		}
+		i++;
+	}
+	nbr = ft_atoi(argv);
+	exit(nbr);
 }
 
 void	ft_exit(char **argv, t_env **env)
 {
-    if ( argv[1] && argv[2] &&
-            str_isdigit(argv[1]) && str_isdigit(argv[2]))
-        {
-            error("exit: too many arguments");
-            g_exitcode = 1;
-            return ;
-        }
-    if (*env)
-        free_env(*env);
-    ft_del_hdfiles();
-    if (argv[1])
-        exit_code(argv[1]);
-    else 
-        exit(0);
+	if (argv[1] && argv[2] && str_isdigit(argv[1]) && str_isdigit(argv[2]))
+	{
+		error("exit: too many arguments");
+		g_exitcode = 1;
+		return ;
+	}
+	if (*env)
+		free_env(*env);
+	ft_del_hdfiles();
+	if (argv[1])
+		exit_code(argv[1]);
+	else
+		exit(0);
 }

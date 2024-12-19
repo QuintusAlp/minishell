@@ -53,8 +53,8 @@ char	*ft_itoa(int nbr)
 	}
 	while (n > 0)
 	{
-		len--;
-		string[len] = '0' + (n % 10);
+		//len--;
+		string[--len] = '0' + (n % 10);
 		n /= 10;
 	}
 	return (string);
@@ -65,10 +65,10 @@ char	*ft_strndup(const char *s1, int len)
 	char	*result;
 	int		i;
 
-    if (!s1)
-        return (NULL);
-    if (len > (int)ft_strlen(s1))
-        len = ft_strlen(s1);
+	if (!s1)
+		return (NULL);
+	if (len > (int)ft_strlen(s1))
+		len = ft_strlen(s1);
 	result = malloc((len + 1) * sizeof(char));
 	if (!result)
 		return (NULL);
@@ -82,18 +82,18 @@ char	*ft_strndup(const char *s1, int len)
 	return (result);
 }
 
-char *get_env_value(char *var_name, t_env **env)
+char	*get_env_value(char *var_name, t_env **env)
 {
-    t_env *var;
+	t_env	*var;
 
-    var = *env;
-    while(var)
-    {
-        if (!ft_strcmp(var_name, var->name))
-        {
-            return (ft_strdup(var->value));
-        }
-        var = var->next;
-    }
-    return (NULL);
+	var = *env;
+	while (var)
+	{
+		if (!ft_strcmp(var_name, var->name))
+		{
+			return (ft_strdup(var->value));
+		}
+		var = var->next;
+	}
+	return (NULL);
 }

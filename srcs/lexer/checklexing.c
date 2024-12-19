@@ -23,8 +23,9 @@ void	terr(char *str, char *u_token)
 
 int	ft_checklexing(t_list *token)
 {
-	char *buffer;
+	char	*buffer;
 	t_list	*next;
+
 	if (token && token->type == PIPE)
 	{
 		g_exitcode = 258;
@@ -51,7 +52,7 @@ int	ft_checklexing(t_list *token)
 		{
 			if (token->next == NULL)
 			{
-				while(1)
+				while (1)
 				{
 					buffer = readline("> ");
 					if (!buffer || buffer[0] != '\0')
@@ -62,7 +63,6 @@ int	ft_checklexing(t_list *token)
 					printf("buffer: %s\n", buffer);
 					ft_lexer(buffer, &next);
 					printf("okok\n");
-					
 					token->next = next;
 				}
 				else

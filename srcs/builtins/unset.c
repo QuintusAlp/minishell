@@ -35,7 +35,7 @@ void	ft_delvar(char *varname, t_env **env)
 	current = *env;
 	prev = NULL;
 	if (strcmp(varname, "_") == 0)
-		return;
+		return ;
 	while (current)
 	{
 		if (!strcmp(current->name, varname))
