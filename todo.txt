@@ -1,7 +1,0 @@
-g_exit status in signals ?
-verifier exit code
-eport gerer les characterers admis.
-flag process
-ctrl + \ dans child process
-
-entrer "test" comme prompt -> trop bizare

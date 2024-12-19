@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 10:41:47 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/13 11:17:15 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/19 16:01:20 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
-
-#include <stdbool.h>
+# include <stdbool.h>
 
 enum e_char_token
 {

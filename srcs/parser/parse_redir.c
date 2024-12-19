@@ -6,92 +6,11 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 11:26:20 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/12 16:29:03 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:55:35 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-int	ft_strcmp2(char *str, char *str_to_find)
-{
-	int	i;
-
-	if (!str)
-		return (0);
-	i = 0;
-	while ((str[i] && str[i] != '\n') || str_to_find[i])
-	{
-		if (str[i] != str_to_find[i])
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-int	ft_cmdlen(char *str)
-{
-	int	i;
-
-	i = 0;
-	str = str + 2;
-	while (str[i] != ')')
-		i++;
-	return (i);
-}
-
-t_list	*ft_delheredoc(t_list **token)
-{
-	t_list	*current;
-	t_list	*new_lst;
-
-	current = *token;
-	new_lst = NULL;
-	while (current)
-	{
-		if (current->type == HEREDOC)
-		{
-			current = current->next->next;
-		}
-		else
-		{
-			ft_lstadd_back(&new_lst,
-				ft_lstnew(ft_strdup(current->value), current->type));
-			current = current->next;
-		}
-	}
-	ft_lstclear(token, &free);
-	return (new_lst);
-}
-
-void	ft_exit_hd(int sig)
-{
-	(void)sig;
-	exit(1);
-}
-
-void	ft_heredoc(char *delimiter, char *file, t_env **g_env)
-{
-	char	*buff;
-	int		fd;
-
-	(void)g_env;
-	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	signal(SIGINT, ft_exit_hd);
-	while (1)
-	{
-		buff = readline("> ");
-		if (buff == NULL)
-			exit(0);
-		if (ft_strcmp(delimiter, buff) == 0)
-			break ;
-		ft_putstr_fd(buff, fd);
-		ft_putstr_fd("\n", fd);
-		free(buff);
-	}
-	if (buff)
-		free (buff);
-	close(fd);
-}
 
 t_node	*ft_redirnode(char *file, t_node *cmd, int type, t_list **token)
 {

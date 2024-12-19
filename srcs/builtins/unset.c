@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:55:32 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/13 10:45:00 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:56:06 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	ft_delvar(char *varname, t_env **env)
 	current = *env;
 	prev = NULL;
 	if (strcmp(varname, "_") == 0)
-		return;
+		return ;
 	while (current)
 	{
 		if (!strcmp(current->name, varname))

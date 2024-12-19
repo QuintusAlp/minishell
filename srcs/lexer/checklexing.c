@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checklexing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 13:58:04 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/19 13:34:51 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:01:08 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,18 @@ void	terr(char *str, char *u_token)
 	write(2, "\'", 1);
 	write(2, "\n", 1);
 }
-int ft_checkpipe(t_list *token)
+
+int	ft_checkpipe(t_list *token)
 {
-	char 	*buffer;
+	char	*buffer;
 	t_list	*next;
 
 	next = NULL;
 	if (token->type != PIPE)
-		return 0;
+		return (0);
 	if (token->next == NULL)
 	{
-		while(1)
+		while (1)
 		{
 			buffer = readline("> ");
 			if (!buffer || buffer[0] != '\0')
@@ -40,7 +41,7 @@ int ft_checkpipe(t_list *token)
 		{
 			ft_lexer(buffer, &next);
 			if (ft_checklexing(next))
-				return 1;
+				return (1);
 			token->next = next;
 		}
 		else
@@ -48,7 +49,8 @@ int ft_checkpipe(t_list *token)
 	}
 	return (0);
 }
-int ft_check_firstnode(t_list *token)
+
+int	ft_check_firstnode(t_list *token)
 {
 	if (token && token->type == PIPE)
 	{
@@ -57,8 +59,9 @@ int ft_check_firstnode(t_list *token)
 		return (1);
 	}
 	else
-		return 0;
+		return (0);
 }
+
 int	ft_checklexing(t_list *token)
 {
 	if (ft_check_firstnode(token))

@@ -1,41 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   trim_tokens_utils2.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/09 11:15:12 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/19 16:00:13 by qalpesse         ###   ########.fr       */
+/*   Created: 2024/12/19 15:26:04 by qalpesse          #+#    #+#             */
+/*   Updated: 2024/12/19 15:27:26 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../../includes/minishell.h"
 
-char	*ft_strdup(const char *s1)
+void	process_singles(char *str, t_trim *trim)
 {
-	char	*coppy;
-	int		i;
+	char	*tmp;
 
-	if (!s1)
-		return (NULL);
-	coppy = malloc((ft_strlen((char *)s1) + 1) * sizeof(char));
-	if (!coppy)
-		return (0);
-	i = 0;
-	while (s1[i])
-	{
-		coppy[i] = s1[i];
-		i++;
-	}
-	coppy[i] = '\0';
-	return (coppy);
+	trim->k = 1;
+	while (str[trim->k] != '\'')
+		trim->k++;
+	tmp = ft_strndup(&str[1], (trim->k - 1));
+	add_to_newstr(tmp, trim);
+	trim->i += ft_strlen(tmp) + 2;
 }
-
-/*
-#include <stdio.h>
-int main(void)
-{
-	
-	printf("%s", ft_strdup(NULL));
-}*/

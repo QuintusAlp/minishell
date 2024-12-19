@@ -1,12 +1,12 @@
 /* ************************************************************************** */
-/*                                                                            */
+/*	                                                                          */
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 18:18:18 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/18 17:54:08 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:34:46 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,7 @@ char	*ft_itoa(int nbr)
 	}
 	while (n > 0)
 	{
-		len--;
-		string[len] = '0' + (n % 10);
+		string[--len] = '0' + (n % 10);
 		n /= 10;
 	}
 	return (string);
@@ -65,10 +64,10 @@ char	*ft_strndup(const char *s1, int len)
 	char	*result;
 	int		i;
 
-    if (!s1)
-        return (NULL);
-    if (len > (int)ft_strlen(s1))
-        len = ft_strlen(s1);
+	if (!s1)
+		return (NULL);
+	if (len > (int)ft_strlen(s1))
+		len = ft_strlen(s1);
 	result = malloc((len + 1) * sizeof(char));
 	if (!result)
 		return (NULL);

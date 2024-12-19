@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 12:44:51 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/04/16 11:12:54 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/19 16:00:46 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 	element = start_list;
 	while (lst)
 	{
-		element->value= f(lst->value);
+		element->value = f(lst->value);
 		lst = lst->next;
 		if (lst)
 		{
