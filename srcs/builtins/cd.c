@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:14:49 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/19 17:21:23 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/20 18:54:10 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,11 +108,11 @@ void	cd(char **argv, t_env **env)
 	input = &argv[1];
 	if (list_size(input) > 1 || list_size(input) < 0)
 		error("cd: too may arguments");
-	if (list_size(input) == 0)
+	if (list_size(input) == 0 || ft_strncmp(*input, "--", ft_strlen(*input)) == 0)
 		only_cd(env);
-	else if (ft_strncmp(input[0], "-", INT_MAX) == 0)
+	else if (ft_strncmp(*input, "-", ft_strlen(*input)) == 0)
 		minus_cd(env);
-	else if (ft_strncmp(&input[0][0], "~", 1) == 0)
+	else if (ft_strncmp(*input, "~", ft_strlen(*input)) == 0)
 		tilde_cd(input[0], env);
 	else
 		basic_cd(input[0], env);
