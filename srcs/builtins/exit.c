@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:35:53 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/20 17:09:08 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/20 18:11:29 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,29 +56,31 @@ int checkargvexit(char *str)
 void	exit_code(char *argv)
 {
 	int		i;
+	int		count;
 	uint8_t	nbr;
+	char	*trimmed;
 
 	i = 0;
-	// while (argv[i])
-	// {
-	// 	if (!(ft_isdigit(argv[i])) && !(argv[i] == '-' && i == 0) && !(is_space(argv[i])))
-	// 	{
-	// 		printf("COYCOUY\n");
-	// 		ft_putstr_fd("bash: exit: ", 2);
-	// 		ft_putstr_fd(argv, 2);
-	// 		ft_putstr_fd(": numeric argument required\n", 2);
-	// 		exit(g_exitcode);
-	// 	}
-	// 	i++;
-	// }
-	// if (checkargvexit(argv[i]))
-	// {
-	// 	printf("COYCOUY\n");
-	// 	ft_putstr_fd("bash: exit: ", 2);
-	// 	ft_putstr_fd(argv, 2);
-	// 	ft_putstr_fd(": numeric argument required\n", 2);
-	// 	exit(g_exitcode);
-	// }
+	count = 0;
+	trimmed = ft_strdup(argv);
+	while (is_space(*trimmed))
+		trimmed++;
+	printf("argv:%s\n", argv);
+	while (trimmed[i])
+	{
+		if (!(ft_isdigit(trimmed[i])) && !(trimmed[i] == '-' && i == 0) && !(is_space(trimmed[i])))
+		{
+			ft_putstr_fd("bash: exit: ", 2);
+			ft_putstr_fd(trimmed, 2);
+			ft_putstr_fd(": numeric argument required\n", 2);
+			return ;
+		}
+		if (ft_isdigit(trimmed[i]) && (i = 0 || is_space(trimmed[i - 1])))
+			count++;
+		i++;
+	}
+	if (count > 1)
+		return (ft_putstr_fd("bash: exit: too many arguments\n", 2));
 	nbr = ft_atoi(argv);
 	exit (nbr);
 }
