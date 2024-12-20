@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:35:53 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/20 18:11:29 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/20 18:45:04 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,14 @@ int checkargvexit(char *str)
 		return 1;
 	return 0;
 }
+
+void	display_error(char *str)
+{
+		ft_putstr_fd("bash: exit: ", 2);
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
+}
+
 void	exit_code(char *argv)
 {
 	int		i;
@@ -65,28 +73,25 @@ void	exit_code(char *argv)
 	trimmed = ft_strdup(argv);
 	while (is_space(*trimmed))
 		trimmed++;
-	printf("argv:%s\n", argv);
 	while (trimmed[i])
 	{
-		if (!(ft_isdigit(trimmed[i])) && !(trimmed[i] == '-' && i == 0) && !(is_space(trimmed[i])))
-		{
-			ft_putstr_fd("bash: exit: ", 2);
-			ft_putstr_fd(trimmed, 2);
-			ft_putstr_fd(": numeric argument required\n", 2);
-			return ;
-		}
-		if (ft_isdigit(trimmed[i]) && (i = 0 || is_space(trimmed[i - 1])))
+		if (trimmed[i] != '\0' && !(ft_isdigit(trimmed[i])) 
+			&& !(trimmed[i] == '-' && i == 0) && !(is_space(trimmed[i])))
+			return(display_error(trimmed));
+		if (trimmed[i] != '\0' && ft_isdigit(trimmed[i]) 
+			&& (i == 0 || is_space(trimmed[i - 1])))
 			count++;
 		i++;
 	}
 	if (count > 1)
-		return (ft_putstr_fd("bash: exit: too many arguments\n", 2));
+		return(display_error(trimmed));
 	nbr = ft_atoi(argv);
 	exit (nbr);
 }
 
 void	ft_exit(char **argv, t_env **env)
 {
+	(void)env;
 	if (argv[1] && argv[2] && str_isdigit(argv[1])
 		&& str_isdigit(argv[2]))
 	{
@@ -94,8 +99,6 @@ void	ft_exit(char **argv, t_env **env)
 		g_exitcode = 1;
 		return ;
 	}
-	if (*env)
-		free_env(*env);
 	ft_del_hdfiles();
 	if (argv[1])
 		exit_code(argv[1]);
