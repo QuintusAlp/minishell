@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:34:33 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/11 15:16:30 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/20 16:52:54 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	is_space(char c)
 {
-	if (!c)
-		return (0);
+	// if (!c)
+	// 	return (0);
 	if (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\v'
 		|| c == '\f')
 		return (1);

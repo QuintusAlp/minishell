@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:35:53 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/19 16:50:24 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/20 17:09:08 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,25 +38,47 @@ static int	str_isdigit(char *str)
 	}
 	return (result);
 }
+int checkargvexit(char *str)
+{
+	int i;
 
+	i = 0;
+	while(is_space(str[i]))
+		i++;
+	if (str[i] != '0')
+		return 1;
+	while(is_space(str[i]))
+		i++;
+	if (str[i] != '\0')
+		return 1;
+	return 0;
+}
 void	exit_code(char *argv)
 {
 	int		i;
 	uint8_t	nbr;
 
 	i = 0;
-	while (argv[i])
-	{
-		if (!(ft_isdigit(argv[i])) && !(argv[i] == '-' && i == 0)
-			&& !(argv[i] != '\'') && (argv[i] != '\"'))
-		{
-			ft_putstr_fd("bash: exit: ", 2);
-			ft_putstr_fd(argv, 2);
-			ft_putstr_fd(": numeric argument required\n", 2);
-			exit(g_exitcode);
-		}
-		i++;
-	}
+	// while (argv[i])
+	// {
+	// 	if (!(ft_isdigit(argv[i])) && !(argv[i] == '-' && i == 0) && !(is_space(argv[i])))
+	// 	{
+	// 		printf("COYCOUY\n");
+	// 		ft_putstr_fd("bash: exit: ", 2);
+	// 		ft_putstr_fd(argv, 2);
+	// 		ft_putstr_fd(": numeric argument required\n", 2);
+	// 		exit(g_exitcode);
+	// 	}
+	// 	i++;
+	// }
+	// if (checkargvexit(argv[i]))
+	// {
+	// 	printf("COYCOUY\n");
+	// 	ft_putstr_fd("bash: exit: ", 2);
+	// 	ft_putstr_fd(argv, 2);
+	// 	ft_putstr_fd(": numeric argument required\n", 2);
+	// 	exit(g_exitcode);
+	// }
 	nbr = ft_atoi(argv);
 	exit (nbr);
 }
