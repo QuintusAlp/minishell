@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 12:16:28 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/11 15:15:03 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/20 16:42:54 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,7 @@ void	ft_findplace(t_env *env, t_env *var)
 	subvar = NULL;
 	while (current)
 	{
-		if (ft_strcmp((current)->name, var->name) == 0 || (((current)->next)
-				&& ft_strcmp(((current)->next)->name, var->name) > 0))
+		if (ft_strcmp((current)->name, var->name) == 0)
 		{
 			update_or_insert(current, var, subvar);
 			return ;
