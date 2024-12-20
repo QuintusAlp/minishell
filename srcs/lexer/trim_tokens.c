@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 10:59:12 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/19 15:06:21 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/19 17:47:21 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,7 @@ int	ft_str(char *str, t_trim *trim)
 void	process_doubles(char *str, t_trim *trim, t_env **g_env)
 {
 	char	*tmp;
-	char	*result;
 
-	result = ft_strdup("");
 	trim->k = 1;
 	while (str[trim->k] && str[trim->k] != '\"')
 		trim->k++;
@@ -133,7 +131,10 @@ void	trim_tokensv2(t_list *tokens, t_env **g_env)
 		str = ft_strdup((char *)current->value);
 		free(current->value);
 		current->value = NULL;
-		current->value = process_token(str, g_env, &trim);
+		if (ft_strncmp(str, "~", ft_strlen(str)) == 0)
+			current->value = ft_strdup(get_env_value("HOME", g_env));
+		else
+			current->value = process_token(str, g_env, &trim);
 		current = current->next;
 	}
 }

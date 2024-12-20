@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/19 16:10:17 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/19 17:35:11 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,11 @@ void	ft_varerror(char *var);
 //********** exec **********
 // exec_cmd
 void	ft_exec_cmd(t_cmd *cmd);
+// exec_cmd_utils
+int		ft_genv_size(t_env *var);
 char	**ft_lst_to_matrice(t_env **g_env);
 void	ft_free_matrice(char **matrice);
+void	ft_free_paths(char **paths);
 // exec_pipe
 void	ft_exec_pipe(t_pipe *node, int dupfd, int *cmd_index);
 void	ft_dup2(int fd1, int fd2);

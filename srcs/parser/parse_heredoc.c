@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 15:53:05 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/19 15:55:46 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/19 16:56:54 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ void	ft_heredoc(char *delimiter, char *file, t_env **g_env)
 		new_buff = process_token(buff, g_env, &trim);
 		if (ft_strcmp(delimiter, new_buff) == 0)
 			break ;
-		printf("new_buff: %s\n", new_buff);
 		ft_putstr_fd(new_buff, fd);
 		ft_putstr_fd("\n", fd);
 		free(buff);

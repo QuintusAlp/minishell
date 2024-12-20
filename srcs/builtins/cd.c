@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:14:49 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/11 15:12:49 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/19 17:21:23 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,25 @@ static int	only_cd(t_env **env)
 static int	minus_cd(t_env **env)
 {
 	t_env	*oldpwd_var;
+	t_env	*pwd_var;
 
 	oldpwd_var = find_key("OLDPWD", env);
-	if (oldpwd_var && oldpwd_var->value)
+	pwd_var = find_key("PWD", env);
+	if (!oldpwd_var || !oldpwd_var->value)
+		return (ft_putstr_fd("bash: cd: OLDPWD not set\n", 2), 1);
+	if (chdir((const char *)oldpwd_var) != 0)
 	{
-		if (chdir((const char *)oldpwd_var) != 0)
-			return (perror("cd"), 1);
-		update_envv("OLDPWD", find_key("PWD", env)->value, env);
-		update_envv("PWD", oldpwd_var->value, env);
+		ft_putstr_fd(pwd_var->value, 1);
+		ft_putchar_fd('\n', 1);
 	}
 	else
-		return (ft_putstr_fd("bash: cd: OLDPWD not set\n", 2), 1);
+	{
+		if (pwd_var && pwd_var->value)
+			update_envv("OLDPWD", find_key("PWD", env)->value, env);
+		update_envv("PWD", oldpwd_var->value, env);
+		ft_putstr_fd(oldpwd_var->value, 1);
+		ft_putchar_fd('\n', 1);
+	}
 	return (0);
 }
 

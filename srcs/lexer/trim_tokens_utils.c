@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 15:32:43 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/19 15:19:10 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/19 17:03:34 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ char	*get_env_value(char *var_name, t_env **env)
 	{
 		if (!ft_strcmp(var_name, var->name))
 		{
-			return (free(var_name), ft_strdup(var->value));
+			return (ft_strdup(var->value));
 		}
 		else
 			var = var->next;
 	}
-	return (free(var_name), NULL);
+	return (NULL);
 }
 
 void	add_to_newstr(char *str, t_trim *trim)
