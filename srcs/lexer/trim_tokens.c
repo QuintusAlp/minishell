@@ -13,34 +13,6 @@
 #include "../../includes/minishell.h"
 
 //process double
-int	ft_dolar(char *str, t_trim *trim, t_env **g_env)
-{
-	char	*var;
-	int		len;
-	int		i;
-
-	trim->k += 1;
-	if (str[0] == '?')
-	{
-		var = ft_itoa(g_exitcode);
-		len = 1;
-	}
-	else
-	{
-		len = 0;
-		while (str[len] && str[len] != '$' && str[len] != ' '
-			&& str[len] != '\"' && str[len] != '\'')
-			len++;
-		var = malloc(len + 1);
-		i = -1;
-		while (i++, i < len)
-			var[i] = str[i];
-		var[i] = '\0';
-		var = get_env_value(var, g_env);
-	}
-	add_to_newstr(var, trim);
-	return (len);
-}
 
 int	ft_str(char *str, t_trim *trim)
 {
@@ -77,7 +49,7 @@ void	process_doubles(char *str, t_trim *trim, t_env **g_env)
 		while (trim->k < (int)ft_strlen(tmp))
 		{
 			if (tmp[trim->k] == '$')
-				trim->k += ft_dolar(&tmp[trim->k + 1], trim, g_env);
+				trim->k += process_dollar(&tmp[trim->k], trim, g_env);
 			else
 				trim->k += ft_str(&tmp[trim->k], trim);
 		}
@@ -98,22 +70,15 @@ char	*process_token(char *str, t_env **g_env, t_trim *trim)
 	while (str[trim->i])
 	{
 		if (str[trim->i] == '\"')
-		{
 			process_doubles(&str[trim->i], trim, g_env);
-		}
 		else if (str[trim->i] == '\'')
-		{
 			process_singles(&str[trim->i], trim);
-		}
-		else if (str[trim->i] == '$' && str[trim->i + 1])
+		else if (str[trim->i] == '$')
 		{
-			trim->i += 1;
-			process_dollar(&str[trim->i], trim, g_env);
+			trim->i += process_dollar(&str[trim->i], trim, g_env);
 		}
 		else
-		{
 			process_simple_str(&str[trim->i], trim);
-		}
 	}
 	return (trim->new_str);
 }

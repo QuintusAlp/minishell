@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/19 17:35:11 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/21 19:43:01 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	add_to_newstr(char *str, t_trim *trim);
 void	init_trim(t_trim *trim);
 void	trim_tokensv2(t_list *tokens, t_env **g_env);
 char	*get_env_value(char *var_name, t_env **env);
-void	process_dollar(char *str, t_trim *trim, t_env **g_env);
+int		process_dollar(char *str, t_trim *trim, t_env **g_env);
 void	process_simple_str(char *str, t_trim *trim);
 void	process_singles(char *str, t_trim *trim);
 char	*process_token(char *str, t_env **g_env, t_trim *trim);

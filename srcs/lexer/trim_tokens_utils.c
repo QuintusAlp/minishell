@@ -41,32 +41,30 @@ void	add_to_newstr(char *str, t_trim *trim)
 		free(dup);
 }
 
-void	init_trim(t_trim *trim)
+int	ft_handle_exitdollar(char **var)
 {
-	trim->j = 0;
-	trim->i = 0;
-	trim->k = 0;
-	trim->new_str = ft_strdup("");
-	trim->temp = ft_strdup("");
+	*var = ft_itoa(g_exitcode);
+	return (1);
 }
 
-void	process_dollar(char *str, t_trim *trim, t_env **g_env)
+int	process_dollar(char *str, t_trim *trim, t_env **g_env)
 {
 	char	*var;
 	int		i;
 	int		len;
 
+	str++;
+	var = NULL;
+	len = 0;
 	if (str[0] == '?')
-	{
-		var = ft_itoa(g_exitcode);
-		len = 1;
-	}
+		len += ft_handle_exitdollar(&var);
 	else
 	{
-		len = 0;
 		while (str[len] && str[len] != '$' && str[len] != ' '
 			&& str[len] != '\'' && str[len] != '\"')
 			len++;
+		if (len == 0)
+			return (add_to_newstr(ft_strdup("$"), trim), 1);
 		var = malloc(len + 1);
 		i = -1;
 		while (i++, i < len)
@@ -75,8 +73,7 @@ void	process_dollar(char *str, t_trim *trim, t_env **g_env)
 		var = get_env_value(var, g_env);
 	}
 	add_to_newstr(var, trim);
-	trim->i += len;
-	trim->k += len;
+	return (len + 1);
 }
 
 void	process_simple_str(char *str, t_trim *trim)
