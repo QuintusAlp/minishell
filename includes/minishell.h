@@ -6,7 +6,7 @@
 /*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:59:52 by qalpesse          #+#    #+#             */
-/*   Updated: 2024/12/21 19:43:01 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/23 17:57:11 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,10 @@ t_env	*ft_newvar_export(char *name, char *value, t_env **env);
 void	ft_addvar_plusegal(char *var, t_env **env);
 // export_utils
 int		ft_print_exportenv(t_env *env);
-void	update_or_insert(t_env *current, t_env *var, t_env *subvar);
+void		update_or_insert(t_env *current, t_env *var);
 int		further_check(char *var, int *j, int *plus_egal);
 int		ft_checkarg(char *var, int *plusegal);
-void	ft_findplace(t_env *var, t_env *env);
+void	ft_findplace(t_env **env, t_env *var);
 // export
 t_env	*ft_newvar(char *name, char *value);
 void	ft_lstadd_front_env(t_env **lst, t_env *new);

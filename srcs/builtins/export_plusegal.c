@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_plusegal.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:51:32 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/11 15:14:49 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/23 18:06:48 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ static t_env	*ft_newvar_plusegal(char *name, char *value, t_env **env)
 		return (ft_newvar_export(name, value, env));
 	else
 	{
+		if (!match->value)
+			match->value = ft_strdup("");
 		new_value = ft_strjoin(match->value, value);
 		free(match->value);
 		match->value = ft_strdup(new_value);
@@ -97,5 +99,5 @@ void	ft_addvar_plusegal(char *var, t_env **env)
 	env_var = ft_newvar_plusegal(data[0], data[1], env);
 	if (!env_var)
 		return ;
-	ft_findplace(*env, env_var);
+	ft_findplace(env, env_var);
 }

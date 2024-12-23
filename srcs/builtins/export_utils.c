@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 12:16:28 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/20 16:42:54 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/23 18:10:05 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,11 @@ int	ft_print_exportenv(t_env *env)
 	return (0);
 }
 
-void	update_or_insert(t_env *current, t_env *var, t_env *subvar)
+void	update_or_insert(t_env *current, t_env *var)
 {
+	t_env	*subvar;
+
+	subvar = NULL;
 	if (ft_strcmp((current)->name, var->name) == 0)
 	{
 		if (var->value)
@@ -92,25 +95,31 @@ int	ft_checkarg(char *var, int *plus_egal)
 	return (0);
 }
 
-void	ft_findplace(t_env *env, t_env *var)
+void	ft_findplace(t_env **env, t_env *var)
 {
-	t_env	*subvar;
 	t_env	*current;
+	t_env	*prev;
 
-	current = env;
-	subvar = NULL;
-	while (current)
+	current = *env;
+	prev = NULL;
+	while (current && ft_strcmp(current->name, var->name) <= 0)
 	{
-		if (ft_strcmp((current)->name, var->name) == 0)
+		if (ft_strcmp(((current))->name, var->name) == 0)
 		{
-			update_or_insert(current, var, subvar);
+			update_or_insert((current), var);
 			return ;
 		}
-		if ((current)->next == NULL)
-		{
-			(current)->next = var;
-			return ;
-		}
-		current = (current)->next;
+		prev = current;
+		current = current->next;
+	}
+	if (prev == NULL)
+	{
+		var->next = *env;
+		*env = var;
+	}
+	else
+	{
+		prev->next = var;
+		var->next = current;
 	}
 }

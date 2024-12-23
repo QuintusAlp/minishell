@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:22:35 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/20 17:08:37 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/23 18:10:50 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_env	*add_nodes(t_env *env, t_env *current, t_env *new_node, char **result)
 		result = ft_split(environ[i], '=');
 		if (!result)
 			return (free(new_node), NULL);
-		if (!ft_strcmp("SHLVL", result[0]))// si jamais c'est la variable shell level on la gere differament
+		if (!ft_strcmp("SHLVL", result[0]))
 		{
 			new_node->name = result[0];
 			new_node->value = ft_itoa(ft_atoi(result[1]) + 1);
