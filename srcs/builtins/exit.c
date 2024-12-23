@@ -6,7 +6,7 @@
 /*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:35:53 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/23 22:59:24 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/23 23:26:41 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,16 +75,16 @@ void	exit_code(char *argv)
 		trimmed++;
 	while (trimmed[i])
 	{
-		if (trimmed[i] != '\0' && !(ft_isdigit(trimmed[i])) 
-			&& !(trimmed[i] == '-' && i == 0) && !(is_space(trimmed[i]))
-			&& !(trimmed[i] == '+'))
-			return(display_error(trimmed));
 		if (trimmed[i] != '\0' && ft_isdigit(trimmed[i]) 
-			&& (i == 0 || is_space(trimmed[i - 1])))
+			&& i > 0 && is_space(trimmed[i - 1]))
 			count++;
+		if (trimmed[i] != '\0' && !(ft_isdigit(trimmed[i])) 
+			&& (trimmed[i] != '-' && i == 0) && !(is_space(trimmed[i]))
+			&& (trimmed[i] != '+' && i == 0))
+			return(display_error(trimmed));
 		i++;
 	}
-	if (count > 1)
+	if (count >= 1)
 		return(display_error(trimmed));
 	nbr = ft_atoi(argv);
 	exit (nbr);
