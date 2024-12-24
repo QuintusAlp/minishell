@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:14:49 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/24 08:29:45 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/24 10:36:22 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,10 @@ static int	minus_cd(t_env **env)
 	t_env	*oldpwd_var;
 	t_env	*pwd_var;
 
+	printf("icic\n");
 	oldpwd_var = find_key("OLDPWD", env);
 	pwd_var = find_key("PWD", env);
-	if (!oldpwd_var || !oldpwd_var->value)
+	if (!oldpwd_var || !oldpwd_var->value || oldpwd_var->value[0] == '\0')
 		return (ft_putstr_fd("bash: cd: OLDPWD not set\n", 2), 1);
 	if (chdir((const char *)oldpwd_var) != 0)
 	{
@@ -107,14 +108,15 @@ void	cd(char **argv, t_env **env)
 	char	**input;
 
 	input = &argv[1];
+	if (!find_key("PWD", env))
+		return ;
 	if (list_size(input) > 1 || list_size(input) < 0)
-		return (error("cd: too may arguments"));
-	if (list_size(input) == 0
-		|| ft_strncmp(*input, "--", ft_strlen(*input)) == 0)
+		error("cd: too may arguments");
+	if (list_size(input) == 0 || ft_strncmp(input[0], "--", INT_MAX) == 0)
 		only_cd(env);
-	else if (ft_strncmp(*input, "-", ft_strlen(*input)) == 0)
+	else if (ft_strncmp(input[0], "-", INT_MAX) == 0)
 		minus_cd(env);
-	else if (ft_strncmp(*input, "~", ft_strlen(*input)) == 0)
+	else if (ft_strncmp(input[0], "~", INT_MAX) == 0)
 		tilde_cd(input[0], env);
 	else
 		basic_cd(input[0], env);

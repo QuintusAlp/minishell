@@ -7,7 +7,6 @@ SRCS = 	./srcs/builtins/builtins.c ./srcs/builtins/cd.c ./srcs/builtins/cd_utils
 		./srcs/parser/ast.c ./srcs/parser/parse_cmd.c ./srcs/parser/parse_pipe.c ./srcs/parser/parse_redir.c ./srcs/parser/parse_heredoc.c\
 		./srcs/signals/signals.c \
 		./srcs/free_ast.c ./srcs/ft_error.c ./srcs/main.c ./srcs/utils.c ./srcs/utils2.c \
-		# ./srcs/lexer/trim_tokens.c ./srcs/lexer/trim_tokens2.c
 		
 
 
@@ -18,7 +17,7 @@ LIB = make -C ./libft
 INCS = includes
 CC = gcc
 RM = rm -rf
-CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address -g3
+CFLAGS = -Wall -Wextra -Werror
 NAME = minishell
 
 ARCH := $(shell uname -m)

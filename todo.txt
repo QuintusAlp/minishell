@@ -1,3 +1,0 @@
-fix exit : " 2 2 " "   02" tout les trucs dans le genre
-cd --
-expender -> faut verifier
