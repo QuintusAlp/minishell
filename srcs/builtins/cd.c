@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:14:49 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/20 18:54:10 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/24 08:29:45 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ static int	basic_cd(char *path, t_env **env)
 		ft_putstr_fd("bash: cd: no such file or directory: ", 2);
 		ft_putstr_fd(path, 2);
 		ft_putchar_fd('\n', 2);
+		g_exitcode = 1;
 		return (1);
 	}
 	if (chdir(path) != 0)
@@ -107,8 +108,9 @@ void	cd(char **argv, t_env **env)
 
 	input = &argv[1];
 	if (list_size(input) > 1 || list_size(input) < 0)
-		error("cd: too may arguments");
-	if (list_size(input) == 0 || ft_strncmp(*input, "--", ft_strlen(*input)) == 0)
+		return (error("cd: too may arguments"));
+	if (list_size(input) == 0
+		|| ft_strncmp(*input, "--", ft_strlen(*input)) == 0)
 		only_cd(env);
 	else if (ft_strncmp(*input, "-", ft_strlen(*input)) == 0)
 		minus_cd(env);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:51:17 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/12 17:09:25 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/23 18:09:39 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	ft_addvar(char *var, t_env **env)
 		data[1][1] = '\0';
 	}
 	env_var = ft_newvar(data[0], data[1]);
-	ft_findplace(*env, env_var);
+	ft_findplace(env, env_var);
 }
 
 int	export(char **argv, t_env **env)
@@ -101,5 +101,6 @@ int	export(char **argv, t_env **env)
 		}
 		i++;
 	}
+	g_exitcode = 0;
 	return (0);
 }

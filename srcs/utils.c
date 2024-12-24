@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:53:14 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/12 17:10:10 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/24 07:58:21 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	error(const char *error)
 	ft_putstr_fd("Error :", 2);
 	ft_putstr_fd((char *)error, 2);
 	ft_putchar_fd('\n', 2);
+	g_exitcode = 1;
 	return ;
 }
 

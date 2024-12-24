@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
+/*   By: qalpesse <qalpesse@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:35:53 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/23 23:26:41 by marlonco         ###   ########.fr       */
+/*   Updated: 2024/12/24 08:41:29 by qalpesse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,27 +38,29 @@ static int	str_isdigit(char *str)
 	}
 	return (result);
 }
-int checkargvexit(char *str)
+
+int	checkargvexit(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(is_space(str[i]))
+	while (is_space(str[i]))
 		i++;
 	if (str[i] != '0')
-		return 1;
-	while(is_space(str[i]))
+		return (1);
+	while (is_space(str[i]))
 		i++;
 	if (str[i] != '\0')
-		return 1;
-	return 0;
+		return (1);
+	return (0);
 }
 
 void	display_error(char *str)
 {
-		ft_putstr_fd("bash: exit: ", 2);
-		ft_putstr_fd(str, 2);
-		ft_putstr_fd(": numeric argument required\n", 2);
+	ft_putstr_fd("bash: exit: ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd(": numeric argument required\n", 2);
+	g_exitcode = 1;
 }
 
 void	exit_code(char *argv)
@@ -73,19 +75,16 @@ void	exit_code(char *argv)
 	trimmed = ft_strdup(argv);
 	while (is_space(*trimmed))
 		trimmed++;
+	if (trimmed[i] == '-' || trimmed[i] == '+')
+		i++;
+	while (ft_isdigit(trimmed[i]))
+		i++;
 	while (trimmed[i])
 	{
-		if (trimmed[i] != '\0' && ft_isdigit(trimmed[i]) 
-			&& i > 0 && is_space(trimmed[i - 1]))
-			count++;
-		if (trimmed[i] != '\0' && !(ft_isdigit(trimmed[i])) 
-			&& (trimmed[i] != '-' && i == 0) && !(is_space(trimmed[i]))
-			&& (trimmed[i] != '+' && i == 0))
-			return(display_error(trimmed));
+		if (!is_space(trimmed[i]))
+			return (display_error(trimmed));
 		i++;
 	}
-	if (count >= 1)
-		return(display_error(trimmed));
 	nbr = ft_atoi(argv);
 	exit (nbr);
 }
@@ -101,6 +100,7 @@ void	ft_exit(char **argv, t_env **env)
 		return ;
 	}
 	ft_del_hdfiles();
+	g_exitcode = 0;
 	if (argv[1])
 		exit_code(argv[1]);
 	else
