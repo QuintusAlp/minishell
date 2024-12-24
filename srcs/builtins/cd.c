@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qalpesse <qalpesse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marlonco <marlonco@students.s19.be>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:14:49 by marlonco          #+#    #+#             */
-/*   Updated: 2024/12/24 10:36:22 by qalpesse         ###   ########.fr       */
+/*   Updated: 2024/12/24 10:49:25 by marlonco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static int	minus_cd(t_env **env)
 	t_env	*oldpwd_var;
 	t_env	*pwd_var;
 
-	printf("icic\n");
 	oldpwd_var = find_key("OLDPWD", env);
 	pwd_var = find_key("PWD", env);
 	if (!oldpwd_var || !oldpwd_var->value || oldpwd_var->value[0] == '\0')
